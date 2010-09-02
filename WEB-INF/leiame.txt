@@ -1,0 +1,1 @@
+Copiar os arquivos dessa pasta no WEB-INF da aplicação WEB.

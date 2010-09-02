@@ -1,0 +1,178 @@
+<script type='text/javascript' src='lms?action=file&name=ftiens4.js'></script>
+<script type='text/javascript' src='dwr/interface/API_1484_11.js'></script>
+<script type='text/javascript' src='dwr/engine.js'></script>
+<script type='text/javascript' src='lms?action=file&name=toc.js'></script>
+
+
+<script>                                                                    
+		            
+		var courseWindow;
+		
+		window.parent.API_1484_11 = API_1484_11;                                    
+
+		API_1484_11.loadTOC = true;        
+		API_1484_11.version = "1.0";                                                      
+
+		API_1484_11.Initialize = function(p0) {                                     
+			var ret;                                                            
+		    API_1484_11.doInitialize(p0,  {                                         
+				callback:function(_ret){ret = _ret;},                       
+				async:false                                                 
+			});                                                                 
+			return ret;                                                         
+		}                                                                           
+
+		API_1484_11.CarregarPag = function() {
+	        var link = "CONTEXTPATH/lms?action=navrequest";
+	        window.parent.frames[2].location = link;
+		}
+		
+		API_1484_11.Terminate = function(p0) {                                      
+			var ret;                                                            
+		    API_1484_11.doTerminate(p0,  {                                          
+				callback:function(_ret){ret = _ret;},                       
+				async:false                                                 
+			});                                                                 
+		                                                                            
+			if (API_1484_11.HasNavRequest()) {
+/*
+  
+ 				Essa solucao é compativel somente com IE.
+ 				
+		        var link = "CONTEXTPATH/lms?action=navrequest";
+		        window.parent.frames[2].location = link;
+
+		        A nova solucao, com setTimeout, permitiu ser compativel com IE e FF.
+		        Porém, com o Chrome ainda nao existe compatibilidade :( 
+*/
+				setTimeout("API_1484_11.CarregarPag()", 10);
+
+		        if (API_1484_11.loadTOC == true) 
+		          atualizarTOC(window.parent.frames[1].document,API_1484_11.GetTOC());
+			}
+
+			return ret;
+		}                                                                          
+		                                                                           
+		API_1484_11.Commit = function(p0) {                                        
+			var ret;
+		    API_1484_11.doCommit(p0,  {
+				callback:function(_ret){ret = _ret;},                      
+				async:false                                                
+			});                                                                
+			return ret;                                                        
+		}                                                                          
+
+		API_1484_11.GetValue = function(p0) {                                      
+			var ret;                                                           
+		    API_1484_11.doGetValue(p0,  {                                          
+				callback:function(_ret){ret = _ret;},                      
+				async:false                                                
+			});                                                                
+			return ret;                                                        
+		}                                                                          
+		                                                                           
+		                                                                           
+		API_1484_11.SetValue = function(p0, p1) {                                  
+			var ret;                                                           
+		    API_1484_11.doSetValue(p0, p1, {                                       
+				callback:function(_ret){ret = _ret;},                      
+				async:false                                                
+			});                         
+			
+	        if (API_1484_11.loadTOC == true) { 
+				if (API_1484_11.NeedsReloadTOC()) { 
+			          atualizarTOC(window.parent.frames[1].document,API_1484_11.GetTOC());
+			    }
+			}
+			                                       
+			return ret;                                                        
+		}                                                                          
+		                                                                           
+		API_1484_11.GetLastError = function() {
+			var ret;
+		    API_1484_11.doGetLastError( {                                          
+				callback:function(_ret){ret = _ret;},                      
+				async:false                                                
+			});                                                                
+			return ret;                                                        
+		}                                                                          
+
+		API_1484_11.GetErrorString = function(p0) {                                
+			var ret;                                                           
+		    API_1484_11.doGetErrorString(p0, {                                     
+				callback:function(_ret){ret = _ret;},                      
+				async:false                                                
+			});
+			return ret;                                                        
+		}                                                                          
+		                                                                           
+		API_1484_11.GetDiagnostic = function(p0) {                                 
+			var ret;                                                           
+		    API_1484_11.doGetDiagnostic(p0, {                                      
+				callback:function(_ret){ret = _ret;},                      
+				async:false                                                
+			});                                                                
+			return ret;                                                        
+		}                                                                          
+		                                                                           
+		API_1484_11.HasNavRequest = function() {                                   
+			var ret;                                                           
+		    API_1484_11.doHasNavRequest( {                                         
+				callback:function(_ret){ret = _ret;},                      
+				async:false                                                
+			});                                                                
+			return ret;                                                        
+
+		}
+
+		API_1484_11.NeedsReloadTOC = function() {                                   
+			var ret;                                                           
+		    API_1484_11.doNeedsReloadTOC( {                                         
+				callback:function(_ret){ret = _ret;},                      
+				async:false                                                
+			});                               
+			return ret;                                                        
+
+		}
+
+		API_1484_11.GetTOC = function() {                                    
+			var ret;
+		    API_1484_11.doGetTOC( {
+				callback:function(_ret){ret = _ret;},                      
+				async:false                                                
+			});
+			return ret;                                                        
+		                                                                           
+		}                                                                          
+
+		API_1484_11.NeedsRecreateTree = function() {                                    
+			var ret;
+		    API_1484_11.isMustRecreateTree( {
+				callback:function(_ret){ret = _ret;},                      
+				async:false                                                
+			});
+			return ret;                                                        
+		                                                                           
+		}                                                                          
+
+		API_1484_11.Terminated = function() {                                    
+			var ret;
+		    API_1484_11.isTerminated( {
+				callback:function(_ret){ret = _ret;},                      
+				async:false                                                
+			});
+			return ret;                                                        
+		                                                                           
+		}                                                                          
+
+		API_1484_11.ProcessRequest = function(p0) {                                    
+			var ret;
+		    API_1484_11.processRequest(p0, {
+				callback:function(_ret){ret = _ret;},                      
+				async:false                                                
+			});
+			return ret;                                                        
+		                                                                           
+		}                                                                          
+		</script>
