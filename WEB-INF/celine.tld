@@ -93,7 +93,7 @@
 	<tag>
 		<name>formImportCourse</name>
 		<tag-class>br.univali.celine.lms.tags.FormImportCourseTag</tag-class>
-		<body-content>empty</body-content>
+		<body-content>JSP</body-content>
 		
 		<attribute>
 			<name>labelSubmit</name>
@@ -150,8 +150,7 @@
 	<tag>
 		<name>loginForm</name>
 		<tag-class>br.univali.celine.lms.tags.LoginFormTag</tag-class>
-		<body-content>empty</body-content>
-
+		<body-content>JSP</body-content>
 		
 		<attribute>
 			<name>nameFieldName</name>

@@ -1,26 +1,30 @@
 package br.univali.celine.lms.tags;
 
 import java.io.IOException;
+
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.PageContext;
 
 
 
-public class LoginFormTag extends NextURLTagSupport {
+public class LoginFormTag extends NextURLBodyTagSupport {
 
+	private static final long serialVersionUID = 1L;
+	
 	private String nameFieldName = "Nick : ";
 	private String nameFieldPassw = "Senha : ";
 	private String defaultName = "";
 	private String defaultPassword = "";
 	
 	@Override
-	public void doTag() throws JspException, IOException {
+	public int doStartTag() throws JspException {
 		
 		
 		try {
-			PageContext jsp = (PageContext) getJspContext();
-			JspWriter out = jsp.getOut();
+			
+			JspWriter out = pageContext.getOut();
+			
+			
 			
 			
 			out.println("<form action='lms' method='post'>");
@@ -39,14 +43,27 @@ public class LoginFormTag extends NextURLTagSupport {
 			out.println("<input type='password' name='passw' value='" + defaultPassword + "'/>");
 			out.println("</div>");
 
-			out.println("<input type='submit' value='Enviar'/>");
-			out.println("</form>");
 			
 		} catch (IOException e) {
 			throw new JspException(e.getMessage(), e.getCause());
 		}
+		
+		return EVAL_BODY_INCLUDE;
 	}
 
+	@Override
+	public int doEndTag() throws JspException {
+		JspWriter out = pageContext.getOut();
+		try {
+			out.println("<input type='submit' value='Enviar'/>");
+			out.println("</form>");
+		} catch (IOException e) {
+			throw new JspException(e.getMessage(), e.getCause());
+		}
+
+		return super.doEndTag();
+	}
+	
 	public String getNameFieldName() {
 		return nameFieldName;
 	}

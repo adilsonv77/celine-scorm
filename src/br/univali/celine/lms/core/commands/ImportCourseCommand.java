@@ -3,11 +3,15 @@ package br.univali.celine.lms.core.commands;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.ProgressListener;
 import org.apache.commons.io.FilenameUtils;
+
 import br.univali.celine.lms.ajax.AjaxInterface;
 import br.univali.celine.lms.config.LMSConfig;
 import br.univali.celine.lms.core.Command;
@@ -102,7 +106,15 @@ public class ImportCourseCommand implements Command, ZipListener, ProgressListen
 			
 		}
 		
-		return HTMLBuilder.buildRedirect(mrp.getParameter("nextURL", true));
+		Map<String, Object> mparams = mrp.getParameters();
+		String params = "";
+		for(String name:mparams.keySet()) {
+			params += "&" + name + "=" + mparams.get(name);
+			
+		}
+		params = params.substring(1);
+		
+		return HTMLBuilder.buildRedirect(mrp.getParameter("nextURL", true) + "?" + params);
 	}
 	
 
