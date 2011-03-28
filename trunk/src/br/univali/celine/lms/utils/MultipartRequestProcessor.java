@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.ProgressListener;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -13,7 +16,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 public class MultipartRequestProcessor {
 
-	private HashMap<String, Object> parameters;
+	private Map<String, Object> parameters;
 	private ArrayList<FileItem> files;
 	private static MultipartRequestProcessor instance = null;
 	private ProgressListener progressListener;
@@ -22,6 +25,10 @@ public class MultipartRequestProcessor {
 		
 
 		
+	}
+	
+	public Map<String, Object> getParameters() {
+		return parameters;
 	}
 	
 	public boolean hasFiles() {
@@ -52,7 +59,6 @@ public class MultipartRequestProcessor {
 	}
 	
 
-	@SuppressWarnings("unchecked")
 	public void processRequest(HttpServletRequest request) {
 		
 		try {
@@ -64,8 +70,8 @@ public class MultipartRequestProcessor {
 			ServletFileUpload upload = new ServletFileUpload(dfif);
 			
 			upload.setProgressListener(progressListener);
-			List items = upload.parseRequest(request);
-			Iterator iter = items.iterator();	
+			List<?> items = upload.parseRequest(request);
+			Iterator<?> iter = items.iterator();	
 			
 			while (iter.hasNext()) {			
 			    	
@@ -105,10 +111,10 @@ public class MultipartRequestProcessor {
 		if (parameters.containsKey(paramName)) {
 		
 			String paramValue = (String) parameters.get(paramName);
-			
+		/* Porque excluir ?	
 			if (delete)
 				parameters.remove(paramName);
-			
+		*/	
 			return paramValue;
 		}
 		

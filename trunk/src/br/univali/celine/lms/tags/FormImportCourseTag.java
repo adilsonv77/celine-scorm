@@ -2,13 +2,13 @@ package br.univali.celine.lms.tags;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.PageContext;
 
 import br.univali.celine.lms.model.UserImpl;
 import br.univali.celine.lmsscorm.User;
 
+public class FormImportCourseTag extends NextURLBodyTagSupport {
 
-public class FormImportCourseTag extends NextURLTagSupport {
+	private static final long serialVersionUID = 1L;
 
 	private String labelSubmit = "Send";
 	private String labelFieldId = "ID: ";
@@ -16,123 +16,141 @@ public class FormImportCourseTag extends NextURLTagSupport {
 	private String labelFieldFile = "File: ";
 	private String progressListener = null;
 	private String statusListener = null;
-	private String refreshInterval = "250";	
+	private String refreshInterval = "250";
 
 	@Override
-	public void doTag() throws JspException {
-		
-		PageContext pageContext = (PageContext) getJspContext();		
-		User user = (User) pageContext.getSession().getAttribute(UserImpl.USER); 
+	public int doStartTag() throws JspException {
+
+		User user = (User) pageContext.getSession().getAttribute(UserImpl.USER);
 
 		try {
 
 			String onSubmit = "javascript:void(0);";
-			JspWriter out = getJspContext().getOut();			
+			JspWriter out = pageContext.getOut();
 
 			if ((progressListener != null) || (statusListener != null)) {
 
 				out.println("<script type='text/javascript' src='dwr/engine.js'></script>");
 				out.println("<script type='text/javascript' src='dwr/util.js'></script>");
 				out.println("<script type='text/javascript' src='dwr/interface/AJAX_INTERFACE.js'></script>");
-				
+
 				out.println("<script type='text/javascript'>");
 				out.println("	function startProgressMonitor() {");
-				
-				out.println("		try {");				
-				
-				out.println(			progressListener + "(0);");
-				out.println("			setInterval('getProgress()', " + Integer.parseInt(refreshInterval) + ");");
-				
+
+				out.println("		try {");
+
+				out.println(progressListener + "(0);");
+				out.println("			setInterval('getProgress()', "
+						+ Integer.parseInt(refreshInterval) + ");");
+
 				out.println("		} catch (error) { }");
-				
-				out.println("	}");
-				
-				
-				out.println("	function startStatusMonitor() {");
-				out.println("		try {");				
-				
-				out.println(			statusListener + "(0);");
-				out.println("			setInterval('getStatus()', " + Integer.parseInt(refreshInterval) + ");");
-				
-				out.println("		} catch (error) { }");								
-				
-				out.println("	}");
-				
-				
-				out.println("	function getProgress() {");
-				out.println("		AJAX_INTERFACE.getUploadProgress('" + user.getName() + "', " + progressListener + ");");
+
 				out.println("	}");
 
-				
-				out.println("	function getStatus() {");
-				out.println("		AJAX_INTERFACE.getUploadStatus('" + user.getName() + "', " + statusListener + ");");
+				out.println("	function startStatusMonitor() {");
+				out.println("		try {");
+
+				out.println(statusListener + "(0);");
+				out.println("			setInterval('getStatus()', "
+						+ Integer.parseInt(refreshInterval) + ");");
+
+				out.println("		} catch (error) { }");
+
 				out.println("	}");
-				
+
+				out.println("	function getProgress() {");
+				out.println("		AJAX_INTERFACE.getUploadProgress('"
+						+ user.getName() + "', " + progressListener + ");");
+				out.println("	}");
+
+				out.println("	function getStatus() {");
+				out.println("		AJAX_INTERFACE.getUploadStatus('"
+						+ user.getName() + "', " + statusListener + ");");
+				out.println("	}");
+
 				out.println("	function startMonitors() {");
-				
+
 				out.println("		startStatusMonitor();");
 				out.println("		startProgressMonitor();");
-				
-				out.println("	}");
-				
-				out.println("</script>");
-				
-				onSubmit = "javascript:startMonitors();";
-				
-			}	
-			
 
-			//TODO: Pense nisso!!! Que tal criarmos um padrão na hora de nomear os estilos das divs?
+				out.println("	}");
+
+				out.println("</script>");
+
+				onSubmit = "javascript:startMonitors();";
+
+			}
+
+			// TODO: Pense nisso!!! Que tal criarmos um padrão na hora de nomear
+			// os estilos das divs?
 			// Criei um padrao que é assim: IniciasDaClasse_nomeDoField.
-			// Por exemplo, esta classe tem as inicias FICT de Form Import Course Tag, 
-			// e possui um field com nome courseId, então a div correspondente fica
-			// fict_courseId. Poderíamos manter o mesmo padrão para todas as outras classes, assim ficaria mais
-			// fácil para o usuário customizar o visual da aplicação. 
-			
-			// O java também traz o recurso, de colocar um tag <description> no tld, assim podemos usar esse
-			// recurso em cada tag para informar os estilos das divs ao usuário.			
+			// Por exemplo, esta classe tem as inicias FICT de Form Import
+			// Course Tag,
+			// e possui um field com nome courseId, então a div correspondente
+			// fica
+			// fict_courseId. Poderíamos manter o mesmo padrão para todas as
+			// outras classes, assim ficaria mais
+			// fácil para o usuário customizar o visual da aplicação.
+
+			// O java também traz o recurso, de colocar um tag <description> no
+			// tld, assim podemos usar esse
+			// recurso em cada tag para informar os estilos das divs ao usuário.
 			// Mas é só uma idéia, então pense nisso...
-			
+
 			out.println("<div class='fict_content'>");
-			out.println("	<form enctype='multipart/form-data' method='post' action='lms?action=importcourse' onsubmit='" + onSubmit + "'>");			
-			
-			out.println("		<input type='hidden' name='nextURL' value='" + getNextURL() + "'/>");
-			
-			out.println("		<div class='fict_label_id'>");			
-			out.println(			labelFieldId);
+			out.println("	<form enctype='multipart/form-data' method='post' action='lms?action=importcourse' onsubmit='"
+					+ onSubmit + "'>");
+
+			out.println("		<input type='hidden' name='nextURL' value='"
+					+ getNextURL() + "'/>");
+
+			out.println("		<div class='fict_label_id'>");
+			out.println(labelFieldId);
 			out.println("		</div>");
-			
+
 			out.println("		<div class='fict_id'>");
 			out.println("			<input type='text' name='id' value=''/>");
 			out.println("		</div>");
-			
+
 			out.println("		<div class='fict_label_title'>");
-			out.println(			labelFieldTitle);
+			out.println(labelFieldTitle);
 			out.println("		</div>");
-			
+
 			out.println("		<div class='fict_title'>");
 			out.println("			<input type='text' name='title' value=''/><br/>");
 			out.println("		</div>");
-			
+
 			out.println("		<div class='fict_label_file'>");
-			out.println(			labelFieldFile);
+			out.println(labelFieldFile);
 			out.println("		</div>");
-			
+
 			out.println("		<div class='fict_file'>");
 			out.println("			<input type='file' name='file'/>");
 			out.println("		</div>");
-			
-			out.println("		<div class='fict_submit'>");
-			out.println("			<input type='submit' name='submit' value='" + labelSubmit + "'>");
-			out.println("		</div>");
-			
-			out.println("	</form>");	
-			out.println("</div>");
-			
+
 		} catch (Exception e) {
 			throw new JspException(e);
 		}
-		
+
+		return EVAL_BODY_INCLUDE;
+
+	}
+
+	@Override
+	public int doEndTag() throws JspException {
+		JspWriter out = pageContext.getOut();
+		try {
+			out.println("		<div class='fict_submit'>");
+			out.println("			<input type='submit' name='submit' value='"
+					+ labelSubmit + "'>");
+			out.println("		</div>");
+
+			out.println("	</form>");
+			out.println("</div>");
+		} catch (Exception e) {
+			throw new JspException(e);
+		}
+		return super.doEndTag();
 	}
 
 	public String getLabelSubmit() {
@@ -186,7 +204,7 @@ public class FormImportCourseTag extends NextURLTagSupport {
 	public void setStatusListener(String statusListener) {
 		this.statusListener = statusListener;
 	}
-	
+
 	public String getStatusListener() {
 		return statusListener;
 	}
