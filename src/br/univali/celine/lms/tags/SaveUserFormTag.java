@@ -9,49 +9,72 @@ import javax.servlet.jsp.PageContext;
 
 import br.univali.celine.lmsscorm.User;
 
-public class SaveUserFormTag extends NextURLTagSupport {
+public class SaveUserFormTag extends NextURLBodyTagSupport {
+
+	private static final long serialVersionUID = 1L;
 
 	private String nameFieldName = "Nick : ";
 	private String nameFieldPassw = "Senha : ";
 	private String label = "Enviar";
 	private String nameFieldAdmin = "Administrador";
 
-
 	@Override
-	public void doTag() throws JspException, IOException {
+	public int doStartTag() throws JspException {
 
-		PageContext pageContext = (PageContext) getJspContext();
+		PageContext pageContext = this.pageContext; // (PageContext)
+													// getJspContext();
 		JspWriter out = pageContext.getOut();
-		HttpSession session = pageContext.getSession(); 
+		HttpSession session = pageContext.getSession();
 		User user = (User) session.getAttribute("editUser");
-		session.removeAttribute("editUser");
 
-		out.println("<form action='lms' method='post'>");
+		try {
+			out.println("<form action='lms' method='post'>");
 
-		if (user == null) {
+			if (user == null) {
 
-			out.println("<input type='hidden' name='action' value='adduser'/>");
-			mountForm("", "", false);
+				out.println("<input type='hidden' name='action' value='adduser'/>");
+				mountForm("", "", false);
 
-		} else {
+			} else {
 
-			out.println("<input type='hidden' name='action' value='updateuser'/>");
-			out.println("<input type='hidden' name='oldName' value='" + user.getName() + "'>");
-			mountForm(user.getName(), user.getPassw(), user.isAdmin());
+				out.println("<input type='hidden' name='action' value='updateuser'/>");
+				out.println("<input type='hidden' name='oldName' value='"
+						+ user.getName() + "'>");
+				mountForm(user.getName(), user.getPassw(), user.isAdmin());
 
+			}
+
+			out.println("<input type='hidden' name='nextURL' value='"
+					+ getNextURL() + "'/>");
+			out.println("<input type='hidden' name='thisURL' value='"
+					+ getThisURL() + "'/>");
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
-		out.println("<input type='hidden' name='nextURL' value='" + getNextURL() + "'/>");
-		out.println("<input type='hidden' name='thisURL' value='" + getThisURL() + "'/>");
-
-		out.println("<input type='submit' value='" + label + "'/>");
-		out.println("</form>");
+		return EVAL_BODY_INCLUDE;
 
 	}
 
-	private void mountForm(String name, String passw, boolean admin) throws IOException {
-		
-		JspWriter out = getJspContext().getOut();
+	@Override
+	public int doEndTag() throws JspException {
+		PageContext pageContext = this.pageContext; 
+		JspWriter out = pageContext.getOut();
+		HttpSession session = pageContext.getSession();
+		session.removeAttribute("editUser");
+		try {
+			out.println("<input type='submit' value='" + label + "'/>");
+			out.println("</form>");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return super.doEndTag();
+	}
+
+	private void mountForm(String name, String passw, boolean admin)
+			throws IOException {
+
+		JspWriter out = pageContext.getOut(); // getJspContext()
 		out.println("<div class='saveuser_name'>");
 		out.println(nameFieldName);
 		out.println("<input type='text' name='name' value='" + name + "'/>");
@@ -59,12 +82,14 @@ public class SaveUserFormTag extends NextURLTagSupport {
 
 		out.println("<div class='saveuser_passw'>");
 		out.println(nameFieldPassw);
-		out.println("<input type='password' name='passw' value='" + passw + "'/>");
+		out.println("<input type='password' name='passw' value='" + passw
+				+ "'/>");
 		out.println("</div>");
 
 		out.println("<div class='saveuser_admin'>");
 
-		out.println("<input id='admin' type='checkbox' value='true'" + (admin?"checked='checked'":"") + " name='admin'>&nbsp;");
+		out.println("<input id='admin' type='checkbox' value='true'"
+				+ (admin ? "checked='checked'" : "") + " name='admin'>&nbsp;");
 		out.println("<label for=\"admin\">" + nameFieldAdmin + "</label>");
 
 		out.println("</div>");
