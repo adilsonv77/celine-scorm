@@ -421,7 +421,7 @@
 	<tag>
 		<name>saveUserForm</name>
 		<tag-class>br.univali.celine.lms.tags.SaveUserFormTag</tag-class>
-		<body-content>empty</body-content>		
+		<body-content>JSP</body-content>		
 		
 		<attribute>
 			<name>nextURL</name>

@@ -1,6 +1,7 @@
 package br.univali.celine.lms.core;
 
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
@@ -67,7 +68,29 @@ public class LMS extends HttpServlet {
 
 		comandos.put("file", new FileCommand());
 
+		try {
+			loadUserCommand(servletConfig);
+		} catch (Exception e) {
+			throw new ServletException(e);
+		}
+		
 		Build20043rdEdition.build();
+	}
+
+	@SuppressWarnings("rawtypes")
+	private void loadUserCommand(ServletConfig servletConfig) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+		
+		Enumeration pm = servletConfig.getServletContext().getInitParameterNames();
+		while (pm.hasMoreElements()) {
+			String actionName = (String)pm.nextElement();
+			if (actionName.startsWith("lms_")) {
+				String className = servletConfig.getServletContext().getInitParameter(actionName);
+				
+				Class clazz = Class.forName(className);
+				comandos.put(actionName.substring(4), (Command)(clazz.newInstance()));
+			}
+		}
+		
 	}
 
 	private static Logger logger = Logger.getLogger("global");

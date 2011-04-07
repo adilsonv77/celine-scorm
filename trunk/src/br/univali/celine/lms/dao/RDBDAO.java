@@ -4,11 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+
 import br.univali.celine.lms.dao.util.ConnectionPool;
 import br.univali.celine.lms.model.CourseImpl;
 import br.univali.celine.lms.model.CoursePracticeImpl;
@@ -35,40 +37,42 @@ public class RDBDAO implements DAO {
 	protected ConnectionPool pool; // os descendentes precisam poder ver esse atributo
 	
 	
-	private String selectLoginSQL = "SELECT ID_USER, DS_NICK, DS_PASSW, TP_USER FROM USERS WHERE DS_NICK = ? AND DS_PASSW = ?";
+	private static final String selectLoginSQL = "SELECT ID_USER, DS_NICK, DS_PASSW, TP_USER FROM USERS WHERE DS_NICK = ? AND DS_PASSW = ?";
 
-	private String selectUsersSQL = "SELECT ID_USER, DS_NICK, DS_PASSW, TP_USER FROM USERS";
-	private String selectUserByNickSQL = "SELECT ID_USER, DS_NICK, DS_PASSW, TP_USER FROM USERS WHERE DS_NICK = ?";	
-	private String insertUserSQL = "INSERT INTO USERS (DS_NICK, DS_PASSW, TP_USER) VALUES (?, ?, ?)";
-	private String deleteUserSQL = "DELETE FROM USERS WHERE DS_NICK = ?";
-	private String editUserSQL = "UPDATE USERS SET DS_NICK = ?, DS_PASSW = ?, TP_USER = ? WHERE DS_NICK = ?";
+	private static final String lastIDSQL = "SELECT LAST_INSERT_ID()";
+
+	private static final String selectUsersSQL = "SELECT ID_USER, DS_NICK, DS_PASSW, TP_USER FROM USERS";
+	private static final String selectUserByNickSQL = "SELECT ID_USER, DS_NICK, DS_PASSW, TP_USER FROM USERS WHERE DS_NICK = ?";	
+	private static final String insertUserSQL = "INSERT INTO USERS (DS_NICK, DS_PASSW, TP_USER) VALUES (?, ?, ?)";
+	private static final String deleteUserSQL = "DELETE FROM USERS WHERE DS_NICK = ?";
+	private static final String editUserSQL = "UPDATE USERS SET DS_NICK = ?, DS_PASSW = ?, TP_USER = ? WHERE DS_NICK = ?";
 
 	
-	private String selectCoursesSQL = "SELECT ID_COURSE, DS_COURSE, DS_ID, DS_TITLE, DS_DERIVED, DS_REMOVED FROM COURSES ORDER BY DS_TITLE";
-	private String selectCourseByCourseIdSQL = "SELECT ID_COURSE, DS_COURSE, DS_ID, DS_TITLE, DS_DERIVED, DS_REMOVED FROM COURSES WHERE DS_ID = ?";
-	private String selectCourseByNameSQL = "SELECT ID_COURSE FROM COURSES WHERE DS_ID=?";
-	private String selectCourseByFolderNameSQL = "SELECT ID_COURSE, DS_COURSE, DS_ID, DS_TITLE, DS_DERIVED, DS_REMOVED FROM COURSES WHERE DS_COURSE=?";	
-	private String insertCourseSQL = "INSERT INTO COURSES (DS_COURSE, DS_ID, DS_TITLE, DS_REMOVED, DS_DERIVED) VALUES (?, ?, ?, ?, ?)";
-	private String removeCourseSQL = "DELETE FROM COURSES WHERE DS_ID = ?";
-	private String markCourseAsRemovedSQL = "UPDATE COURSES SET DS_REMOVED = ? WHERE DS_ID = ?";	
+	private static final String selectCoursesSQL = "SELECT ID_COURSE, DS_COURSE, DS_ID, DS_TITLE, DS_DERIVED, DS_REMOVED FROM COURSES ORDER BY DS_TITLE";
+	private static final String selectCourseByCourseIdSQL = "SELECT ID_COURSE, DS_COURSE, DS_ID, DS_TITLE, DS_DERIVED, DS_REMOVED FROM COURSES WHERE DS_ID = ?";
+	private static final String selectCourseByNameSQL = "SELECT ID_COURSE FROM COURSES WHERE DS_ID=?";
+	private static final String selectCourseByFolderNameSQL = "SELECT ID_COURSE, DS_COURSE, DS_ID, DS_TITLE, DS_DERIVED, DS_REMOVED FROM COURSES WHERE DS_COURSE=?";	
+	private static final String insertCourseSQL = "INSERT INTO COURSES (DS_COURSE, DS_ID, DS_TITLE, DS_REMOVED, DS_DERIVED) VALUES (?, ?, ?, ?, ?)";
+	private static final String removeCourseSQL = "DELETE FROM COURSES WHERE DS_ID = ?";
+	private static final String markCourseAsRemovedSQL = "UPDATE COURSES SET DS_REMOVED = ? WHERE DS_ID = ?";	
 	
 		
-	private String insertContentPackageStrSQL = "INSERT INTO CONTENT_PACKAGES (DS_ID, DS_CONTENT_PACKAGE) VALUES (?, ?)";
-	private String getDerivedCoursePackageStrSQL = "SELECT DS_CONTENT_PACKAGE FROM CONTENT_PACKAGES WHERE DS_ID = ?";
+	private static final String insertContentPackageStrSQL = "INSERT INTO CONTENT_PACKAGES (DS_ID, DS_CONTENT_PACKAGE) VALUES (?, ?)";
+	private static final String getDerivedCoursePackageStrSQL = "SELECT DS_CONTENT_PACKAGE FROM CONTENT_PACKAGES WHERE DS_ID = ?";
 
-	private String selectUserRegisteredSQL = "SELECT ID_SUSPENDEDACTIVITY FROM COURSESUSERS CU, USERS U, COURSES C " +
+	private static final String selectUserRegisteredSQL = "SELECT ID_SUSPENDEDACTIVITY FROM COURSESUSERS CU, USERS U, COURSES C " +
 								"  WHERE CU.ID_USER = U.ID_USER AND CU.ID_COURSE = C.ID_COURSE AND U.DS_NICK=? AND C.DS_ID = ?";
 	
 
 	
-	 private String insertCoursesUsersSQL = "INSERT INTO COURSESUSERS (ID_USER, ID_COURSE) VALUES (?, ?)";
-	 private String deleteCoursesUsersSQL = "DELETE FROM COURSESUSERS WHERE ID_USER=? AND ID_COURSE=?";
+	 private static final String insertCoursesUsersSQL = "INSERT INTO COURSESUSERS (ID_USER, ID_COURSE) VALUES (?, ?)";
+	 private static final String deleteCoursesUsersSQL = "DELETE FROM COURSESUSERS WHERE ID_USER=? AND ID_COURSE=?";
 	
 
-	 private String updateSuspendedActivitySQL = "UPDATE COURSESUSERS SET ID_SUSPENDEDACTIVITY=? WHERE ID_USER=? AND ID_COURSE=?";
-	 private String selectSuspendedActivitySQL = "SELECT ID_SUSPENDEDACTIVITY FROM COURSESUSERS WHERE ID_USER=? AND ID_COURSE=?";
+	 private static final String updateSuspendedActivitySQL = "UPDATE COURSESUSERS SET ID_SUSPENDEDACTIVITY=? WHERE ID_USER=? AND ID_COURSE=?";
+	 private static final String selectSuspendedActivitySQL = "SELECT ID_SUSPENDEDACTIVITY FROM COURSESUSERS WHERE ID_USER=? AND ID_COURSE=?";
 
-	 private String insertTrackModelObjectiveSQL = "INSERT INTO TMOBJECTIVES " +
+	 private static final String insertTrackModelObjectiveSQL = "INSERT INTO TMOBJECTIVES " +
 			"(BOOL_PROGRESSSTATUS, BOOL_SATISFIEDSTATUS, " +
 				 "BOOL_MEASURESTATUS, VL_NORMALIZEDMEASURE," +
 				 "ID_USER, ID_COURSE, ID_ACTIVITY, ID_OBJECTIVE) VALUES " +
@@ -76,28 +80,28 @@ public class RDBDAO implements DAO {
 	
 	
 	
-	 private String selectTrackModelOneObjectiveSQL = 
+	 private static final String selectTrackModelOneObjectiveSQL = 
 			"SELECT ID_USER, ID_COURSE, ID_ACTIVITY, ID_OBJECTIVE, BOOL_PROGRESSSTATUS, BOOL_SATISFIEDSTATUS, " +
 				 "BOOL_MEASURESTATUS, VL_NORMALIZEDMEASURE FROM TMOBJECTIVES " +
 				 "WHERE ID_USER=? AND ID_COURSE=? AND ID_ACTIVITY=? AND ID_OBJECTIVE=?";
 	
 	
-	 private String updateTrackModelObjectiveSQL = 
+	 private static final String updateTrackModelObjectiveSQL = 
 			"UPDATE TMOBJECTIVES " +
 			"SET BOOL_PROGRESSSTATUS=?, BOOL_SATISFIEDSTATUS=?, " +
 				 "BOOL_MEASURESTATUS=?, VL_NORMALIZEDMEASURE=? " +
 			"WHERE ID_USER=? AND ID_COURSE=? AND ID_ACTIVITY=? AND ID_OBJECTIVE=?";
 	
 	
-	 private String selectTrackModelObjectivesSQL = 
+	 private static final String selectTrackModelObjectivesSQL = 
 			"SELECT ID_USER, ID_COURSE, ID_ACTIVITY, ID_OBJECTIVE, BOOL_PROGRESSSTATUS, BOOL_SATISFIEDSTATUS, " +
 				 "BOOL_MEASURESTATUS, VL_NORMALIZEDMEASURE FROM TMOBJECTIVES " +
 				 "WHERE ID_USER=? AND ID_COURSE=?";
 	
 	
-	 private String deleteTrackModelObjectivesSQL = "DELETE FROM TMOBJECTIVES WHERE ID_USER=? AND ID_COURSE=?";
+	 private static final String deleteTrackModelObjectivesSQL = "DELETE FROM TMOBJECTIVES WHERE ID_USER=? AND ID_COURSE=?";
 
-	 private String insertTrackModelActivitySQL = "INSERT INTO TMACTIVITIES " +
+	 private static final String insertTrackModelActivitySQL = "INSERT INTO TMACTIVITIES " +
 			"(BOOL_PROGRESSSTATUS, VL_ABSOLUTEDURATION, " +
 				 "VL_EXPERIENCEDDURATION, VL_ATTEMPTCOUNT, BOOL_SUSPENDED, ID_PARENTACTIVITY, IDX_CHILDREN, " +
 				 "BOOL_ATTEMPTCOMPLETIONSTATUS, BOOL_ATTEMPTPROGRESSSTATUS, VL_SCORERAW, VL_SCOREMIN, VL_SCOREMAX, VL_SCORESCALED, " +
@@ -105,13 +109,13 @@ public class RDBDAO implements DAO {
 				 "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	
 	
-	 private String selectTrackModelOneActivitySQL = 
+	 private static final String selectTrackModelOneActivitySQL = 
 			"SELECT ID_USER, ID_COURSE, ID_ACTIVITY, BOOL_PROGRESSSTATUS, VL_ABSOLUTEDURATION, " +
 				 "VL_EXPERIENCEDDURATION, VL_ATTEMPTCOUNT, BOOL_SUSPENDED, ID_PARENTACTIVITY, IDX_CHILDREN FROM TMACTIVITIES " +
 				 "WHERE ID_USER=? AND ID_COURSE=? AND ID_ACTIVITY=?";
 	
 	
-	 private String updateTrackModelActivitySQL = 
+	 private static final String updateTrackModelActivitySQL = 
 			"UPDATE TMACTIVITIES " +
 			"SET BOOL_PROGRESSSTATUS=?, VL_ABSOLUTEDURATION=?, " +
 				 "VL_EXPERIENCEDDURATION=?, VL_ATTEMPTCOUNT=?, BOOL_SUSPENDED=?, ID_PARENTACTIVITY=?, IDX_CHILDREN=?, " +
@@ -119,7 +123,7 @@ public class RDBDAO implements DAO {
 			"WHERE ID_USER=? AND ID_COURSE=? AND ID_ACTIVITY=?";
 	
 	
-	 private String selectTrackModelActivitiesSQL = 
+	 private static final String selectTrackModelActivitiesSQL = 
 			"SELECT ID_USER, ID_COURSE, ID_ACTIVITY, BOOL_PROGRESSSTATUS, VL_ABSOLUTEDURATION, " +
 				 "VL_EXPERIENCEDDURATION, VL_ATTEMPTCOUNT, BOOL_SUSPENDED, ID_PARENTACTIVITY, IDX_CHILDREN, " +
 				 "BOOL_ATTEMPTCOMPLETIONSTATUS, BOOL_ATTEMPTPROGRESSSTATUS, VL_SCORERAW, " +
@@ -127,48 +131,48 @@ public class RDBDAO implements DAO {
 				 "WHERE ID_USER=? AND ID_COURSE=? ORDER BY ID_PARENTACTIVITY, IDX_CHILDREN";
 	
 	
-	 private String deleteTrackModelActivitiesSQL = "DELETE FROM TMACTIVITIES WHERE ID_USER=? AND ID_COURSE=?";
-	
+	 private static final String deleteTrackModelActivitiesSQL = "DELETE FROM TMACTIVITIES WHERE ID_USER=? AND ID_COURSE=?";
+	/*
 	 @SuppressWarnings("unused")
 	private String selectTrackModelInteractionsSQL = 
 			"SELECT ID_USER, ID_COURSE, ID_ACTIVITY, NR_INDEX, ID_INTERACTION, DS_TYPE, DS_TIMESTAMP, NR_WEIGHTING, " +
 			" DS_LEARNERRESPONSE, DS_RESULT, DS_LATENCY, DS_DESCRIPTION FROM TMINTERACTIONS " +
 			"WHERE ID_USER=? AND ID_COURSE=? AND ID_ACTIVITY=? ORDER BY NR_INDEX";
+	*/
 	
-	
-	 private String insertTrackModelInteractionsSQL = "INSERT INTO TMINTERACTIONS " +
+	 private static final String insertTrackModelInteractionsSQL = "INSERT INTO TMINTERACTIONS " +
 			"(ID_USER, ID_COURSE, ID_ACTIVITY, NR_INDEX, ID_INTERACTION, DS_TYPE, DS_TIMESTAMP, NR_WEIGHTING, " +
 			" DS_LEARNERRESPONSE, DS_RESULT, DS_LATENCY, DS_DESCRIPTION) VALUES " +
 			"(?,?,?,?,?,?,?,?,?,?,?,?)";
 	
 	
-	 private String deleteTrackModelInteractionsSQL = 
+	 private static final String deleteTrackModelInteractionsSQL = 
 			"DELETE FROM TMINTERACTIONS WHERE ID_USER=? AND ID_COURSE=? AND ID_ACTIVITY=? AND ID_INTERACTION=?";
 	
-	 private String deleteTrackModelInteractionsByCourseSQL = 
+	 private static final String deleteTrackModelInteractionsByCourseSQL = 
 			"DELETE FROM TMINTERACTIONS WHERE ID_USER=? AND ID_COURSE=?";
 	
 	// request
-	 private String insertRequestActivitySQL = 
+	 private static final String insertRequestActivitySQL = 
 			"INSERT INTO REQUESTACTIVITIES (VL_ATTEMPT, VL_EXPERIENCEDDURATION, DT_LASTTIMEACCESSED, ID_USER, ID_COURSE, ID_ACTIVITY) " +
 			"VALUES (?,?,?,?,?,?)";
 	
 	
-	 private String updateRequestActivitySQL = 
+	 private static final String updateRequestActivitySQL = 
 			"UPDATE REQUESTACTIVITIES SET VL_ATTEMPT=?, VL_EXPERIENCEDDURATION=?, DT_LASTTIMEACCESSED=? WHERE " +
 			"ID_USER=? AND ID_COURSE=? AND ID_ACTIVITY=?";
 	
 	
-	 private String selectRequestActivitySQL = 
+	 private static final String selectRequestActivitySQL = 
 			"SELECT VL_ATTEMPT, VL_EXPERIENCEDDURATION, DT_LASTTIMEACCESSED FROM REQUESTACTIVITIES " +
 			"WHERE ID_USER=? AND ID_COURSE=? AND ID_ACTIVITY=?";
 	
 
-	 private String selectCoursesAccessedSQL = 
+	 private static final String selectCoursesAccessedSQL = 
 			"SELECT ID_USER, COUNT(DISTINCT ID_COURSE), SUM(VL_EXPERIENCEDDURATION), MAX(DT_LASTTIMEACCESSED) FROM " +
 				"REQUESTACTIVITIES GROUP BY ID_USER";
 	
-	 private String selectCoursesAccessedOneUserSQL = 
+	 private static final String selectCoursesAccessedOneUserSQL = 
 			"SELECT ID_COURSE, SUM(VL_EXPERIENCEDDURATION), MAX(DT_LASTTIMEACCESSED) FROM REQUESTACTIVITIES " +
 				"WHERE ID_USER = ? GROUP BY ID_COURSE";
 	
@@ -957,6 +961,8 @@ public class RDBDAO implements DAO {
 		
 		Connection connection = pool.getConnection();
 		PreparedStatement ps = null;
+		Statement st = null;
+		ResultSet rs = null;
 		
 		try {
 			
@@ -966,8 +972,16 @@ public class RDBDAO implements DAO {
 			ps.setString(3, user.isAdmin()?"A":"U");		
 			ps.execute();
 			
+			st = connection.createStatement();
+			rs = st.executeQuery(lastIDSQL);
+			rs.next();
+			((UserImpl)user).setId(rs.getInt(1));
+			
+			
 		} finally {
 		
+			try { rs.close(); } catch (Exception e) {}
+			try { st.close(); } catch (Exception e) {}
 			try { ps.close(); } catch (Exception e) {}
 			try { connection.close(); } catch (Exception e) {}
 			
@@ -1001,6 +1015,7 @@ public class RDBDAO implements DAO {
 
 		Connection connection = pool.getConnection();
 		PreparedStatement ps = null;
+		ResultSet rs = null;
 		
 		try {
 		
@@ -1010,9 +1025,17 @@ public class RDBDAO implements DAO {
 			ps.setString(3, user.isAdmin()?"A":"U");
 			ps.setString(4, userName);
 			ps.executeUpdate();
+			ps.close();
+			
+			ps = connection.prepareStatement(selectUserByNickSQL);
+			ps.setString(1, user.getName());
+			rs = ps.executeQuery();
+			rs.next();
+			((UserImpl)user).setId(rs.getInt(1));
 			
 		} finally {
 		
+			try { rs.close(); } catch (Exception e) {}
 			try { ps.close(); } catch (Exception e) {}
 			try { connection.close(); } catch (Exception e) {}
 			
