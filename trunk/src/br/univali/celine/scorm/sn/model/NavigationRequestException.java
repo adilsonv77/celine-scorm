@@ -17,6 +17,7 @@ public class NavigationRequestException extends Exception {
 		return msgs[exception];
 	}
 
+	// TODO transformar em descendentes de Exception
 	private static final String[] msgs = new String[] {
 		"",
 		"NB.2.1-1 Current Activity is already defined / Sequencing session has already begun",
@@ -24,7 +25,7 @@ public class NavigationRequestException extends Exception {
 		"NB.2.1-3 Suspended Activity is not defined",
 		"NB.2.1-4 Flow Sequencing Control Mode violation",
 		"NB.2.1-5 Flow or Forward Only Sequencing Control Mode violation",
-		"NB.2.1-6 No activity is “previous” to the root",
+		"NB.2.1-6 No activity is \"previous\" to the root",
 		"NB.2.1-7 Unsupported navigation request",
 		"NB.2.1-8 Choice Exit Sequencing Control Mode violation",
 		"NB.2.1-9 No activities to consider",
@@ -41,13 +42,13 @@ public class NavigationRequestException extends Exception {
 		"TB.2.3-7 Undefined termination request",
 		"SB.2.1-1 Last activity in the tree",
 		"SB.2.1-2 Cluster has no available children",
-		"SB.2.1-3 No activity is “previous” to the root",
+		"SB.2.1-3 No activity is \"previous\" to the root",
 		"SB.2.1-4 Forward Only Sequencing Control Mode violation",
 		"SB.2.2-1 Flow Sequencing Control Mode violation",
 		"SB.2.2-2 Activity unavailable",
 		"SB.2.4-1 Forward Traversal Blocked",
 		"SB.2.4-2 Forward Only Sequencing Control Mode violation",
-		"SB.2.4-3 No activity is “previous” to the root",
+		"SB.2.4-3 No activity is \"previous\" to the root",
 		"SB.2.5-1 Current Activity is defined / Sequencing session already begun",
 		"SB.2.6-1 Current Activity is defined / Sequencing session already begun",
 		"SB.2.6-2 No Suspended Activity defined",
@@ -62,7 +63,7 @@ public class NavigationRequestException extends Exception {
 		"SB.2.9-5 No activities to consider",
 		"SB.2.9-6 Unable to activate target; target is not a child of the Current Activity",
 		"SB.2.9-7 Choice Exit Sequencing Control Mode violation",
-		"SB.2.9-8 Unable to choose target activity – constrained choice",
+		"SB.2.9-8 Unable to choose target activity - constrained choice",
 		"SB.2.9-9 Choice request prevented by Flow-only activity",
 		"SB.2.10-1 Current Activity is not defined / Sequencing session has not begun",
 		"SB.2.10-2 Current Activity is active or suspended",
@@ -73,7 +74,8 @@ public class NavigationRequestException extends Exception {
 		"DB.1.1-1 Cannot deliver a non-leaf activity",
 		"DB.1.1-2 Nothing to deliver",
 		"DB.1.1-3 Activity unavailable",
-		"DB.2-1 Identified activity is already active"
+		"DB.2-1 Identified activity is already active",
+		"SB.2.12-1 Current Activity is not defined / Sequencing session has not begun"
 		
 	};
 	

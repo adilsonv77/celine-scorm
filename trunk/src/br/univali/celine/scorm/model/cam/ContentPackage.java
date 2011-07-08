@@ -9,7 +9,7 @@ public class ContentPackage {
 		cp.setOrganizations(new Organizations());
 		cp.setResources(new Resources());
 
-		Organization org = new Organization();
+		Organization20043rd org = new Organization20043rd();
 		org.setTitle(organizationName);
 		org.setIdentifier(orgIdentifier);
 		cp.getOrganizations().addOrganization(org);

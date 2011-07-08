@@ -12,6 +12,7 @@ import br.univali.celine.scorm.dataModel.cmi.Exit;
 import br.univali.celine.scorm.dataModel.cmi.SessionTime;
 import br.univali.celine.scorm.dataModel.cmi.TotalTime;
 import br.univali.celine.scorm.model.cam.ContentPackage;
+import br.univali.celine.scorm.model.cam.Item;
 import br.univali.celine.scorm.model.cam.Resource;
 import br.univali.celine.scorm.model.dataTypes.Duration;
 import br.univali.celine.scorm.sn.ProcessProvider;
@@ -94,8 +95,8 @@ public class APIImplementation implements API {
 	
 	public String getResource() {
 		
-		Resource res = this.contentPackage.getResource(tree.getCurrentActivity().getItem().getIdentifierref());
-		return res.getXmlBase() +  res.getHref() + tree.getCurrentActivity().getItem().getParameters();
+		Resource res = this.contentPackage.getResource(((Item)tree.getCurrentActivity().getItem()).getIdentifierref());
+		return res.getXmlBase() +  res.getHref() + ((Item)tree.getCurrentActivity().getItem()).getParameters();
 	}
 	
 	
@@ -464,7 +465,7 @@ public class APIImplementation implements API {
 
 	private boolean isLastWasSCO() {
 		
-		Resource res = this.contentPackage.getResource(tree.getCurrentActivity().getItem().getIdentifierref());
+		Resource res = this.contentPackage.getResource(((Item)tree.getCurrentActivity().getItem()).getIdentifierref());
 		return res.getScormType().equals("sco");
 		
 	}

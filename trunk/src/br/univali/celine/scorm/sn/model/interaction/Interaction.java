@@ -19,7 +19,7 @@ public abstract class Interaction {
 	private String description;
 	private String latency;
 	private String result;
-	private List<String> correctResponses = new ArrayList<String>();
+	protected List<String> correctResponses = new ArrayList<String>();
 	private List<String> objectivesId = new ArrayList<String>();
 	private String id;
 
@@ -78,7 +78,7 @@ public abstract class Interaction {
 	protected void testLearnerResponse(String learnerResponse) throws Exception {
 		// a maioria dos interactions o learnerResponse é igual ao pattern
 		
-		testPattern(learnerResponse);
+		testPattern(0,learnerResponse);
 		
 	}
 
@@ -162,7 +162,7 @@ public abstract class Interaction {
 
 	public void setCorrectResponsesPattern(int index, String pattern) throws Exception {
 
-		testPattern(pattern);
+		testPattern(index, pattern);
 		
 		if (index == correctResponses.size())
 			this.correctResponses.add(pattern);
@@ -170,11 +170,15 @@ public abstract class Interaction {
 			this.correctResponses.set(index, pattern);
 	}
 
-	protected abstract void testPattern(String pattern) throws Exception;
+	protected abstract void testPattern(int index, String pattern) throws Exception;
 	
-	public String getCorrectResponsesPattern(int index) {
+	public String getCorrectResponsesPattern(int index) throws Exception {
+		testGetResponsesPattern(index);
+		
 		return this.correctResponses.get(index);
 	}
+
+	protected void testGetResponsesPattern(int index) throws Exception {	}
 
 	@Override
 	public String toString() {

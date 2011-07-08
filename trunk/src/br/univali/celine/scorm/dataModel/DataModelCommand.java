@@ -1,6 +1,5 @@
 package br.univali.celine.scorm.dataModel;
 
-import br.univali.celine.scorm.dataModel.cmi.BasicDataModelCommand;
 import br.univali.celine.scorm.rteApi.ErrorManager;
 
 /**

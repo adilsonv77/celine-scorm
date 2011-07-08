@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
 
-import br.univali.celine.scorm.model.cam.AbstractItem;
 import br.univali.celine.scorm.model.cam.Item;
-import br.univali.celine.scorm.model.cam.Resource;
+import br.univali.celine.scorm.model.cam.Item20043rd;
+import br.univali.celine.scorm.model.cam.SuperItem;
 import br.univali.celine.scorm.model.imsss.ConditionOperator;
 import br.univali.celine.scorm.model.imsss.RandomizationTiming;
 import br.univali.celine.scorm.model.imsss.RequiredForRollupConsiderations;
@@ -18,11 +18,12 @@ import br.univali.celine.scorm.model.imsss.RuleCondition;
 import br.univali.celine.scorm.model.imsss.SelectionTiming;
 import br.univali.celine.scorm.model.imsss.SequencingRule;
 import br.univali.celine.scorm.sn.model.interaction.Interaction;
+import br.univali.celine.scorm2004_4th.model.cam.Item20044th;
 
 public class LearningActivity {
 
 	// Item mapeado do XML
-	private AbstractItem item;
+	private SuperItem item;
 
 	// esses saos os filhos realmente da atividade
 	private List<LearningActivity> children = new ArrayList<LearningActivity>(); 
@@ -58,7 +59,7 @@ public class LearningActivity {
 
 	private static Logger logger = Logger.getLogger("global");
 
-	public LearningActivity(AbstractItem item) {
+	public LearningActivity(SuperItem item) {
 		this.item = item;
 	}
 	
@@ -66,7 +67,7 @@ public class LearningActivity {
 		return getItem().getIdentifier();
 	}
 	
-	public AbstractItem getItem() {
+	public SuperItem getItem() {
 		return this.item;
 	}
 	
@@ -712,8 +713,15 @@ public class LearningActivity {
 	}
 
 	public double getCompletionThreshold() {
-		if (item.getClass().isAssignableFrom(Item.class)) {
-			return ((Item)item).getCompletionThreshold();
+		if (item.getClass().isAssignableFrom(Item20043rd.class) || item.getClass().isAssignableFrom(Item20044th.class)) {
+			
+			if (item.getClass().isAssignableFrom(Item20044th.class)) {
+				if (((Item20044th)item).getObjectCompletionThreshold().isCompletedByMeasure() == false) {
+					return -1;
+				}
+			}
+			
+			return item.getCompletionThreshold();
 		} else {
 			return -1;
 		}
@@ -796,8 +804,8 @@ public class LearningActivity {
 
 	// TODO essa é uma informacao gerenciada pelo LMS. Por exemplo, um mural de recados do professor para alguma atividade.
 	//      entao pensar mais tarde em fazer algum recurso no CELINE para que os professores possam adicionar esses comentarios 
-	private List<Comment> commentsFromLMS = new ArrayList<Comment>(); 
-	
+	private List<Comment> commentsFromLMS = new ArrayList<Comment>();
+
 	public List<Interaction> getInteractions() {
 		if (interactions == null) {
 			interactions = new ArrayList<Interaction>();

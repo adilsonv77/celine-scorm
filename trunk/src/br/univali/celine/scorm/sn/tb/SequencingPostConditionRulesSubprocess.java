@@ -11,7 +11,7 @@ public class SequencingPostConditionRulesSubprocess {
 		
 		if (currentActivity.isSuspended() == true) {
 			// do not apply post condition rules to a suspendend activity
-			return null;
+			return new SequencingPostConditionRulesSubprocessResult(null, null);
 		}
 		
 		ProcessProvider pp = ProcessProvider.getInstance();

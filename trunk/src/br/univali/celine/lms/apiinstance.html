@@ -8,7 +8,8 @@
 		            
 		var courseWindow;
 		
-		window.parent.API_1484_11 = API_1484_11;                                    
+		window.parent.API_1484_11 = API_1484_11;  
+		window.parent.API = API_1484_11; // SCORM 1.2 must be named just API                    
 
 		API_1484_11.loadTOC = true;        
 		API_1484_11.version = "1.0";                                                      
@@ -22,6 +23,10 @@
 			return ret;                                                         
 		}                                                                           
 
+		API_1484_11.LMSInitialize = function(p0) {
+			return API_1484_11.Initialize(p0);
+		}
+		
 		API_1484_11.CarregarPag = function() {
 	        var link = "CONTEXTPATH/lms?action=navrequest";
 	        window.parent.frames[2].location = link;
@@ -53,7 +58,11 @@
 
 			return ret;
 		}                                                                          
-		                                                                           
+
+		API_1484_11.LMSFinish = function(p0) {
+			return API_1484_11.Terminate(p0);
+		}
+                                                                 
 		API_1484_11.Commit = function(p0) {                                        
 			var ret;
 		    API_1484_11.doCommit(p0,  {
@@ -63,6 +72,10 @@
 			return ret;                                                        
 		}                                                                          
 
+		API_1484_11.LMSCommit = function(p0) { 
+			return API_1484_11.Commit(p0);
+		}
+		
 		API_1484_11.GetValue = function(p0) {                                      
 			var ret;                                                           
 		    API_1484_11.doGetValue(p0,  {                                          
@@ -71,7 +84,10 @@
 			});                                                                
 			return ret;                                                        
 		}                                                                          
-		                                                                           
+
+		API_1484_11.LMSGetValue = function(p0) {
+			return API_1484_11.GetValue(p0);
+		}                                                                      
 		                                                                           
 		API_1484_11.SetValue = function(p0, p1) {                                  
 			var ret;                                                           
@@ -88,7 +104,11 @@
 			                                       
 			return ret;                                                        
 		}                                                                          
-		                                                                           
+
+		API_1484_11.LMSSetValue = function(p0, p1) {
+			return API_1484_11.SetValue(p0, p1);
+		}
+	                                                                           
 		API_1484_11.GetLastError = function() {
 			var ret;
 		    API_1484_11.doGetLastError( {                                          
@@ -96,8 +116,12 @@
 				async:false                                                
 			});                                                                
 			return ret;                                                        
-		}                                                                          
-
+		}                 
+		                                                         
+		API_1484_11.LMSGetLastError = function() {
+			return API_1484_11.GetLastError();
+		}
+		
 		API_1484_11.GetErrorString = function(p0) {                                
 			var ret;                                                           
 		    API_1484_11.doGetErrorString(p0, {                                     
@@ -106,7 +130,11 @@
 			});
 			return ret;                                                        
 		}                                                                          
-		                                                                           
+
+		API_1484_11.LMSGetErrorString = function(p0) {
+			return API_1484_11.GetErrorString(p0);
+		}
+                                                                 
 		API_1484_11.GetDiagnostic = function(p0) {                                 
 			var ret;                                                           
 		    API_1484_11.doGetDiagnostic(p0, {                                      
@@ -114,7 +142,11 @@
 				async:false                                                
 			});                                                                
 			return ret;                                                        
-		}                                                                          
+		}            
+
+		API_1484_11.LMSGetDiagnostic = function(p0) {
+			return API_1484_11.GetDiagnostic(p0); 
+		}                                                              
 		                                                                           
 		API_1484_11.HasNavRequest = function() {                                   
 			var ret;                                                           

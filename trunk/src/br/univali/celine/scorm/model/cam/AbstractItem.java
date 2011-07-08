@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import br.univali.celine.scorm.model.adlnav.Presentation;
 import br.univali.celine.scorm.model.imsss.Sequencing;
 
 public abstract class AbstractItem {
@@ -63,14 +64,6 @@ public abstract class AbstractItem {
 		return itens.iterator();
 	}
 
-	public String getIdentifierref() {
-		return "";
-	}
-
-	public String getParameters() {
-		return "";
-	}
-
 	private Metadata metadata;
 
 	public Metadata getMetadata() {
@@ -81,6 +74,78 @@ public abstract class AbstractItem {
 		this.metadata = metadata;
 	}
 	
+	private double completionThreshold = -1; // nao inicializado
+
+	public double getCompletionThreshold() {
+		return completionThreshold;
+	}
+
+	public void setCompletionThreshold(String completionThreshold) {
+		setCompletionThreshold(Double.valueOf(completionThreshold));
+	}
 	
+	public void setCompletionThreshold(double completionThreshold) {
+		this.completionThreshold = completionThreshold;
+	}
+
+	private Presentation adlNavPresentation;  
+	
+	
+	public Presentation getAdlNavPresentation() {
+		return adlNavPresentation;
+	}
+
+	public void setAdlNavPresentation(Presentation adlNavPresentation) {
+		this.adlNavPresentation = adlNavPresentation;
+	}
+
+	private String identifierref, parameters = "";
+	private boolean isvisible = true;
+	public boolean isIsvisible() {
+		return isvisible;
+	}
+
+	public void setIsvisible(boolean isvisible) {
+		this.isvisible = isvisible;
+	}
+
+	public String getParameters() {
+		return parameters;
+	}
+
+	public void setParameters(String parameters) {
+		this.parameters = parameters;
+	}
+
+	public String getIdentifierref() {
+		return identifierref;
+	}
+
+	public void setIdentifierref(String identifierref) {
+		this.identifierref = identifierref;
+	}
+	
+	private String dataFromLMS;
+
+	public String getDataFromLMS() {
+		return dataFromLMS;
+	}
+
+	public void setDataFromLMS(String dataFromLMS) {
+		this.dataFromLMS = dataFromLMS;
+	}
+	
+	private String timeLimitAction;
+
+	public String getTimeLimitAction() {
+		return timeLimitAction;
+	}
+
+	public void setTimeLimitAction(String timeLimitAction) {
+		this.timeLimitAction = timeLimitAction;
+	}
+	
+	
+
 
 }

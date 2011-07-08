@@ -31,7 +31,7 @@ import br.univali.celine.lms.core.commands.SuspendAllCourseCommand;
 import br.univali.celine.lms.core.commands.UnregisterCourseCommand;
 import br.univali.celine.lms.core.commands.UpdateUserCommand;
 import br.univali.celine.lms.utils.LMSLogger;
-import br.univali.celine.scorm.versions.Build20043rdEdition;
+import br.univali.celine.scorm.versions.Build20044thEdition;
 
 public class LMS extends HttpServlet {
 
@@ -74,7 +74,8 @@ public class LMS extends HttpServlet {
 			throw new ServletException(e);
 		}
 		
-		Build20043rdEdition.build();
+		// Build20043rdEdition.build();
+		Build20044thEdition.build();
 	}
 
 	@SuppressWarnings("rawtypes")

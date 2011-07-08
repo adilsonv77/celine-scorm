@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 
 import br.univali.celine.scorm.model.cam.ContentPackage;
 import br.univali.celine.scorm.model.imsss.MapInfo;
@@ -492,6 +493,18 @@ public class ActivityTree {
 			}
 		
 		return null;
+	}
+
+	//TODO: o certo é criar uma nova versao para o LearningActivity, só para versao 2004 4th
+	private Map<String, String> adlcpData = new HashMap<String, String>(); 
+	
+	public void storeData(String targetID, String novoValor) {
+		this.adlcpData.put(targetID, novoValor);
+	}
+
+	public String retrieveData(String targetID) {
+		return this.adlcpData.get(targetID);	
+		
 	}
 
 }

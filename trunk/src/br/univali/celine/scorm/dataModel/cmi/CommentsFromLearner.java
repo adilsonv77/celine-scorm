@@ -22,6 +22,10 @@ public class CommentsFromLearner extends CommentsManager {
 	public static final String name = "cmi.comments_from_learner";
 	private static final String simpleName = "comments_from_learner";
 	
+	public CommentsFromLearner() {
+		super(TrataComment.class);
+	}
+
 	@Override
 	protected String getSimpleName() {
 		return simpleName;

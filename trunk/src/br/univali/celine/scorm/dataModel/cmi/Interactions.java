@@ -53,9 +53,11 @@ public class Interactions implements DataModelCommand {
 
 	private static final String[] result_state = new String[] { "correct",
 			"incorrect", "neutral", "unanticipated" };
+	
+	private DotNotationCommand interactionCount = new InteractionsCount();
 
 	private DotNotationCommandManager commMan = new DotNotationCommandManager(
-			simpleName, new InteractionsCount());
+			simpleName, interactionCount );
 	
 	public Interactions() {
 		commMan.add("id", new TrataIdInteractionsDotNotationCommand());
@@ -128,11 +130,33 @@ public class Interactions implements DataModelCommand {
 		try {
 			return errorManager.getTree().getInteraction(index);
 		} catch (Exception e) {
+			logger.severe(e.getLocalizedMessage());
 			errorManager.attribError(ErrorManager.DataModelDependencyNotEstablished);
 			return null;
 		}
 	}
 
+	private boolean gerarErroIndice(int indice, int size, ErrorManager errorManager, boolean get) {
+		if (indice == size) { 
+			if (get)
+				errorManager.attribError(ErrorManager.GeneralGetFailure);
+			else
+				errorManager.attribError(ErrorManager.DataModelDependencyNotEstablished);
+		}
+		else
+			if (indice > size) {
+				if (get)
+					errorManager.attribError(ErrorManager.GeneralGetFailure);
+				else
+					errorManager.attribError(ErrorManager.GeneralSetFailure);
+			}
+			else
+				return false;
+		
+		return true;
+		
+	}
+	
 	private String getTratarCorrectResponses(String key,
 			ErrorManager errorManager) {
 		
@@ -141,17 +165,32 @@ public class Interactions implements DataModelCommand {
 		
 		String campos[] = key.split("[.]");
 
-		Interaction it = getInteraction(Integer.parseInt(campos[0]), errorManager);
+		int indice = Integer.parseInt(campos[0]);
+
+		Interaction it = getInteraction(indice, errorManager);
 		if (it == null) {
-			errorManager.attribError(ErrorManager.GeneralGetFailure);
+			
+			int size = Integer.parseInt(interactionCount.getValue(errorManager, 0, 0));
+			gerarErroIndice(indice, size, errorManager, true);
 			return "";
+			
 		}
 
 		if (campos[campos.length - 1].equals("_count")) {
 			return String.valueOf(it.getCorrectResponsesPatternCount());
 		}
 
-		return it.getCorrectResponsesPattern(Integer.parseInt(campos[campos.length - 2])); 
+		int indResp = Integer.parseInt(campos[campos.length - 2]);
+		int size = it.getCorrectResponsesPatternCount();
+		if (!gerarErroIndice(indResp, size, errorManager, true))
+			try {
+				return it.getCorrectResponsesPattern(indResp);
+			} catch (Exception e) {
+				errorManager.attribError(ErrorManager.GeneralGetFailure);
+				return "";
+			}
+		else
+			return "";
 	}
 
 	private boolean setTratarCorrectResponses(String key, String newValue,
@@ -166,11 +205,13 @@ public class Interactions implements DataModelCommand {
 			errorManager.attribError(ErrorManager.DataModelElementIsReadOnly);
 			return false;
 		}
-
-		Interaction it = getInteraction(Integer.parseInt(campos[0]), errorManager);
+		
+		int indice = Integer.parseInt(campos[0]);
+		
+		Interaction it = getInteraction(indice, errorManager);
 		if (it == null) {
-			errorManager.attribError(ErrorManager.GeneralSetFailure);
-			return false;
+			int size = Integer.parseInt(interactionCount.getValue(errorManager, 0, 0));
+			return !gerarErroIndice(indice, size, errorManager, false);
 		}
 
 		if (it.getType() == null) {
@@ -179,9 +220,20 @@ public class Interactions implements DataModelCommand {
 		}
 
 		try {
-			it.setCorrectResponsesPattern(Integer.parseInt(campos[2]), newValue);
+			int indResp = Integer.parseInt(campos[2]);
+			int size = it.getCorrectResponsesPatternCount();
+			
+			if (indResp <= size) {
+				it.setCorrectResponsesPattern(indResp, newValue);
+			} else
+				if (!gerarErroIndice(indResp, size, errorManager, false)) 
+					return false;
+			
 		} catch (Exception e) {
-			errorManager.attribError(ErrorManager.DataModelElementTypeMismatch);
+			if (e.getMessage() != null)
+			   errorManager.attribError(ErrorManager.GeneralSetFailure);
+			else
+			   errorManager.attribError(ErrorManager.DataModelElementTypeMismatch);
 			return false;
 		}
 
@@ -195,9 +247,12 @@ public class Interactions implements DataModelCommand {
 		// n.objectives.m.id
 
 		String fields[] = key.split("[.]");
-		Interaction it = getInteraction(Integer.parseInt(fields[0]), errorManager);
+		int indice = Integer.parseInt(fields[0]);
+		Interaction it = getInteraction(indice, errorManager);
 		if (it == null) {
-			errorManager.attribError(ErrorManager.GeneralGetFailure);
+			int size = Integer.parseInt(interactionCount.getValue(errorManager, 0, 0));
+			gerarErroIndice(indice, size, errorManager, true);
+			//errorManager.attribError(ErrorManager.GeneralGetFailure);
 			return "";
 		}
 			
@@ -206,13 +261,13 @@ public class Interactions implements DataModelCommand {
 			return String.valueOf(it.getObjectivesCount());
 		}
 
-		int m = Integer.parseInt(fields[2]);
-		if (m >= it.getObjectivesCount()) {
-			errorManager.attribError(ErrorManager.GeneralGetFailure);
+		int indResp = Integer.parseInt(fields[2]);
+		int size = it.getObjectivesCount();
+		if (!gerarErroIndice(indResp, size, errorManager, true))
+			return it.getObjectiveId(indResp);
+		else
 			return "";
-		}
 
-		return it.getObjectiveId(m);
 	}
 
 	private boolean setTratarObjectives(String key, String newValue,
@@ -387,7 +442,7 @@ public class Interactions implements DataModelCommand {
 			try {
 				valor = Double.valueOf(novoValor);
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.severe(e.getLocalizedMessage());
 				errorManager
 						.attribError(ErrorManager.DataModelElementTypeMismatch);
 				return false;
@@ -424,10 +479,16 @@ public class Interactions implements DataModelCommand {
 			// setLearnerResponse
 
 			Interaction it = errorManager.getTree().getInteraction(n);
+			
+			if (it.getType() == null) {
+				errorManager.attribError(ErrorManager.DataModelDependencyNotEstablished);
+				return false;
+			}
+			
 			try {
 				it.setLearnerResponse(novoValor);
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.severe(e.getLocalizedMessage());
 				errorManager.attribError(ErrorManager.DataModelElementTypeMismatch);
 				return false;
 			}

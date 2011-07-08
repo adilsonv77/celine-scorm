@@ -6,6 +6,7 @@ import java.util.List;
 
 import br.univali.celine.scorm.model.cam.ContentPackage;
 import br.univali.celine.scorm.model.cam.Item;
+import br.univali.celine.scorm.model.cam.Item20043rd;
 import br.univali.celine.scorm.model.cam.Organization;
 import br.univali.celine.scorm.model.cam.Resource;
 import br.univali.celine.scorm.model.cam.Resources;
@@ -143,7 +144,7 @@ public class EasyContentPackage {
 	}
 
 	public void addItem(String identifier, String title) {
-		itens.add(Item.buildBasic(identifier, title));
+		itens.add(Item20043rd.buildBasic(identifier, title));
 	}
 
 	public void addResource(Resource res) {
