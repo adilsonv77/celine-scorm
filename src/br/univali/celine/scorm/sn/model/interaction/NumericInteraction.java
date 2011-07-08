@@ -7,7 +7,7 @@ public class NumericInteraction extends Interaction {
 	}
 
 	@Override
-	protected void testPattern(String pattern) throws Exception {
+	protected void testPattern(int index, String pattern) throws Exception {
 		String values[] = pattern.split("\\[:\\]");
 		if (values.length > 0) {
 			Double.valueOf(values[0]);

@@ -10,9 +10,9 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
 import br.univali.celine.lms.config.LMSConfig;
 import br.univali.celine.lms.model.UserImpl;
 import br.univali.celine.lmsscorm.User;
-import br.univali.celine.scorm.model.cam.AbstractItem;
 import br.univali.celine.scorm.model.cam.ContentPackage;
 import br.univali.celine.scorm.model.cam.Item;
+import br.univali.celine.scorm.model.cam.SuperItem;
 
 @SuppressWarnings("serial")
 public class SeeContentCourseTag extends BodyTagSupport {
@@ -25,7 +25,7 @@ public class SeeContentCourseTag extends BodyTagSupport {
 	private String varCourseName = "varCourseName";
 	private String varItemId = "varItemId";
 	
-	private AbstractItem itemAtual;
+	private SuperItem itemAtual;
 	private Iterator<Item> children;
 	private List<Iterator<Item>> pilha = new ArrayList<Iterator<Item>>();	
 	//private List<AbstractItem> pilha = new ArrayList<AbstractItem>();

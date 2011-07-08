@@ -47,7 +47,7 @@ public class LMSFilter implements Filter {
 				String resource = uri.substring(uri.indexOf("$$$$") + 4);
 				File f = new File(myURIEncoder(LMSConfig.getInstance().getCoursesFolder()+ resource));
 
-				logger.info(f.toString());
+				// logger.info(f.toString());
 				
 				FileInputStream fio = new FileInputStream(f);
 				byte b[] = new byte[(int) f.length()];

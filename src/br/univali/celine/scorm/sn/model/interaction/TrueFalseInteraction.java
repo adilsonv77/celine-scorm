@@ -1,5 +1,7 @@
 package br.univali.celine.scorm.sn.model.interaction;
 
+import br.univali.celine.scorm.rteApi.ErrorManager;
+
 
 public class TrueFalseInteraction extends Interaction {
 
@@ -8,13 +10,20 @@ public class TrueFalseInteraction extends Interaction {
 	}
 
 	@Override
-	protected void testPattern(String pattern) throws Exception {
+	protected void testPattern(int index, String pattern) throws Exception {
 
+		if (index > 0)
+			throw new Exception(""+ErrorManager.GeneralSetFailure);
 		if (!(pattern.equals("true") || pattern.equals("false"))){
 			throw new Exception();
 		}
 	}
 
+	@Override
+	protected void testGetResponsesPattern(int index) throws Exception {
+		if (index > 0)
+			throw new Exception();
+	}
 	
 	
 }

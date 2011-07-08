@@ -23,7 +23,7 @@ import br.univali.celine.lmsscorm.TrackObjective;
 import br.univali.celine.lmsscorm.User;
 import br.univali.celine.lmsscorm.UserPractice;
 import br.univali.celine.scorm.model.cam.ContentPackage;
-import br.univali.celine.scorm.model.cam.Item;
+import br.univali.celine.scorm.model.cam.Item20043rd;
 import br.univali.celine.scorm.sn.model.LearningActivity;
 
 import com.thoughtworks.xstream.XStream;
@@ -92,7 +92,7 @@ public class XMLDAO implements DAO {
 		xstream.alias("user", UserImpl.class);
 		xstream.alias("registeredCourse", RegisteredCourse.class);
 		xstream.alias("course", CourseImpl.class);
-		xstream.alias("item", Item.class);
+		xstream.alias("item", Item20043rd.class);
 
 		
 		return xstream;

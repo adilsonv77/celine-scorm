@@ -30,7 +30,12 @@ public abstract class DotNotationCommandImpl implements DotNotationCommand {
 	public final boolean setValue(ErrorManager errorManager, int n, int size,
 			String novoValor) {
 		
-		if (n >= size) {
+		if (n > size) {
+			errorManager.attribError(ErrorManager.GeneralSetFailure);
+			return false;
+		}
+		
+		if (n == size) {
 			errorManager.attribError(ErrorManager.DataModelDependencyNotEstablished);
 			return false;
 		}

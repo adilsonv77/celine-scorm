@@ -8,7 +8,7 @@ import br.univali.celine.scorm.sn.model.NavigationRequestType;
 
 public class NavigationRequestProcess {
 
-	private HashMap<NavigationRequestType, NavigationRequestCommand> commands = new HashMap<NavigationRequestType, NavigationRequestCommand>();
+	protected HashMap<NavigationRequestType, NavigationRequestCommand> commands = new HashMap<NavigationRequestType, NavigationRequestCommand>();
 	
 	public NavigationRequestProcess() {
 		commands.put(NavigationRequestType.Start, new StartNavigationRequestCommand());
@@ -22,7 +22,7 @@ public class NavigationRequestProcess {
 		commands.put(NavigationRequestType.ExitAll, new ExitAllNavigationRequestCommand()); 
 		commands.put(NavigationRequestType.Abandon, new AbandonNavigationRequestCommand()); 
 		commands.put(NavigationRequestType.AbandonAll, new AbandonAllNavigationRequestCommand()); 
-		commands.put(NavigationRequestType.SuspendAll, new SuspendAllNavigationRequestCommand()); 
+		commands.put(NavigationRequestType.SuspendAll, new SuspendAllNavigationRequestCommand());
 	}
 	
 	public NavigationRequestResult run(ActivityTree activityTree, NavigationRequest navigationRequest) {

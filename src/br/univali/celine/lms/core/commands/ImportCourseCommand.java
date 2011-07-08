@@ -44,7 +44,7 @@ public class ImportCourseCommand implements Command, ZipListener, ProgressListen
 		mrp.processRequest(request);			
 		
 		String coursesFolder = LMSConfig.getInstance().getCompleteCoursesFolder();
-		coursesFolder = coursesFolder.replaceAll("file:/", "");
+		coursesFolder = coursesFolder.replaceAll("file:", "");
 		String title = mrp.getParameter("title", true); // TODO: esse title nao deveria vir do formulario, mas ser extraido do contentpackage !!!
 		String id = mrp.getParameter("id", true); // TODO: esse id nao deveria vir do formulario, mas ser extraido do contentpackage !!!
 		

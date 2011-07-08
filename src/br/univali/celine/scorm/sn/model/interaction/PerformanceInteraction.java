@@ -10,7 +10,7 @@ public class PerformanceInteraction extends Interaction {
 	}
 
 	@Override
-	protected void testPattern(String pattern) throws Exception {
+	protected void testPattern(int index, String pattern) throws Exception {
 		List<String> respostas = Arrays.asList(pattern.split("\\[,\\]"));
 
 		if (respostas.size() == 0)

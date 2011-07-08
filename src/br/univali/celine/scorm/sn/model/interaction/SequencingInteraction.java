@@ -8,7 +8,7 @@ public class SequencingInteraction extends Interaction {
 	}
 
 	@Override
-	protected void testPattern(String pattern) throws Exception {
+	protected void testPattern(int index, String pattern) throws Exception {
 		// vale tudo
 	}
 

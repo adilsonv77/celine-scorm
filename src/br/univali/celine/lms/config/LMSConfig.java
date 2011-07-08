@@ -5,7 +5,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import javax.servlet.ServletContext;
+
 import org.apache.commons.digester.Digester;
+
 import br.univali.celine.lms.dao.RDBDAO;
 import br.univali.celine.lms.dao.XMLDAO;
 import br.univali.celine.lms.integration.LMSIntegration;
@@ -13,6 +15,7 @@ import br.univali.celine.lmsscorm.DAO;
 import br.univali.celine.lmsscorm.User;
 import br.univali.celine.scorm.model.cam.ContentPackage;
 import br.univali.celine.scorm.model.cam.ContentPackageReader;
+import br.univali.celine.scorm.model.cam.ContentPackageReaderFactory;
 
 
 /**
@@ -199,7 +202,10 @@ public class LMSConfig {
 
 	public ContentPackage openContentPackageByFolderName(String courseFolder) throws Exception {
 
-		return ContentPackageReader.ler(LMSConfig.getInstance().getContentPackageFile(courseFolder));
+		String fileName = LMSConfig.getInstance().getContentPackageFile(courseFolder);
+		ContentPackageReader cpr = ContentPackageReaderFactory.getContentPackageReader(fileName);
+		
+		return cpr.ler(fileName);
 		
 	}
 	
@@ -216,7 +222,9 @@ public class LMSConfig {
 	
 	public ContentPackage openContentPackageStr(String packageStr) throws Exception {
 	
-		return ContentPackageReader.ler(new ByteArrayInputStream(packageStr.getBytes()));		
+		ByteArrayInputStream bytes = new ByteArrayInputStream(packageStr.getBytes());
+		ContentPackageReader cpr = ContentPackageReaderFactory.getContentPackageReader(bytes);
+		return cpr.ler(bytes);		
 	}
 	
 	

@@ -8,7 +8,9 @@ public class LikertInteraction extends Interaction {
 	}
 
 	@Override
-	protected void testPattern(String pattern) throws Exception {
+	protected void testPattern(int index, String pattern) throws Exception {
+		if (pattern.contains("[]") || pattern.contains("[,]"))
+			throw new Exception();
 	}
 
 

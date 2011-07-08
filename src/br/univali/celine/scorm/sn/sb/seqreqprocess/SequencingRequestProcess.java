@@ -14,7 +14,7 @@ import br.univali.celine.scorm.sn.model.SequencingRequest;
  */
 public class SequencingRequestProcess {
 
-	private HashMap<SequencingRequest, SequencingRequestCommand> commands = new HashMap<SequencingRequest, SequencingRequestCommand>(); 
+	protected HashMap<SequencingRequest, SequencingRequestCommand> commands = new HashMap<SequencingRequest, SequencingRequestCommand>(); 
 	
 	public SequencingRequestProcess() {
 		commands.put(SequencingRequest.START, new StartSequencingRequestProcess()); // passo 1.

@@ -10,7 +10,7 @@ public class MultipleChoiceInteraction extends Interaction {
 	}
 
 	@Override
-	protected void testPattern(String pattern) throws Exception {
+	protected void testPattern(int index, String pattern) throws Exception {
 		List<String> respostas = Arrays.asList(pattern.split("\\[,\\]"));
 		
 		/*
@@ -20,12 +20,28 @@ public class MultipleChoiceInteraction extends Interaction {
 			o Each short_identifier_type shall occur in the set only once.
 		 */
 		
+		/* no correct_responses pode nao ter respostas !!!
+		 * ver se tem algum que exige respostas
+		if (respostas.size() == 0) // a especificacao diz uma coisa, os testes fazem outra :(
+			throw new Exception("There arent choices");
+		*/
 		for (int x = 0; x<respostas.size(); x++) {
+			String s = respostas.get(x); 
+			if (s.length() == 0 || s.contains("[") || s.contains("]")) {
+				throw new Exception("Incorrect identifier");
+			}
+
 			for (int y=x+1;y<respostas.size(); y++)
-				if (respostas.get(x).equals(respostas.get(y)))
-					throw new Exception();
+				if (s.equals(respostas.get(y)))
+					throw new Exception("The same id is more one time");
 		}
 		
+		// page 125 from RTE 4th version 
+		for (int x=0;x<correctResponses.size();x++)
+			if (x != index)
+				if (pattern.equals(correctResponses.get(x))) {
+					throw new Exception("These correct response already exists");
+				}
 		
 	}
 

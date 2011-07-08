@@ -8,7 +8,7 @@ import org.apache.commons.io.FileUtils;
 
 import br.univali.celine.lms.utils.zip.Zip;
 import br.univali.celine.scorm.model.cam.ContentPackage;
-import br.univali.celine.scorm.model.cam.Item;
+import br.univali.celine.scorm.model.cam.Item20043rd;
 import br.univali.celine.scorm.model.cam.Organization;
 import br.univali.celine.scorm.model.cam.Resource;
 
@@ -54,7 +54,7 @@ public class ContentPackageBuilder {
 		for (FileItem fi : fileItens) {
 
 			zip.unzip(fi.zipFile, new File(sdir + "/" + fi.itemName));
-			Item item = Item.buildBasic(fi.itemName, fi.itemName);
+			Item20043rd item = Item20043rd.buildBasic(fi.itemName, fi.itemName);
 			item.setIdentifierref("RES-" + fi.itemName);
 
 			org.addItem(item);
