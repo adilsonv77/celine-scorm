@@ -12,6 +12,11 @@ public class LaunchData implements DataModelCommand {
 	public String getValue(String key, ErrorManager errorManager)
 			throws Exception {
 
+		if (key.length() > 0) {
+			errorManager.attribError(ErrorManager.GeneralArgumentError);
+			return "";
+		}
+		
 		String dataFromLMS = errorManager.getTree().getCurrentActivity().getDataFromLMS();
 		if (dataFromLMS == null) {
 			errorManager.attribError(ErrorManager.DataModelElementValueNotInitialized);

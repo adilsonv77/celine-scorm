@@ -702,6 +702,8 @@ public class LearningActivity {
 	// cmi.success_status
 	private SuccessStatus successStatus = SuccessStatus.unknown;
 	
+	private LessonStatus lessonStatus = LessonStatus.notAttempted;
+	
 	// cmi.progress_measure
 	private double progressMeasure = -1;
 
@@ -827,6 +829,15 @@ public class LearningActivity {
 
 	public void clearInteractions() {
 		getInteractions().clear();	
+	}
+
+	// SCORM 1.2
+	public LessonStatus getLessonStatus() {
+		return lessonStatus;
+	}
+
+	public void setLessonStatus(LessonStatus value) {
+		this.lessonStatus = value;
 	}
 
 	public SuccessStatus getSuccessStatus() {

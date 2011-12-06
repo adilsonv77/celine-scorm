@@ -1,6 +1,7 @@
 package br.univali.celine.scorm.versions;
 
 import br.univali.celine.scorm.dataModel.DataModelCommandManager;
+import br.univali.celine.scorm.dataModel.adl.Data;
 import br.univali.celine.scorm.dataModel.adl.nav.Request;
 import br.univali.celine.scorm.dataModel.adl.nav.RequestValid;
 import br.univali.celine.scorm.dataModel.cmi.CommentsFromLMS;
@@ -13,6 +14,7 @@ import br.univali.celine.scorm.dataModel.cmi.Exit;
 import br.univali.celine.scorm.dataModel.cmi.Interactions;
 import br.univali.celine.scorm.dataModel.cmi.LaunchData;
 import br.univali.celine.scorm.dataModel.cmi.LearnerId;
+import br.univali.celine.scorm.dataModel.cmi.LearnerName;
 import br.univali.celine.scorm.dataModel.cmi.LearnerPreference;
 import br.univali.celine.scorm.dataModel.cmi.Location;
 import br.univali.celine.scorm.dataModel.cmi.MaxTimeAllowed;
@@ -55,20 +57,20 @@ import br.univali.celine.scorm.sn.up.LimitConditionsCheckProcess;
 import br.univali.celine.scorm.sn.up.SequencingRuleCheckSubprocess;
 import br.univali.celine.scorm.sn.up.SequencingRulesCheckProcess;
 import br.univali.celine.scorm.sn.up.TerminateDescendentAttemptsProcess;
-import br.univali.celine.scorm2004_4th.dataModel.adl.Data;
 import br.univali.celine.scorm2004_4th.sn.nb.NavigationRequestProcess20044th;
 import br.univali.celine.scorm2004_4th.sn.sb.seqreqprocess.SequencingRequestProcess20044th;
 
-public class Build20044thEdition {
+public class Build20044thEdition implements BuildVersion {
 
-	public static void build() {
+	public Build20044thEdition() {
 		
 		buildDM();
 		buildSN();
 		
 	}
 
-	private static void buildSN() {
+	private void buildSN() {
+		ProcessProvider.clearInstance();
 		ProcessProvider pp = ProcessProvider.getInstance();
 		
 		pp.setActivityProgressRollupProcess(new ActivityProgressRollupProcess());
@@ -102,7 +104,8 @@ public class Build20044thEdition {
 		pp.setTerminationRequestProcess(new TerminationRequestProcess());
 	}
 
-	private static void buildDM() {
+	private void buildDM() {
+		DataModelCommandManager.clearGlobalInstance();
 		DataModelCommandManager dm = DataModelCommandManager.getGlobalInstance();
 		
 		dm.put(Request.name, new Request());
@@ -118,7 +121,7 @@ public class Build20044thEdition {
 		dm.put(Interactions.name, new Interactions());
 		dm.put(LaunchData.name, new LaunchData());
 		dm.put(LearnerId.name, new LearnerId());
-		dm.put(LearnerId.learnerName, new LearnerId());
+		dm.put(LearnerName.name, new LearnerName());
 		dm.put("", new LearnerPreference()); // TODO
 		dm.put(Location.name, new Location()); // TODO precisa rever para tirar o esquema de getDataModel e dm.putDataModel
 		dm.put(MaxTimeAllowed.name, new MaxTimeAllowed());
@@ -137,5 +140,11 @@ public class Build20044thEdition {
 		
 		dm.put(Data.name, new Data());
 	}
+	
+	@Override
+	public int getVersion() {
+		return 2004;
+	}
+	
 	
 }

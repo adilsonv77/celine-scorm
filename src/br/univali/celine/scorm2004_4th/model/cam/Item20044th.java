@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import br.univali.celine.scorm.model.cam.AbstractItem;
+import br.univali.celine.scorm.model.cam.CompletionThreshold;
 import br.univali.celine.scorm.model.cam.Item;
 import br.univali.celine.scorm.model.imsss.Sequencing;
 

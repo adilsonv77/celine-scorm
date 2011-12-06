@@ -22,11 +22,14 @@ import br.univali.celine.scorm.model.imsss.RollupRules;
 import br.univali.celine.scorm.model.imsss.RuleCondition;
 import br.univali.celine.scorm.model.imsss.Sequencing;
 import br.univali.celine.scorm.model.imsss.SequencingRule;
+import br.univali.celine.scorm.versions.Build20043rdEdition;
+import br.univali.celine.scorm.versions.BuildVersion;
 
 public class ContentPackageReader20043rd implements ContentPackageReader {
 
 	protected Class<?> itemClass = Item20043rd.class;
 	protected Class<?> organizationClass = Organization20043rd.class;
+	private BuildVersion version;
 	
 	public ContentPackage ler(String nomeArquivo) throws Exception {
 		if (nomeArquivo.startsWith("file:")) {
@@ -46,7 +49,7 @@ public class ContentPackageReader20043rd implements ContentPackageReader {
         // Prime the digester stack with an object for rules to
         // operate on. Note that it is quite common for "this"
         // to be the object pushed.
-        ContentPackage manifest = new ContentPackage();
+        ContentPackage manifest = new ContentPackage(this);
         d.push(manifest);
         // Add rules to the digester that will be triggered while
         // parsing occurs.
@@ -287,12 +290,8 @@ public class ContentPackageReader20043rd implements ContentPackageReader {
         d.addObjectCreate("manifest/resources", Resources.class);
         d.addSetNext("manifest/resources", "setResources");
         
-        d.addObjectCreate("manifest/resources/resource", Resource.class);
-        d.addSetNext("manifest/resources/resource", "addResource");
-        d.addSetProperties("manifest/resources/resource", "adlcp:scormType", "scormType");
-        d.addSetProperties("manifest/resources/resource", "xml:base", "xmlBase");
-		d.addSetProperties("manifest/resources/resource");
-		
+        addResource(d);
+
         d.addObjectCreate("manifest/resources/resource/file", File.class);
         d.addSetNext("manifest/resources/resource/file", "addFile");
 		d.addSetProperties("manifest/resources/resource/file");
@@ -300,6 +299,22 @@ public class ContentPackageReader20043rd implements ContentPackageReader {
         d.addObjectCreate("manifest/resources/resource/dependency", Dependency.class);
         d.addSetNext("manifest/resources/resource/dependency", "addDependency");
 		d.addSetProperties("manifest/resources/resource/dependency");
+	}
+
+	protected void addResource(Digester d) {
+        d.addObjectCreate("manifest/resources/resource", Resource.class);
+        d.addSetNext("manifest/resources/resource", "addResource");
+        d.addSetProperties("manifest/resources/resource", "adlcp:scormType", "scormType");
+        d.addSetProperties("manifest/resources/resource", "xml:base", "xmlBase");
+		d.addSetProperties("manifest/resources/resource");
+		
+	}
+
+	@Override
+	public BuildVersion buildVersion() throws Exception {
+		if (this.version == null)
+			this.version = new Build20043rdEdition(); 
+		return this.version;
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import br.univali.celine.scorm.model.cam.ContentPackage;
+import br.univali.celine.scorm.model.cam.ContentPackageReader20043rd;
 import br.univali.celine.scorm.model.cam.Item;
 import br.univali.celine.scorm.model.cam.Item20043rd;
 import br.univali.celine.scorm.model.cam.Organization;
@@ -157,7 +158,7 @@ public class EasyContentPackage {
 	
 	public ContentPackage build(String organizationName, String orgIdentifier) {
 
-		ContentPackage cp = ContentPackage.buildBasic(organizationName, orgIdentifier);
+		ContentPackage cp = ContentPackage.buildBasic(organizationName, orgIdentifier, new ContentPackageReader20043rd());
 
 		Organization org = cp.getOrganizations().getDefaultOrganization();
 		for (Item item : itens) {
