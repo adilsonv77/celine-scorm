@@ -8,6 +8,7 @@ import org.apache.commons.io.FileUtils;
 
 import br.univali.celine.lms.utils.zip.Zip;
 import br.univali.celine.scorm.model.cam.ContentPackage;
+import br.univali.celine.scorm.model.cam.ContentPackageReader20043rd;
 import br.univali.celine.scorm.model.cam.Item20043rd;
 import br.univali.celine.scorm.model.cam.Organization;
 import br.univali.celine.scorm.model.cam.Resource;
@@ -47,7 +48,7 @@ public class ContentPackageBuilder {
 
 		fdir.mkdirs();
 
-		ContentPackage cp = ContentPackage.buildBasic(organizationName, organizationName);
+		ContentPackage cp = ContentPackage.buildBasic(organizationName, organizationName, new ContentPackageReader20043rd());
 		Organization org = cp.getOrganizations().getDefaultOrganization();
 
 		Zip zip = new Zip();

@@ -13,6 +13,7 @@ import br.univali.celine.scorm.dataModel.cmi.Exit;
 import br.univali.celine.scorm.dataModel.cmi.Interactions;
 import br.univali.celine.scorm.dataModel.cmi.LaunchData;
 import br.univali.celine.scorm.dataModel.cmi.LearnerId;
+import br.univali.celine.scorm.dataModel.cmi.LearnerName;
 import br.univali.celine.scorm.dataModel.cmi.LearnerPreference;
 import br.univali.celine.scorm.dataModel.cmi.Location;
 import br.univali.celine.scorm.dataModel.cmi.MaxTimeAllowed;
@@ -58,16 +59,17 @@ import br.univali.celine.scorm.sn.up.SequencingRuleCheckSubprocess;
 import br.univali.celine.scorm.sn.up.SequencingRulesCheckProcess;
 import br.univali.celine.scorm.sn.up.TerminateDescendentAttemptsProcess;
 
-public class Build20043rdEdition {
+public class Build20043rdEdition implements BuildVersion {
 
-	public static void build() {
+	public Build20043rdEdition() {
 		
 		buildDM();
 		buildSN();
 		
 	}
 
-	private static void buildSN() {
+	private void buildSN() {
+		ProcessProvider.clearInstance();
 		ProcessProvider pp = ProcessProvider.getInstance();
 		
 		pp.setActivityProgressRollupProcess(new ActivityProgressRollupProcess());
@@ -101,7 +103,8 @@ public class Build20043rdEdition {
 		pp.setTerminationRequestProcess(new TerminationRequestProcess());
 	}
 
-	private static void buildDM() {
+	private void buildDM() {
+		DataModelCommandManager.clearGlobalInstance();
 		DataModelCommandManager dm = DataModelCommandManager.getGlobalInstance();
 		
 		dm.put(Request.name, new Request());
@@ -117,7 +120,7 @@ public class Build20043rdEdition {
 		dm.put(Interactions.name, new Interactions());
 		dm.put(LaunchData.name, new LaunchData());
 		dm.put(LearnerId.name, new LearnerId());
-		dm.put(LearnerId.learnerName, new LearnerId());
+		dm.put(LearnerName.name, new LearnerName());
 		dm.put("", new LearnerPreference()); // TODO
 		dm.put(Location.name, new Location()); // TODO precisa rever para tirar o esquema de getDataModel e dm.putDataModel
 		dm.put(MaxTimeAllowed.name, new MaxTimeAllowed());
@@ -133,6 +136,11 @@ public class Build20043rdEdition {
 		dm.put(TotalTime.name, new TotalTime()); // TODO rever para tirar o esquema de get e dm.put DataModel
 
 		dm.put(Version.name, new Version());
+	}
+
+	@Override
+	public int getVersion() {
+		return 2004;
 	}
 	
 }

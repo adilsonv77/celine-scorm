@@ -3,8 +3,18 @@ package br.univali.celine.scorm.model.cam;
 
 public class ContentPackage {
 
-	public static ContentPackage buildBasic(String organizationName, String orgIdentifier) {
-		ContentPackage cp = new ContentPackage();
+	private ContentPackageReader contentPackageReader;
+
+	public ContentPackage(ContentPackageReader cpr) {
+		this.contentPackageReader = cpr;
+	}
+
+	public ContentPackageReader getContentPackageReader() {
+		return contentPackageReader;
+	}
+	
+	public static ContentPackage buildBasic(String organizationName, String orgIdentifier, ContentPackageReader cpr) {
+		ContentPackage cp = new ContentPackage(cpr);
 
 		cp.setOrganizations(new Organizations());
 		cp.setResources(new Resources());

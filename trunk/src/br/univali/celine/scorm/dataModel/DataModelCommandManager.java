@@ -29,6 +29,10 @@ public class DataModelCommandManager {
 		return instance;
 	}
 	
+	public static void clearGlobalInstance() {
+		instance = null;
+	}
+
 	private class DataValue {
 
 		private String restoChave;

@@ -27,9 +27,13 @@ public abstract class CommentsManager implements DataModelCommand {
 			try {
 				constr = clazz.getConstructor(this.getClass().getSuperclass(), Fields.class);
 			} catch (Exception e1) {
-				e1.printStackTrace();
-				// ai fodeu !!!
-				return;
+				try {
+					constr = clazz.getConstructor(this.getClass().getSuperclass().getSuperclass(), Fields.class); // i´m hating this solution :(
+				} catch (Exception e2) {
+					e2.printStackTrace();
+					// ai fodeu !!!
+					return;
+				}
 			}
 		}
 

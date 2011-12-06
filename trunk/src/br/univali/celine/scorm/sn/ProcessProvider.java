@@ -54,6 +54,10 @@ public class ProcessProvider {
 		
 	}
 	
+	public static void clearInstance() {
+		instance = null;
+	}
+	
 	private OverallSequencingProcess overallSequencingProcess; // [OP.1]
 	
 	private NavigationRequestProcess navigationRequestProcess; // [NB.2.1]

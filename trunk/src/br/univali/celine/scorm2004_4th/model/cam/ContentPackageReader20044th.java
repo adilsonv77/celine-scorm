@@ -2,7 +2,13 @@ package br.univali.celine.scorm2004_4th.model.cam;
 
 import org.apache.commons.digester.Digester;
 
+import br.univali.celine.scorm.model.cam.CompletionThreshold;
+import br.univali.celine.scorm.versions.Build20044thEdition;
+import br.univali.celine.scorm.versions.BuildVersion;
+
 public class ContentPackageReader20044th extends br.univali.celine.scorm.model.cam.ContentPackageReader20043rd{
+
+	private BuildVersion version;
 
 	public ContentPackageReader20044th() {
 		this.itemClass = Item20044th.class;
@@ -38,4 +44,12 @@ public class ContentPackageReader20044th extends br.univali.celine.scorm.model.c
 		d.addSetProperties("*/item/adlcp:data/adlcp:map");
   		
    	}
+   	
+	@Override
+	public BuildVersion buildVersion() throws Exception {
+		if (this.version == null)
+			this.version = new Build20044thEdition(); 
+		return this.version;
+	}
+   	
 }

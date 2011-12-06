@@ -41,7 +41,7 @@ public class OpenCourseCommand implements Command {
 		ContentPackage cp = null;
 		String courseFolder = "";
 
-		if (course != null) {
+		if (course != null) { // eu acho que sempre tem q ser diferente de null :p
 		
 			if (course.isDerived())
 				cp = config.openContentPackageStr(control.getDerivedCoursePackageStr(courseId));

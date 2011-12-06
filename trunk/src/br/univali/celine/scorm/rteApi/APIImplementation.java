@@ -46,6 +46,7 @@ public class APIImplementation implements API {
 	private User user;
 	private DAO dao;
 	private Set<ListenerRequest> listeners = new HashSet<ListenerRequest>();
+	private int version;
 	
 	public ActivityTree getActivityTree() {
 		return tree;
@@ -54,6 +55,8 @@ public class APIImplementation implements API {
 	public APIImplementation(String courseFolder, ContentPackage contentPackage, User user, DAO dao, 
 							 ListenerDataModel listenerDataModel, ListenerRequest listenerRequest) throws Exception {
 
+		this.version = contentPackage.getContentPackageReader().buildVersion().getVersion();
+		
 		this.courseFolder = courseFolder;
 		//this.contentPackage = ContentPackageReader.ler(imsManifestFile);
 		this.contentPackage = contentPackage;
@@ -86,7 +89,7 @@ public class APIImplementation implements API {
 		}
 		
 		ProcessProvider.getInstance().getOverallSequencingProcess().run(nr, tree);
-		this.errorManager = new ErrorManager(tree, user, courseFolder);
+		this.errorManager = new ErrorManager(tree, user, courseFolder, version);
 	}
 	
 	public String getCourseFolder() {
@@ -104,7 +107,10 @@ public class APIImplementation implements API {
 		logger.info("Initialize " + stateModel);
 		
 		if (stateModel == CommunicationSessionStateModel.running) {
-			errorManager.attribError(ErrorManager.AlreadyInitialized);
+			if (version == 12)
+				errorManager.attribError(ErrorManager.GeneralException);
+			else
+				errorManager.attribError(ErrorManager.AlreadyInitialized);
 			return false;
 		}
 		
@@ -421,7 +427,7 @@ public class APIImplementation implements API {
 	
 	public String getErrorString(String errorCode) {
 
-		return "";
+		return errorManager.getErrorString(version, Integer.parseInt(errorCode));
 	}
 
 	

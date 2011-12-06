@@ -83,10 +83,13 @@ public class Zip {
 				File file = new File(dir, zipEntry.getName());
 				currentEntry++;
 
-				if (zipEntry.isDirectory() && !file.exists()) {
+				if (zipEntry.isDirectory()) {
 
-					file.mkdirs();
+					 if (!file.exists())
+						 file.mkdirs();
+					 
 					continue;
+					
 				}
 
 				if (!file.getParentFile().exists())
