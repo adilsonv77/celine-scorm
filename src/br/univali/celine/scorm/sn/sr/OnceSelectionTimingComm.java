@@ -19,9 +19,10 @@ public class OnceSelectionTimingComm implements SelectionTimingComm {
 				
 				int count = activity.getSelectionCount();
 				List<LearningActivity> children = activity.getChildren();
+				int lim = children.size();
 				while (newChildren.size() < count) {
 					
-					int n = rand.nextInt() % count;
+					int n = Math.abs(rand.nextInt()) % lim;
 					LearningActivity sortedActivity = children.get(n);
 					if (newChildren.contains(sortedActivity) == false)
 						newChildren.add(sortedActivity);

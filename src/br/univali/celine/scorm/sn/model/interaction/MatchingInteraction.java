@@ -11,7 +11,7 @@ public class MatchingInteraction extends Interaction {
 
 
 	@Override
-	protected void testPattern(int index, String pattern) throws Exception {
+	protected void testPattern(int index, String pattern, boolean correct_responses) throws Exception {
 		List<String> respostas = Arrays.asList(pattern.split("\\[,\\]"));
 
 		// SetValue(“cmi.interactions.0.learner_response”, “2[.]c[,]1[.]a[,]3[.]b”)

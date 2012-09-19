@@ -13,7 +13,7 @@ public class FillInInteraction extends Interaction {
 	}
 
 	@Override
-	protected void testPattern(int index, String pattern) throws Exception {
+	protected void testPattern(int index, String pattern, boolean correct_responses) throws Exception {
 		/*
 			The following requirements shall be adhered to in building the characterstring:
 			o The array may contain one or more localized_string_types.

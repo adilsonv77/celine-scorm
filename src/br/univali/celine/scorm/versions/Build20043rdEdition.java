@@ -28,6 +28,8 @@ import br.univali.celine.scorm.dataModel.cmi.SuspendData;
 import br.univali.celine.scorm.dataModel.cmi.TimeLimitAction;
 import br.univali.celine.scorm.dataModel.cmi.TotalTime;
 import br.univali.celine.scorm.dataModel.cmi.Version;
+import br.univali.celine.scorm.model.cam.AbstractItem;
+import br.univali.celine.scorm.model.cam.Item20043rd;
 import br.univali.celine.scorm.sn.ProcessProvider;
 import br.univali.celine.scorm.sn.db.ClearSuspendedActivitySubprocess;
 import br.univali.celine.scorm.sn.db.ContentDeliveryEnvironmentProcess;
@@ -141,6 +143,23 @@ public class Build20043rdEdition implements BuildVersion {
 	@Override
 	public int getVersion() {
 		return 2004;
+	}
+
+	@Override
+	public AbstractItem buildItem() {
+		
+		return new Item20043rd();
+	}
+
+	@Override
+	public String[] getXSDFileNames() {
+		String folder = "/br/univali/celine/scorm";
+		
+		return new String[] { 
+							  folder + "/adlcp_v1p3.xsd", 
+							  folder + "/adlnav_v1p3.xsd",
+							  folder + "/imscp_v1p1.xsd"
+							};
 	}
 	
 }

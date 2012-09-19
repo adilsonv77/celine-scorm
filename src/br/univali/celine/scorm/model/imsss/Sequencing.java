@@ -122,6 +122,50 @@ public class Sequencing {
 		this.objectives = objectives;
 	}
 
+	public void assign(Sequencing source) {
+		if (getControlMode() == null)
+			setControlMode(new ControlMode());
+		getControlMode().assign(source.getControlMode());
+		
+		assign(getPreConditionRules(), source.getPreConditionRules());
+		assign(getPostConditionRules(),source.getPostConditionRules());
+		assign(getExitConditionRules(),source.getExitConditionRules());
+		
+		if (getLimitConditions() == null)
+			setLimitConditions(new LimitConditions());
+		getLimitConditions().assign(source.getLimitConditions());
+		
+		if (getRollupRules() == null)
+			setRollupRules(new RollupRules());
+		getRollupRules().assign(source.getRollupRules());
+		
+		getObjectives().assign(source.getObjectives());
+		
+		if (getRandomizationControls() == null)
+			setRandomizationControls(new RandomizationControls());
+		getRandomizationControls().assign(source.getRandomizationControls());
+		
+		if (getDeliveryControls() == null) 
+			setDeliveryControls(new DeliveryControls());
+		getDeliveryControls().assign(source.getDeliveryControls());
+		
+		if (getConstrainedChoiceConsiderations() == null) 
+			setConstrainedChoiceConsiderations(new ConstrainedChoiceConsiderations());
+		getConstrainedChoiceConsiderations().assign(source.getConstrainedChoiceConsiderations());
+		
+		if (getRollupConsiderations() == null)
+			setRollupConsiderations(new RollupConsiderations());
+		getRollupConsiderations().assign(source.getRollupConsiderations());
+		
+		
+	}
+
+	private void assign(List<SequencingRule> preConditionRules2,
+			List<SequencingRule> preConditionRules3) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	@Override
 	public String toString() {
 	

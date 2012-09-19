@@ -8,7 +8,7 @@ public class OtherInteraction extends Interaction {
 	}
 
 	@Override
-	protected void testPattern(int index, String pattern) throws Exception {
+	protected void testPattern(int index, String pattern, boolean correct_responses) throws Exception {
 	}
 
 

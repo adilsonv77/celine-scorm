@@ -31,6 +31,10 @@ public class DeliveryControls {
 							  new Object[]{tracked, completionSetByContent, objectiveSetByContent});
 		
 	}
+	public void assign(DeliveryControls deliveryControls) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 	

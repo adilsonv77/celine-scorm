@@ -23,4 +23,9 @@ public class ConstrainedChoiceConsiderations {
 		return String.format("<constrainedChoiceConsiderations preventActivation=\"%s\" constrainChoice=\"%s\"/>\n",
 								new Object[]{preventActivation, constrainChoice});
 	}
+	public void assign(
+			ConstrainedChoiceConsiderations constrainedChoiceConsiderations) {
+		// TODO Auto-generated method stub
+		
+	}
 }

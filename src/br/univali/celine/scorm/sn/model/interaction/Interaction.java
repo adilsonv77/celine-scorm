@@ -78,7 +78,7 @@ public abstract class Interaction {
 	protected void testLearnerResponse(String learnerResponse) throws Exception {
 		// a maioria dos interactions o learnerResponse é igual ao pattern
 		
-		testPattern(0,learnerResponse);
+		testPattern(0, learnerResponse, false);
 		
 	}
 
@@ -162,7 +162,7 @@ public abstract class Interaction {
 
 	public void setCorrectResponsesPattern(int index, String pattern) throws Exception {
 
-		testPattern(index, pattern);
+		testPattern(index, pattern, true);
 		
 		if (index == correctResponses.size())
 			this.correctResponses.add(pattern);
@@ -170,7 +170,7 @@ public abstract class Interaction {
 			this.correctResponses.set(index, pattern);
 	}
 
-	protected abstract void testPattern(int index, String pattern) throws Exception;
+	protected abstract void testPattern(int index, String pattern, boolean correct_responses) throws Exception;
 	
 	public String getCorrectResponsesPattern(int index) throws Exception {
 		testGetResponsesPattern(index);

@@ -128,7 +128,7 @@ public class TrackModelManager {
 		}
 		
 		int idx = 0;
-		for (LearningActivity activity:act.getChildren()) {
+		for (LearningActivity activity:act.getAvailableChildren()) { // modificado 18/09/12 para getAvailableChildren, pois só interessa manter os disponiveis
 			iterateActivities(courseId, learnerId, dao, activity, act.getItem().getIdentifier(), idx);
 			idx++;
 		}

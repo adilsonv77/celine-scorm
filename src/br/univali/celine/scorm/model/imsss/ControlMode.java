@@ -53,5 +53,9 @@ public class ControlMode {
 				" forwardOnly=\""+this.forwardOnly+"\" useCurrentAttemptObjectiveInfo=\""+isUseCurrentAttemptObjectiveInfo()+"\"" +
 				" useCurrentAttemptProgressInfo=\""+isUseCurrentAttemptProgressInfo()+"\" /> \n";
 	}
+	public void assign(ControlMode controlMode) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

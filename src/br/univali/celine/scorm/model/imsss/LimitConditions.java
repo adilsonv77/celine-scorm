@@ -47,5 +47,9 @@ public class LimitConditions {
 		
 		return "<limitConditions "+ret+"/>\n";
 	}
+	public void assign(LimitConditions limitConditions) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

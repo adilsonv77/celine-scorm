@@ -2,7 +2,7 @@ package br.univali.celine.lms.config;
 
 import java.lang.reflect.Method;
 
-import org.apache.commons.digester.Rule;
+import org.apache.commons.digester3.Rule;
 import org.xml.sax.Attributes;
 
 import br.univali.celine.lms.utils.LMSLogger;
@@ -28,7 +28,7 @@ public class BeanSetterAttribute extends Rule {
 	public void end(String namespace, String name) throws Exception {
 		
 		String methodName = "set" + attributeName;
-		Method[] methods = digester.peek().getClass().getMethods();
+		Method[] methods = getDigester().peek().getClass().getMethods();
 		for (Method method:methods) {
 			if (method.getName().equals(methodName)) {
 				
@@ -44,7 +44,7 @@ public class BeanSetterAttribute extends Rule {
 						
 					} 
 					
-					method.invoke(digester.peek(), obj);
+					method.invoke(getDigester().peek(), obj);
 					
 				} catch (Exception e) {
 					LMSLogger.throwing(e);					

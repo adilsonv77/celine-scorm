@@ -48,6 +48,14 @@ public class RandomizationControls {
 				new Object[]{getRandomizationTiming(), getSelectCount(), isReorderChildren(), getSelectionTiming()});
 		
 	}
+	public void assign(RandomizationControls randomizationControls) {
+		
+		setRandomizationTiming(randomizationControls.getRandomizationTiming());
+		setSelectionTiming(randomizationControls.getSelectionTiming());
+		setReorderChildren(randomizationControls.isReorderChildren());
+		setSelectCount(randomizationControls.getSelectCount());
+		
+	}
 	
 	
 	

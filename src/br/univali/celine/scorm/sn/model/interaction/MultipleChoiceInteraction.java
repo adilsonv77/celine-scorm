@@ -10,7 +10,7 @@ public class MultipleChoiceInteraction extends Interaction {
 	}
 
 	@Override
-	protected void testPattern(int index, String pattern) throws Exception {
+	protected void testPattern(int index, String pattern, boolean correct_responses) throws Exception {
 		List<String> respostas = Arrays.asList(pattern.split("\\[,\\]"));
 		
 		/*
@@ -20,11 +20,11 @@ public class MultipleChoiceInteraction extends Interaction {
 			o Each short_identifier_type shall occur in the set only once.
 		 */
 		
-		/* no correct_responses pode nao ter respostas !!!
-		 * ver se tem algum que exige respostas
-		if (respostas.size() == 0) // a especificacao diz uma coisa, os testes fazem outra :(
+		/* no correct_responses pode nao ter respostas !!! */
+		
+		if (!correct_responses && respostas.size() == 0) // a especificacao diz uma coisa, os testes fazem outra :(
 			throw new Exception("There arent choices");
-		*/
+		
 		for (int x = 0; x<respostas.size(); x++) {
 			String s = respostas.get(x); 
 			if (s.length() == 0 || s.contains("[") || s.contains("]")) {

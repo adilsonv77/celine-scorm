@@ -3,6 +3,7 @@ package br.univali.celine.scorm.sn.sr;
 import java.util.HashMap;
 
 import br.univali.celine.scorm.model.imsss.SelectionTiming;
+import br.univali.celine.scorm.sn.ProcessProvider;
 import br.univali.celine.scorm.sn.model.LearningActivity;
 
 // [SR.1]
@@ -43,6 +44,11 @@ public class SelectChildrenProcess {
 			comm.run(activity);
 		else
 			; // undefined timing attribute
+		
+		// The normative Sequencing Behavior Pseudo Code (refer to Appendix C) does not
+		//    explicitly state when the Randomize Children Process is invoked. 
+		// Se a especificação (inclusive da 4th) nao fala quando usar, entao eu chamo logo depois de selecionar os filhos
+		ProcessProvider.getInstance().getRandomizeChildrenProcess().run(activity);
 		
 	}	
 	

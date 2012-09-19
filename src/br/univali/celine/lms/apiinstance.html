@@ -30,6 +30,12 @@
 		API_1484_11.CarregarPag = function() {
 	        var link = "CONTEXTPATH/lms?action=navrequest";
 	        window.parent.frames[2].location = link;
+	        
+	        setTimeout("API_1484_11.CarregarTOC()", 100);
+		}
+		
+		API_1484_11.CarregarTOC = function() {
+			atualizarTOC(window.parent.frames[1].document,API_1484_11.GetTOC());
 		}
 		
 		API_1484_11.Terminate = function(p0) {                                      
@@ -40,20 +46,10 @@
 			});                                                                 
 		                                                                            
 			if (API_1484_11.HasNavRequest()) {
-/*
-  
- 				Essa solucao é compativel somente com IE.
- 				
-		        var link = "CONTEXTPATH/lms?action=navrequest";
-		        window.parent.frames[2].location = link;
-
-		        A nova solucao, com setTimeout, permitiu ser compativel com IE e FF.
-		        Porém, com o Chrome ainda nao existe compatibilidade :( 
-*/
 				setTimeout("API_1484_11.CarregarPag()", 10);
 
-		        if (API_1484_11.loadTOC == true) 
-		          atualizarTOC(window.parent.frames[1].document,API_1484_11.GetTOC());
+		      //  if (API_1484_11.loadTOC == true) 
+		      //    atualizarTOC(window.parent.frames[1].document,API_1484_11.GetTOC());
 			}
 
 			return ret;
