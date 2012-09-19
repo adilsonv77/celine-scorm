@@ -1,12 +1,16 @@
-package br.univali.celine.scorm.model.cam;
+package br.univali.celine.scorm1_2.model.cam;
 
 import java.io.InputStream;
 import java.util.Iterator;
 
-import org.apache.commons.digester.Digester;
+import org.apache.commons.digester3.Digester;
 
-import br.univali.celine.scorm.versions.Build1_2;
+import br.univali.celine.scorm.model.cam.ContentPackage;
+import br.univali.celine.scorm.model.cam.ContentPackageReader20043rd;
+import br.univali.celine.scorm.model.cam.Item;
+import br.univali.celine.scorm.model.cam.Organization;
 import br.univali.celine.scorm.versions.BuildVersion;
+import br.univali.celine.scorm1_2.versions.Build1_2;
 
 public class ContentPackageReader12 extends ContentPackageReader20043rd {
 

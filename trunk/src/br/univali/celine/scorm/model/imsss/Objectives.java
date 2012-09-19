@@ -43,4 +43,9 @@ public class Objectives {
 		return ret + "</imsss:objectives>\n";
 		
 	}
+
+	public void assign(Objectives objectives2) {
+		// TODO Auto-generated method stub
+		
+	}
 }

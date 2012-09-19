@@ -427,6 +427,9 @@ public class APIImplementation implements API {
 	
 	public String getErrorString(String errorCode) {
 
+		if (errorCode == null || errorCode.equals("")) // can be enter that some errorCode == null 
+			return null;       // it must accept, either is not in specification
+		
 		return errorManager.getErrorString(version, Integer.parseInt(errorCode));
 	}
 

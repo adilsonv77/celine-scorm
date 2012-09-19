@@ -3,7 +3,7 @@ package br.univali.celine.scorm.model.cam;
 import java.io.FileInputStream;
 import java.net.URL;
 
-import org.apache.commons.digester.Digester;
+import org.apache.commons.digester3.Digester;
 
 import br.univali.celine.scorm.model.adlnav.NavigationInterface;
 import br.univali.celine.scorm.model.adlnav.Presentation;
@@ -29,7 +29,7 @@ public class ContentPackageReader20043rd implements ContentPackageReader {
 
 	protected Class<?> itemClass = Item20043rd.class;
 	protected Class<?> organizationClass = Organization20043rd.class;
-	private BuildVersion version;
+	protected BuildVersion version;
 	
 	public ContentPackage ler(String nomeArquivo) throws Exception {
 		if (nomeArquivo.startsWith("file:")) {
@@ -45,6 +45,7 @@ public class ContentPackageReader20043rd implements ContentPackageReader {
 	public ContentPackage ler(java.io.InputStream stream) throws Exception {
         // Create a Digester instance
         Digester d = new Digester();
+        d.setNamespaceAware(true); // desconsidera todos os namespaces !!!
         
         // Prime the digester stack with an object for rules to
         // operate on. Note that it is quite common for "this"
@@ -110,7 +111,7 @@ public class ContentPackageReader20043rd implements ContentPackageReader {
 		d.addObjectCreate("manifest/organizations/organization", organizationClass);
         d.addSetNext("manifest/organizations/organization", "addOrganization");
 		d.addSetProperties("manifest/organizations/organization");
-		d.addSetProperties("manifest/organizations/organization", "adlseq:objectivesGlobalToSystem", "objectivesGlobalToSystem");
+		d.addSetProperties("manifest/organizations/organization", "objectivesGlobalToSystem", "objectivesGlobalToSystem");
 	}
 
 	protected void addOrganizationItem(Digester d) {
@@ -142,19 +143,19 @@ public class ContentPackageReader20043rd implements ContentPackageReader {
 	}
 
 	private void addNavigationInterface(Digester d) {
-        d.addObjectCreate("*/item/adlnav:presentation/adlnav:navigationInterface", NavigationInterface.class);
-        d.addSetNext("*/item/adlnav:presentation/adlnav:navigationInterface", "setNavigationInterface");
-        d.addCallMethod("*/item/adlnav:presentation/adlnav:navigationInterface/adlnav:hideLMSUI", "addHideLMSUI", 0);
+        d.addObjectCreate("*/item/presentation/navigationInterface", NavigationInterface.class);
+        d.addSetNext("*/item/presentation/adlnav:navigationInterface", "setNavigationInterface");
+        d.addCallMethod("*/item/presentation/navigationInterface/hideLMSUI", "addHideLMSUI", 0);
 	}
 
 	protected void addPresentation(Digester d) {
-		d.addObjectCreate("*/item/adlnav:presentation", Presentation.class);
-        d.addSetNext("*/item/adlnav:presentation", "setAdlNavPresentation");
+		d.addObjectCreate("*/item/presentation", Presentation.class);
+        d.addSetNext("*/item/presentation", "setAdlNavPresentation");
 
 	}
 
 	protected void addCompletionThreshold(Digester d) {
-      d.addCallMethod("*/item/adlcp:completionThreshold", "setCompletionThreshold", 0);
+      d.addCallMethod("*/item/completionThreshold", "setCompletionThreshold", 0);
 	}
 	
 	protected void addOrganizationTitle(Digester d) {
@@ -162,8 +163,8 @@ public class ContentPackageReader20043rd implements ContentPackageReader {
 	}
 
 	protected void addImssSequencing(Digester d, String tagParent) {
-		d.addObjectCreate(tagParent+"/imsss:sequencing", Sequencing.class);
-        d.addSetNext(tagParent+"/imsss:sequencing", "setImsssSequencing");
+		d.addObjectCreate(tagParent+"/sequencing", Sequencing.class);
+        d.addSetNext(tagParent+"/sequencing", "setImsssSequencing");
 
         addControlMode(d, tagParent);
         addSequencingRules(d, tagParent);
@@ -179,71 +180,71 @@ public class ContentPackageReader20043rd implements ContentPackageReader {
 	protected void addConstrainedChoiceConsiderations(Digester d,
 			String tagParent) {
 		
-        d.addObjectCreate(tagParent+"/imsss:sequencing/adlseq:constrainedChoiceConsiderations", ConstrainedChoiceConsiderations.class);
-        d.addSetNext(tagParent+"/imsss:sequencing/adlseq:constrainedChoiceConsiderations", "setConstrainedChoiceConsiderations");
-        d.addSetProperties(tagParent+"/imsss:sequencing/adlseq:constrainedChoiceConsiderations");
+        d.addObjectCreate(tagParent+"/sequencing/adlseq:constrainedChoiceConsiderations", ConstrainedChoiceConsiderations.class);
+        d.addSetNext(tagParent+"/sequencing/adlseq:constrainedChoiceConsiderations", "setConstrainedChoiceConsiderations");
+        d.addSetProperties(tagParent+"/sequencing/adlseq:constrainedChoiceConsiderations");
 		
 	}
 
 	protected void addRollupConsiderations(Digester d, String tagParent) {
-        d.addObjectCreate(tagParent+"/imsss:sequencing/adlseq:rollupConsiderations", RollupConsiderations.class);
-        d.addSetNext(tagParent+"/imsss:sequencing/adlseq:rollupConsiderations", "setRollupConsiderations");
-        d.addSetProperties(tagParent+"/imsss:sequencing/adlseq:rollupConsiderations");
+        d.addObjectCreate(tagParent+"/sequencing/rollupConsiderations", RollupConsiderations.class);
+        d.addSetNext(tagParent+"/sequencing/rollupConsiderations", "setRollupConsiderations");
+        d.addSetProperties(tagParent+"/sequencing/rollupConsiderations");
 	}
 
 	protected void addRollupRules(Digester d, String tagParent) {
-        d.addObjectCreate(tagParent+"/imsss:sequencing/imsss:rollupRules", RollupRules.class);
-        d.addSetNext(tagParent+"/imsss:sequencing/imsss:rollupRules", "setRollupRules");
-        d.addSetProperties(tagParent+"/imsss:sequencing/imsss:rollupRules");
+        d.addObjectCreate(tagParent+"/sequencing/rollupRules", RollupRules.class);
+        d.addSetNext(tagParent+"/sequencing/rollupRules", "setRollupRules");
+        d.addSetProperties(tagParent+"/sequencing/rollupRules");
 
         // <rollupRule>
-        d.addObjectCreate(tagParent+"/imsss:sequencing/imsss:rollupRules/imsss:rollupRule", RollupRule.class);
-        d.addSetNext(tagParent+"/imsss:sequencing/imsss:rollupRules/imsss:rollupRule", "addRollupRule");
-        d.addSetProperties(tagParent+"/imsss:sequencing/imsss:rollupRules/imsss:rollupRule");
+        d.addObjectCreate(tagParent+"/sequencing/rollupRules/rollupRule", RollupRule.class);
+        d.addSetNext(tagParent+"/sequencing/rollupRules/rollupRule", "addRollupRule");
+        d.addSetProperties(tagParent+"/sequencing/rollupRules/rollupRule");
 
 		// <rollupCondition>
-        d.addObjectCreate(tagParent+"/imsss:sequencing/imsss:rollupRules/imsss:rollupRule/imsss:rollupConditions/imsss:rollupCondition", RollupCondition.class);
-        d.addSetProperties(tagParent+"/imsss:sequencing/imsss:rollupRules/imsss:rollupRule/imsss:rollupConditions/imsss:rollupCondition");
-        d.addSetNext(tagParent+"/imsss:sequencing/imsss:rollupRules/imsss:rollupRule/imsss:rollupConditions/imsss:rollupCondition", "addRollupCondition");
+        d.addObjectCreate(tagParent+"/sequencing/rollupRules/rollupRule/rollupConditions/rollupCondition", RollupCondition.class);
+        d.addSetProperties(tagParent+"/sequencing/rollupRules/rollupRule/rollupConditions/rollupCondition");
+        d.addSetNext(tagParent+"/sequencing/rollupRules/rollupRule/rollupConditions/rollupCondition", "addRollupCondition");
 		
 		// <rollupAction>
-		d.addCallMethod(tagParent+"/imsss:sequencing/imsss:rollupRules/imsss:rollupRule/imsss:rollupAction", "setRollupAction", 1);
-		d.addCallParam(tagParent+"/imsss:sequencing/imsss:rollupRules/imsss:rollupRule/imsss:rollupAction", 0, "action");
+		d.addCallMethod(tagParent+"/sequencing/rollupRules/rollupRule/rollupAction", "setRollupAction", 1);
+		d.addCallParam(tagParent+"/sequencing/rollupRules/rollupRule/rollupAction", 0, "action");
         
         /*
-        d.addCallMethod(tagParent+"/imsss:sequencing/imsss:rollupRules/imsss:rollupRule/imsss:rollupAction", "set");
-        d.addSetNext(tagParent+"/imsss:sequencing/imsss:rollupRules/imsss:rollupRule", "addRollupRule");
-        d.addSetProperties(tagParent+"/imsss:sequencing/imsss:rollupRules/imsss:rollupRule");
+        d.addCallMethod(tagParent+"/sequencing/rollupRules/rollupRule/rollupAction", "set");
+        d.addSetNext(tagParent+"/sequencing/rollupRules/rollupRule", "addRollupRule");
+        d.addSetProperties(tagParent+"/sequencing/rollupRules/rollupRule");
         */
         
 	}
 
 	protected void addRandomizationControls(Digester d, String tagParent) {
-        d.addObjectCreate(tagParent+"/imsss:sequencing/imsss:randomizationControls", RandomizationControls.class);
-        d.addSetNext(tagParent+"/imsss:sequencing/imsss:randomizationControls", "setRandomizationControls");
-        d.addSetProperties(tagParent+"/imsss:sequencing/imsss:randomizationControls");
+        d.addObjectCreate(tagParent+"/sequencing/randomizationControls", RandomizationControls.class);
+        d.addSetNext(tagParent+"/sequencing/randomizationControls", "setRandomizationControls");
+        d.addSetProperties(tagParent+"/sequencing/randomizationControls");
 	}
 
 	protected void addLimitConditions(Digester d, String tagParent) {
-        d.addObjectCreate(tagParent+"/imsss:sequencing/imsss:limitConditions", LimitConditions.class);
-        d.addSetNext(tagParent+"/imsss:sequencing/imsss:limitConditions", "setLimitConditions");
-        d.addSetProperties(tagParent+"/imsss:sequencing/imsss:limitConditions");
+        d.addObjectCreate(tagParent+"/sequencing/limitConditions", LimitConditions.class);
+        d.addSetNext(tagParent+"/sequencing/limitConditions", "setLimitConditions");
+        d.addSetProperties(tagParent+"/sequencing/limitConditions");
         
 	}
 
 	protected void addDeliveryControls(Digester d, String tagParent) {
-        d.addObjectCreate(tagParent+"/imsss:sequencing/imsss:deliveryControls", DeliveryControls.class);
-        d.addSetNext(tagParent+"/imsss:sequencing/imsss:deliveryControls", "setDeliveryControls");
-        d.addSetProperties(tagParent+"/imsss:sequencing/imsss:deliveryControls");
+        d.addObjectCreate(tagParent+"/sequencing/deliveryControls", DeliveryControls.class);
+        d.addSetNext(tagParent+"/sequencing/deliveryControls", "setDeliveryControls");
+        d.addSetProperties(tagParent+"/sequencing/deliveryControls");
 	}
 
 	protected void addObjectives(Digester d, String tagParent) {
 
-        d.addObjectCreate(tagParent+"/imsss:sequencing/imsss:objectives", Objectives.class);
-        d.addSetNext(tagParent+"/imsss:sequencing/imsss:objectives", "setObjectives");
+        d.addObjectCreate(tagParent+"/sequencing/objectives", Objectives.class);
+        d.addSetNext(tagParent+"/sequencing/objectives", "setObjectives");
 
-        addObjective(d, tagParent+"/imsss:sequencing/imsss:objectives/imsss:primaryObjective", "setPrimaryObjective");
-        addObjective(d, tagParent+"/imsss:sequencing/imsss:objectives/imsss:objective", "addObjective");
+        addObjective(d, tagParent+"/sequencing/objectives/primaryObjective", "setPrimaryObjective");
+        addObjective(d, tagParent+"/sequencing/objectives/objective", "addObjective");
 	}
 
 	protected void addObjective(Digester d, String tagParent, String metodoAdd) {
@@ -251,23 +252,23 @@ public class ContentPackageReader20043rd implements ContentPackageReader {
 		
 		d.addSetProperties(tagParent);                     
 		d.addSetNext(tagParent, metodoAdd);
-		d.addCallMethod(tagParent+"/imsss:minNormalizedMeasure", "setMinNormalizedMeasure", 0);
+		d.addCallMethod(tagParent+"/minNormalizedMeasure", "setMinNormalizedMeasure", 0);
 		
-		d.addObjectCreate(tagParent+"/imsss:mapInfo", MapInfo.class);
-		d.addSetNext(tagParent+"/imsss:mapInfo", "addMapInfo");
-		d.addSetProperties(tagParent+"/imsss:mapInfo");
+		d.addObjectCreate(tagParent+"/mapInfo", MapInfo.class);
+		d.addSetNext(tagParent+"/mapInfo", "addMapInfo");
+		d.addSetProperties(tagParent+"/mapInfo");
 	}
 
 	protected void addSequencingRules(Digester d, String tagParent) {
-        addConditionRule(d, tagParent+"/imsss:sequencing/imsss:sequencingRules/imsss:preConditionRule", "addPreConditionRule");
-        addConditionRule(d, tagParent+"/imsss:sequencing/imsss:sequencingRules/imsss:postConditionRule", "addPostConditionRule");
-        addConditionRule(d, tagParent+"/imsss:sequencing/imsss:sequencingRules/imsss:exitConditionRule", "addExitConditionRule");
+        addConditionRule(d, tagParent+"/sequencing/sequencingRules/preConditionRule", "addPreConditionRule");
+        addConditionRule(d, tagParent+"/sequencing/sequencingRules/postConditionRule", "addPostConditionRule");
+        addConditionRule(d, tagParent+"/sequencing/sequencingRules/exitConditionRule", "addExitConditionRule");
 	}
 
 	protected void addControlMode(Digester d, String tagParent) {
-        d.addObjectCreate(tagParent+"/imsss:sequencing/imsss:controlMode", ControlMode.class);
-        d.addSetNext(tagParent+"/imsss:sequencing/imsss:controlMode", "setControlMode");
-        d.addSetProperties(tagParent+"/imsss:sequencing/imsss:controlMode");
+        d.addObjectCreate(tagParent+"/sequencing/controlMode", ControlMode.class);
+        d.addSetNext(tagParent+"/sequencing/controlMode", "setControlMode");
+        d.addSetProperties(tagParent+"/sequencing/controlMode");
 	}
 
 	protected void addConditionRule(Digester d, String tagCondition, String metodoAdd) {
@@ -275,15 +276,15 @@ public class ContentPackageReader20043rd implements ContentPackageReader {
 		d.addSetNext(tagCondition, metodoAdd);
 
 		// <ruleConditions>
-		d.addSetProperties(tagCondition+"/imsss:ruleConditions");
+		d.addSetProperties(tagCondition+"/ruleConditions");
 				
-		d.addObjectCreate(tagCondition+"/imsss:ruleConditions/imsss:ruleCondition", RuleCondition.class);
-		d.addSetNext(tagCondition+"/imsss:ruleConditions/imsss:ruleCondition", "addRuleCondition");
-		d.addSetProperties(tagCondition+"/imsss:ruleConditions/imsss:ruleCondition");
+		d.addObjectCreate(tagCondition+"/ruleConditions/ruleCondition", RuleCondition.class);
+		d.addSetNext(tagCondition+"/ruleConditions/ruleCondition", "addRuleCondition");
+		d.addSetProperties(tagCondition+"/ruleConditions/ruleCondition");
 
 		// <ruleAction>
-		d.addCallMethod(tagCondition+"/imsss:ruleAction", "setRuleAction", 1);
-		d.addCallParam(tagCondition+"/imsss:ruleAction", 0, "action");
+		d.addCallMethod(tagCondition+"/ruleAction", "setRuleAction", 1);
+		d.addCallParam(tagCondition+"/ruleAction", 0, "action");
 	}
 
 	protected void addResources(Digester d) {
@@ -304,8 +305,8 @@ public class ContentPackageReader20043rd implements ContentPackageReader {
 	protected void addResource(Digester d) {
         d.addObjectCreate("manifest/resources/resource", Resource.class);
         d.addSetNext("manifest/resources/resource", "addResource");
-        d.addSetProperties("manifest/resources/resource", "adlcp:scormType", "scormType");
-        d.addSetProperties("manifest/resources/resource", "xml:base", "xmlBase");
+        d.addSetProperties("manifest/resources/resource", "scormType", "scormType");
+        d.addSetProperties("manifest/resources/resource", "base", "xmlBase");
 		d.addSetProperties("manifest/resources/resource");
 		
 	}

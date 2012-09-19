@@ -7,7 +7,7 @@ public class Resource {
 
 	private Metadata metadata;
 	private String identifier;
-	private String type;
+	private String type = "webcontent";
 	private String href;
 	private String scormType;
 	private String xmlBase = "";

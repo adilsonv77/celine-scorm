@@ -1,0 +1,40 @@
+<project name="celine" default="deploy" basedir=".">
+
+	<target name="init">
+		<delete dir="dist" />
+		<mkdir dir="dist" />
+		
+		<delete dir="etc" />
+		<mkdir dir="etc" />
+		
+		<copy todir="dist">
+			<fileset dir="bin" excludes="**/testes/*"/>
+		</copy>
+
+		<mkdir dir="dist/META-INF" />
+		<copy file="WEB-INF/celine.tld" todir="dist/META-INF"/>
+
+	</target>
+
+	<target name="jar">
+		<jar jarfile="etc/celine.jar" basedir="dist" />
+	</target>
+	
+	<target name="deploy" depends="undeploy,init,jar"/>
+	
+	<!--
+	<target name="deploy" depends="undeploy,init,jar">
+
+		<copy file="etc/celinelms.jar" todir="e:/celine/bruce/WebContent/WEB-INF/lib" />
+		<copy file="etc/celinelms.jar" todir="E:/java/celine/testelms/WebContent/WEB-INF/lib"/>
+		<copy file="etc/celinelms.jar" todir="e:/celine/bruce-lip/WebContent/WEB-INF/lib" />
+
+	</target>
+	-->
+	
+	<target name="undeploy">
+		<delete dir="dist" />
+		<delete dir="etc" />
+	</target>
+
+</project>

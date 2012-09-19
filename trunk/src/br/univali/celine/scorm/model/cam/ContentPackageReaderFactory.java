@@ -10,6 +10,8 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import br.univali.celine.scorm1_2.model.cam.ContentPackageReader12;
+
 public class ContentPackageReaderFactory {
 
 	private static String version;
@@ -64,11 +66,13 @@ public class ContentPackageReaderFactory {
 			if (!e.getMessage().equals("Parando")) {
 				throw e;
 			}
-		}
+		} 
+		
+		// TODO needs make more sophisticated
 		if (version.equals("1.2"))
 			return new ContentPackageReader12();
 		else
-			if (version.equals("CAM 1.3")) {
+			if (version.equals("CAM 1.3") || version.equals("2004 3rd Edition")) {
 				return new ContentPackageReader20043rd();
 			} else { // SCORM 2004 4th Edition
 				return new br.univali.celine.scorm2004_4th.model.cam.ContentPackageReader20044th();

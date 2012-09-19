@@ -1,14 +1,12 @@
 package br.univali.celine.scorm2004_4th.model.cam;
 
-import org.apache.commons.digester.Digester;
+import org.apache.commons.digester3.Digester;
 
 import br.univali.celine.scorm.model.cam.CompletionThreshold;
-import br.univali.celine.scorm.versions.Build20044thEdition;
 import br.univali.celine.scorm.versions.BuildVersion;
+import br.univali.celine.scorm2004_4th.versions.Build20044thEdition;
 
 public class ContentPackageReader20044th extends br.univali.celine.scorm.model.cam.ContentPackageReader20043rd{
-
-	private BuildVersion version;
 
 	public ContentPackageReader20044th() {
 		this.itemClass = Item20044th.class;
@@ -17,13 +15,10 @@ public class ContentPackageReader20044th extends br.univali.celine.scorm.model.c
 	
    	protected void addCompletionThreshold(Digester d) {
         
-        d.addObjectCreate("*/item/adlcp:completionThreshold", CompletionThreshold.class); 
-        d.addSetNext("*/item/adlcp:completionThreshold", "setCompletionThreshold");
-        d.addSetProperties("*/item/adlcp:completionThreshold");
-        
         d.addObjectCreate("*/item/completionThreshold", CompletionThreshold.class); 
         d.addSetNext("*/item/completionThreshold", "setCompletionThreshold");
         d.addSetProperties("*/item/completionThreshold");
+        
 	}
 
 
@@ -31,7 +26,7 @@ public class ContentPackageReader20044th extends br.univali.celine.scorm.model.c
    	protected void addRootOrganization(Digester d) {
    		super.addRootOrganization(d);
 
-   		d.addSetProperties("manifest/organizations/organization", "adlcp:sharedDataGlobalToSystem", "sharedDataGlobalToSystem");
+   		d.addSetProperties("manifest/organizations/organization", "sharedDataGlobalToSystem", "sharedDataGlobalToSystem");
    		
    	}
    	
@@ -39,9 +34,9 @@ public class ContentPackageReader20044th extends br.univali.celine.scorm.model.c
    	protected void beforeOrganizationItemSetNext(Digester d) {
   		super.beforeOrganizationItemSetNext(d);
 
-  		d.addObjectCreate("*/item/adlcp:data/adlcp:map", AdlcpMap.class);
-        d.addSetNext("*/item/adlcp:data/adlcp:map", "addAdlcpMap");
-		d.addSetProperties("*/item/adlcp:data/adlcp:map");
+  		d.addObjectCreate("*/item/data/map", AdlcpMap.class);
+        d.addSetNext("*/item/data/map", "addAdlcpMap");
+		d.addSetProperties("*/item/data/map");
   		
    	}
    	

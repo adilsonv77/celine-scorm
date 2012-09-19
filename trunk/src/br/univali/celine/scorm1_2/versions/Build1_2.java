@@ -1,4 +1,4 @@
-package br.univali.celine.scorm.versions;
+package br.univali.celine.scorm1_2.versions;
 
 import br.univali.celine.scorm.dataModel.DataModelCommandManager;
 import br.univali.celine.scorm.dataModel.adl.nav.Request;
@@ -8,6 +8,8 @@ import br.univali.celine.scorm.dataModel.cmi.LaunchData;
 import br.univali.celine.scorm.dataModel.cmi.LearnerPreference;
 import br.univali.celine.scorm.dataModel.cmi.StudentData;
 import br.univali.celine.scorm.dataModel.cmi.SuspendData;
+import br.univali.celine.scorm.model.cam.AbstractItem;
+import br.univali.celine.scorm.model.cam.Item20043rd;
 import br.univali.celine.scorm.sn.ProcessProvider;
 import br.univali.celine.scorm.sn.db.ClearSuspendedActivitySubprocess;
 import br.univali.celine.scorm.sn.db.ContentDeliveryEnvironmentProcess;
@@ -38,6 +40,7 @@ import br.univali.celine.scorm.sn.up.LimitConditionsCheckProcess;
 import br.univali.celine.scorm.sn.up.SequencingRuleCheckSubprocess;
 import br.univali.celine.scorm.sn.up.SequencingRulesCheckProcess;
 import br.univali.celine.scorm.sn.up.TerminateDescendentAttemptsProcess;
+import br.univali.celine.scorm.versions.BuildVersion;
 import br.univali.celine.scorm1_2.dataModel.cmi.Core;
 
 public class Build1_2 implements BuildVersion {
@@ -103,6 +106,17 @@ public class Build1_2 implements BuildVersion {
 	@Override
 	public int getVersion() {
 		return 12;
+	}
+
+	@Override
+	public AbstractItem buildItem() {
+		return new Item20043rd();
+	}
+
+	@Override
+	public String[] getXSDFileNames() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

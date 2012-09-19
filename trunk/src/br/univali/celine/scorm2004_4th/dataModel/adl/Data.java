@@ -1,4 +1,4 @@
-package br.univali.celine.scorm.dataModel.adl;
+package br.univali.celine.scorm2004_4th.dataModel.adl;
 
 import br.univali.celine.scorm.dataModel.DataModelCommand;
 import br.univali.celine.scorm.dataModel.cmi.DotNotationCommand;

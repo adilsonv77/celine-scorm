@@ -30,6 +30,7 @@ public class TableOfContentsFactory {
 		this.constrainedChoice = null;
 		
 		prepareForConstrainedChoice(); // see session 3.3.1
+		
 		traverseTree(); // criar todo o TOC baseado na Activity Tree
 		
 		return this.toc;
@@ -84,7 +85,7 @@ public class TableOfContentsFactory {
 		NodeTableOfContent newNode = new NodeTableOfContent(
 				activity.getItem().getIdentifier(),
 				activity.getItem().getTitle(),
-				status == NodeStatus.enabled && status != NodeStatus.notVisible, 
+				status == NodeStatus.enabled, 
 				status != NodeStatus.notVisible); 
 		
 		if (tree.getCurrentActivity() == activity)
@@ -114,41 +115,62 @@ public class TableOfContentsFactory {
 	// .. implementar o método abaixo
 	
 	private NodeStatus evaluate(LearningActivity activity, NodeTableOfContent parentNode) {
-		// raiz sempre é válida
-		if (activity.getParent() == null || activity == tree.getCurrentActivity())
+		// raiz sempre é válida: a partir de 12/09/12 verificou-se que nao eh por ai
+		/*
+		if (activity.getParent() == null) // || activity == tree.getCurrentActivity())
 			return NodeStatus.enabled;
+		*/
+		// Sequencing Control Choice
+		if (sequencingControlChoice(activity) == false)
+			return NodeStatus.notVisible;
+		
+		// Sequencing Control Choice Exit
+		if (sequencingControlChoiceExit(activity) == false) {
+			return NodeStatus.notVisible;
+		}
 		
 		// Sequencing Rule Description
 		if (sequencingRule(activity) == false) {
 			return NodeStatus.notVisible;
 		}
 		
-		// Sequencing Control Choice
-		// se o pai diz que nao pode selecionar os filhos
-		if (activity.getParent().isSequencingControlChoice() == false) {
-			return NodeStatus.notEnabled;
-		}
+		if (activity.getParent() != null) {
+			// Sequencing Control Choice
+			// se o pai diz que nao pode selecionar os filhos
+			if (activity.getParent().isSequencingControlChoice() == false) 
+				return NodeStatus.notEnabled;
 		
-		// Sequencing Control Choice Exit
-		if (sequencingControlChoiceExit(activity) == false) {
-			return NodeStatus.notEnabled;
-		}
-		
-		// Constrain Choice Controls
-		if (constrainChoiceControls(activity) == false) {
-			return NodeStatus.notEnabled;
+			// Constrain Choice Controls
+			if (constrainChoiceControls(activity) == false) 
+				return NodeStatus.notEnabled;
 		}
 		
 		return NodeStatus.enabled;
 	}
 
-	private boolean sequencingControlChoiceExit(LearningActivity activity) {
-		if (tree.getCurrentActivity() != activity && tree.getCurrentActivity().isSequencingControlChoiceExit() == false) {
-			
-			if (activity.isDescendantFrom(tree.getCurrentActivity()) == false)
-				return false;
-		}
+	private boolean sequencingControlChoice(LearningActivity activity) {
 		
+		// The Sequencing Control Choice control mode has no affect when defined on a leaf activity.
+		if (!activity.isLeaf()) {
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean sequencingControlChoiceExit(LearningActivity activity) {
+		if (tree.getCurrentActivity().isSequencingControlChoiceExit() == false) {
+			
+			if (tree.getCurrentActivity() != activity) {
+				
+				if (activity.isDescendantFrom(tree.getCurrentActivity()) == false)
+					return false;
+			} else {
+				if (!activity.hasChildren())
+					return false;
+			}
+		
+		}
 		return true;
 	}
 

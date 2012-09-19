@@ -1,7 +1,6 @@
-package br.univali.celine.scorm.versions;
+package br.univali.celine.scorm2004_4th.versions;
 
 import br.univali.celine.scorm.dataModel.DataModelCommandManager;
-import br.univali.celine.scorm.dataModel.adl.Data;
 import br.univali.celine.scorm.dataModel.adl.nav.Request;
 import br.univali.celine.scorm.dataModel.adl.nav.RequestValid;
 import br.univali.celine.scorm.dataModel.cmi.CommentsFromLMS;
@@ -29,6 +28,7 @@ import br.univali.celine.scorm.dataModel.cmi.SuspendData;
 import br.univali.celine.scorm.dataModel.cmi.TimeLimitAction;
 import br.univali.celine.scorm.dataModel.cmi.TotalTime;
 import br.univali.celine.scorm.dataModel.cmi.Version;
+import br.univali.celine.scorm.model.cam.AbstractItem;
 import br.univali.celine.scorm.sn.ProcessProvider;
 import br.univali.celine.scorm.sn.db.ClearSuspendedActivitySubprocess;
 import br.univali.celine.scorm.sn.db.ContentDeliveryEnvironmentProcess;
@@ -57,6 +57,9 @@ import br.univali.celine.scorm.sn.up.LimitConditionsCheckProcess;
 import br.univali.celine.scorm.sn.up.SequencingRuleCheckSubprocess;
 import br.univali.celine.scorm.sn.up.SequencingRulesCheckProcess;
 import br.univali.celine.scorm.sn.up.TerminateDescendentAttemptsProcess;
+import br.univali.celine.scorm.versions.BuildVersion;
+import br.univali.celine.scorm2004_4th.dataModel.adl.Data;
+import br.univali.celine.scorm2004_4th.model.cam.Item20044th;
 import br.univali.celine.scorm2004_4th.sn.nb.NavigationRequestProcess20044th;
 import br.univali.celine.scorm2004_4th.sn.sb.seqreqprocess.SequencingRequestProcess20044th;
 
@@ -146,5 +149,16 @@ public class Build20044thEdition implements BuildVersion {
 		return 2004;
 	}
 	
-	
+	@Override
+	public AbstractItem buildItem() {
+		
+		return new Item20044th();
+	}
+
+	@Override
+	public String[] getXSDFileNames() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

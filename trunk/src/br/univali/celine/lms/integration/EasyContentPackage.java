@@ -5,9 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import br.univali.celine.scorm.model.cam.ContentPackage;
-import br.univali.celine.scorm.model.cam.ContentPackageReader20043rd;
 import br.univali.celine.scorm.model.cam.Item;
-import br.univali.celine.scorm.model.cam.Item20043rd;
 import br.univali.celine.scorm.model.cam.Organization;
 import br.univali.celine.scorm.model.cam.Resource;
 import br.univali.celine.scorm.model.cam.Resources;
@@ -17,7 +15,7 @@ import br.univali.celine.scorm.model.imsss.Objective;
 public class EasyContentPackage {
 
 	private List<Item> itens = new ArrayList<Item>();
-	private List<Resource> resources = new ArrayList<Resource>();
+	private Resources resources = new Resources();
 
 	public void addItem(String contentPackageId, Item item) {
 		updateIdentifier(contentPackageId, item);
@@ -144,30 +142,28 @@ public class EasyContentPackage {
 		
 	}
 
-	public void addItem(String identifier, String title) {
-		itens.add(Item20043rd.buildBasic(identifier, title));
+	public void addItem(Item item) {
+		itens.add(item);
 	}
 
 	public void addResource(Resource res) {
-		resources.add(res);
+		resources.addResource(res);
 	}
 
-	public List<Resource> getResources() {
+	public Resources getResources() {
 		return resources;
 	}
 	
 	public ContentPackage build(String organizationName, String orgIdentifier) {
 
-		ContentPackage cp = ContentPackage.buildBasic(organizationName, orgIdentifier, new ContentPackageReader20043rd());
+		ContentPackage cp = ContentPackage.buildBasic(organizationName, orgIdentifier, null);
 
 		Organization org = cp.getOrganizations().getDefaultOrganization();
 		for (Item item : itens) {
 			org.addItem(item);
 		}
 
-		for (Resource res : resources) {
-			cp.getResources().addResource(res);
-		}
+		cp.setResources(resources);
 
 		return cp;
 	}

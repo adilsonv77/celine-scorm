@@ -22,6 +22,7 @@ public class FileCommand implements Command {
 			}
 			BinaryFileHandler bin = new BinaryFileHandler(request, fileName);
 			response.getOutputStream().write(bin.getContent());
+			response.getOutputStream().flush();
 			return null;
 			
 		} else {

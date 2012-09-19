@@ -59,4 +59,9 @@ public class RollupRules {
 		return ret + "</rollupRules>\n";
 	}
 
+	public void assign(RollupRules rollupRules2) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

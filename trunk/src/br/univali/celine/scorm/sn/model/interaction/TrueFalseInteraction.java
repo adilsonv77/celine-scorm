@@ -10,7 +10,7 @@ public class TrueFalseInteraction extends Interaction {
 	}
 
 	@Override
-	protected void testPattern(int index, String pattern) throws Exception {
+	protected void testPattern(int index, String pattern, boolean correct_responses) throws Exception {
 
 		if (index > 0)
 			throw new Exception(""+ErrorManager.GeneralSetFailure);

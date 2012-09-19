@@ -316,7 +316,7 @@ public class LearningActivity {
 		
 		List<LearningActivity> novo = new ArrayList<LearningActivity>();
 		while (availableChildren.isEmpty() == false) {
-			int index = sorteio.nextInt(availableChildren.size()-1);
+			int index = Math.abs(sorteio.nextInt(availableChildren.size()));
 			novo.add(availableChildren.get(index));
 			availableChildren.remove(index);
 		}

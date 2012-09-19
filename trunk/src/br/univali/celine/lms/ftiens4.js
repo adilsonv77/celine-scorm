@@ -61,6 +61,7 @@ function Folder(folderDescription, hreference) //constructor
   this.prependHTML = "";
   this.pospendHTML = "";
   this.classEstilo = "";
+  this.hasLink = false;
  
   //dynamic data 
   this.isOpen = false;
@@ -192,7 +193,7 @@ function drawFolder(insertAtObj)
 	  docW = docW + "</td>"+this.prependHTML+"<td valign=middle "+swidth+" class='"+this.classEstilo+"'>"
   else
 	  docW = docW + "</td>"+this.prependHTML+"<td valign=middle nowrap "+swidth+" class='"+this.classEstilo+"'>"
-  if (USETEXTLINKS) 
+  if (USETEXTLINKS && this.hasLink) 
   { 
     docW = docW + this.linkHTML(true) 
     docW = docW + this.desc + "</a>"
@@ -420,6 +421,7 @@ function Item(itemDescription) // Constructor
   this.parentObj = null
 
   this.maySelect=true
+  this.hasLink=true
 
   this.initialize = initializeItem;
   this.createIndex = createEntryIndex;
@@ -857,7 +859,7 @@ function gFld(description, hreference, fixedId)
   return folder;
 } 
  
-function gLnk(optionFlags, description, linkData, fixedId) 
+function gLnk(optionFlags, description, linkData, fixedId, enabled) 
 { 
   if (optionFlags>=0) { //is numeric (old style) or empty (error)
     //Target changed from numeric to string in Aug 2002, and support for numeric style was entirely dropped in Mar 2004
@@ -867,6 +869,7 @@ function gLnk(optionFlags, description, linkData, fixedId)
 
   newItem = new Item(description);
   newItem.id = fixedId;
+  newItem.hasLink = enabled;
   setItemLink(newItem, optionFlags, linkData);
   return newItem;
 } 

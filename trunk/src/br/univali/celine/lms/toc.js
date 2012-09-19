@@ -91,11 +91,11 @@ function iterarItens(documento, elems) {
 }
 
 
-
 function createTOC(documento, toc) {
 	
 	var foldersTree = gFld(toc.name, null, 'treeID');
 	foldersTree.treeID = "curso";
+	window.parent.foldersTree = foldersTree;
 	
 	var niveis = new Array();
 	niveis.push(foldersTree);
@@ -105,7 +105,7 @@ function createTOC(documento, toc) {
 	iterateAddNode(niveis, toc.children);
 	
 	initializeDocument(foldersTree);
-	atualizarTOC(documento, toc);
+	return atualizarTOC(documento, toc);
 }
 
 

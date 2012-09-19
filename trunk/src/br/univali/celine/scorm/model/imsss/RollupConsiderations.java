@@ -63,5 +63,9 @@ public class RollupConsiderations {
 							   requiredForCompleted, requiredForIncomplete, 
 							   measureSatisfactionIfActive});
 	}
+	public void assign(RollupConsiderations rollupConsiderations) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

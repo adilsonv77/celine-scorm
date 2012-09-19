@@ -4,8 +4,6 @@ import br.univali.celine.scorm.model.cam.ContentPackage;
 import br.univali.celine.scorm.model.cam.ContentPackageReader;
 import br.univali.celine.scorm.model.cam.ContentPackageReaderFactory;
 import br.univali.celine.scorm.rteApi.APIImplementation;
-import br.univali.celine.scorm.sn.model.dataTypes.Second10_2;
-import br.univali.celine.scorm.versions.Build20044thEdition;
 
 
 public class TestarAPI {
@@ -16,8 +14,8 @@ public class TestarAPI {
 		//String folder = "C:/adilson/cursos/LMSTestPackage_DMI";
 		//String folder2 = "LMSTestPackage_DMI";
 		
-		String folder = "C:/adilson/cursos/LMSTestCourse01";
-		String folder2 = "LMSTestCourse01";
+		String folder = "C:/adilson/cursos/LMSTestPackage_DMI";
+		String folder2 = "LMSTestPackage_DMI";
 		
 		//String folder = "C:/Documents and Settings/adilsonv/Desktop/redesbayes_probabilidade";
 		//String folder2 = "redesbayes_probabilidade";
@@ -33,16 +31,31 @@ public class TestarAPI {
 		
 		rdbDAO.initialize();
 		
-		User user = rdbDAO.findUser("Student, Joe");
+		User user = rdbDAO.findUser("adilson");
 		
 		APIImplementation api = new APIImplementation(
 				folder2, cp, user, rdbDAO, null, null);
 		api.initialize("");
-		System.out.println(api.getLastError());
-
-		System.out.println(api.getValue("cmi.launch_data") );
-		System.out.println(api.getLastError());
 		
+		
+		/*
+		System.out.println("adl.data._count : " + api.getValue("adl.data._count"));
+		System.out.println("Last error : " + api.getLastError());
+
+		/*
+		System.out.println("Last error : " + api.getLastError());
+
+		System.out.println("cmi.score.scaled : " + api.getValue("cmi.score.scaled"));
+		System.out.println("Last error : " + api.getLastError());
+		
+		System.out.println("cmi.score.raw : " + api.getValue("cmi.score.raw"));
+		System.out.println("Last error : " + api.getLastError());
+		
+		System.out.println("cmi.score.min : " + api.getValue("cmi.score.min"));
+		System.out.println("Last error : " + api.getLastError());
+		
+		System.out.println("cmi.score.max : " + api.getValue("cmi.score.max"));
+		System.out.println("Last error : " + api.getLastError());
 /*
 		System.out.println(api.getValue("cmi.core.student_name"));
 		System.out.println(api.getLastError());
@@ -69,10 +82,11 @@ public class TestarAPI {
 		/*
 		System.out.println(api.getValue("cmi.launch_data"));
 		System.out.println(api.getLastError());
-		/*
+		*/
 		api.processRequest("activity_3");
 		api.setValue("cmi.interactions.0.id", "INT0");
 		api.setValue("cmi.interactions.1.id", "INT1");
+		/*
 		api.setValue("cmi.interactions.1.type", "choice");
 		api.setValue("cmi.interactions.1.correct_responses.0.pattern", "");
 		
@@ -83,8 +97,16 @@ public class TestarAPI {
 	    		   "asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50fdsatyuioplkjhgfdsazxcvbnm0987654321qwertyuiopl49";
 		api.setValue("cmi.interactions.1.correct_responses.0.pattern", s);
 		System.out.println(api.getLastError());
-		
+		*/
 		api.setValue("cmi.interactions.2.id", "INT2");
+		api.setValue("cmi.interactions.2.type", "choice");
+		System.out.println(api.setValue("cmi.interactions.2.learner_response", 
+				"a[,]asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50[,]asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50[,]a[,]asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50fdsatyuioplkjhgfdsazxcvbnm0987654321qwertyuiopl49"));
+		
+		System.out.println(api.getLastError());
+		
+		System.out.println("{lang=en}7r61bLD4PC3Hdf6GY1WXF1DRaRD3a5Fmw3VbXXYR5PE4DZ4aY9sVZ6PIjTBMt7ELux0YLG7R1h6TP1AvHY1mCbFDcPRWQEae9u0uHF9USHX7pgbDyW06RrZY8DTALwm5AH2C6xM3v3KOG0J7GlAJ85V51Icj514IRRpEDJ3n3R3bTBHONIZPG9xA9zDkWi4Jw5ZVZ5aBmnOot5DqQ4FNhUADILTBh9GRqscwdvefblengthOfString250".length());
+		/*
 		api.setValue("cmi.interactions.2.type", "fill-in");
 		s = "{lang=eng}{order_matters=true}{case_matters=invalid}a[,]asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50[,]asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50[,]a[,]asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50fdsatyuioplkjhgfdsazxcvbnm0987654321qwertyuiopl49[,]{case_matters=true}{case_matters=invalid}a[,]asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50[,]asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50[,]a[,]asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50fdsatyuioplkjhgfdsazxcvbnm0987654321qwertyuiopl49";
 		api.setValue("cmi.interactions.2.correct_responses.0.pattern", s);
