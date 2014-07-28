@@ -55,6 +55,7 @@ public class LMSConfig {
 	private static void doBuildConfig(String path) throws Exception {
 		
 		Digester d = new Digester();
+		d.setUseContextClassLoader(true);
         d.push(config);
 
         d.addCallMethod("*/courses-folder", "setCoursesFolder", 0);
@@ -73,7 +74,8 @@ public class LMSConfig {
         d.addCallMethod("*/database-source/xml", "setFileName", 0);
         d.addSetNext("*/database-source/xml", "setDAO");
         
-		d.addObjectCreate("*/database-source/bean", "class", DAO.class);
+        d.addObjectCreate("*/database-source/bean", "", "class"); // devido a um bug da versao 3.3 tive que fazer esse workaround !!!
+        //d.addObjectCreate("*/database-source/bean", "class", DAO.class); 
 		d.addSetNext("*/database-source/bean", "setDAO");
 
 		d.addRule("*/database-source/bean/bean-attribute", new BeanSetterAttribute());

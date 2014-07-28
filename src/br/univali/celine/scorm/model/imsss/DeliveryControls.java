@@ -27,7 +27,7 @@ public class DeliveryControls {
 	@Override
 	public String toString() {
 		
-		return  String.format("<deliveryControls tracked=\"%s\" completionSetByContent=\"%s\" objectiveSetByContent=\"%s\"/>\n", 
+		return  String.format("<imsss:deliveryControls tracked=\"%s\" completionSetByContent=\"%s\" objectiveSetByContent=\"%s\"/>\n", 
 							  new Object[]{tracked, completionSetByContent, objectiveSetByContent});
 		
 	}

@@ -56,7 +56,7 @@ public class Objective {
 			label = "objective";
 		
 		String ret = "<imsss:" + label + " satisfiedByMeasure=\""+isSatisfiedByMeasure()+"\" " + id + ">\n";
-		ret += "<minNormalizedMeasure>"+minNormalizedMeasure+"</minNormalizedMeasure>\n";
+		ret += "<imsss:minNormalizedMeasure>"+minNormalizedMeasure+"</imsss:minNormalizedMeasure>\n";
 		for (MapInfo map:mapsInfo) {
 			ret += map;
 		}

@@ -7,5 +7,6 @@ public interface BuildVersion {
 	int getVersion();
 	AbstractItem buildItem();
 	String[] getXSDFileNames();
+	String getMetadataSchemaVersion();
 
 }

@@ -20,7 +20,7 @@ public class ConstrainedChoiceConsiderations {
 	@Override
 	public String toString() {
 		
-		return String.format("<constrainedChoiceConsiderations preventActivation=\"%s\" constrainChoice=\"%s\"/>\n",
+		return String.format("<adlseq:constrainedChoiceConsiderations preventActivation=\"%s\" constrainChoice=\"%s\"/>\n",
 								new Object[]{preventActivation, constrainChoice});
 	}
 	public void assign(

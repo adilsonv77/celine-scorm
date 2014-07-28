@@ -118,5 +118,10 @@ public class Build1_2 implements BuildVersion {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public String getMetadataSchemaVersion() {
+		return "1.2";
+	}
 	
 }

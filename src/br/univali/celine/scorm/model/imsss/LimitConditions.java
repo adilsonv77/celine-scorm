@@ -45,7 +45,7 @@ public class LimitConditions {
 			ret += " attemptAbsoluteDurationLimit=\""+attemptAbsoluteDurationLimit+"\"";
 		}
 		
-		return "<limitConditions "+ret+"/>\n";
+		return "<imsss:limitConditions "+ret+"/>\n";
 	}
 	public void assign(LimitConditions limitConditions) {
 		// TODO Auto-generated method stub

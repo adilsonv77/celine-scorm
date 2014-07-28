@@ -41,15 +41,15 @@ public class SequencingRule {
 	public String toString() {
 		String ret = "";
 		if (!getRuleConditions().isEmpty()) {
-			ret = "<ruleConditions conditionCombination=\""+getConditionCombination()+"\">\n";
+			ret = "<imsss:ruleConditions conditionCombination=\""+getConditionCombination()+"\">\n";
 			for (RuleCondition rc:getRuleConditions()) {
 				ret += rc + "\n";
 			}
-			ret += "</ruleConditions>\n";
+			ret += "</imsss:ruleConditions>\n";
 		}
 
 		if (getEnumRuleAction() != null)  {
-			ret += "<ruleAction action=\""+getRuleAction()+"\"/>\n";
+			ret += "<imsss:ruleAction action=\""+getRuleAction()+"\"/>\n";
 		}
 		
 		return ret;

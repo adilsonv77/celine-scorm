@@ -118,8 +118,8 @@ public class Interactions implements DataModelCommand {
 
 	public void clear(ErrorManager errorManager) throws Exception {
 		/*
-		 * TODO rever se precisa e qdo fazer esse clear // the interactions are
-		 * per SCO errorManager.getTree().clearInteractions();
+		 * TODO rever se precisa e qdo fazer esse clear 
+		 * // the interactions are per SCO errorManager.getTree().clearInteractions();
 		 * commMan.clear(errorManager);
 		 */
 	}
@@ -226,14 +226,11 @@ public class Interactions implements DataModelCommand {
 			if (indResp <= size) {
 				it.setCorrectResponsesPattern(indResp, newValue);
 			} else
-				if (!gerarErroIndice(indResp, size, errorManager, false)) 
+				if (gerarErroIndice(indResp, size, errorManager, false)) 
 					return false;
 			
 		} catch (Exception e) {
-			if (e.getMessage() != null)
-			   errorManager.attribError(ErrorManager.GeneralSetFailure);
-			else
-			   errorManager.attribError(ErrorManager.DataModelElementTypeMismatch);
+ 		    errorManager.attribError(ErrorManager.DataModelElementTypeMismatch);
 			return false;
 		}
 

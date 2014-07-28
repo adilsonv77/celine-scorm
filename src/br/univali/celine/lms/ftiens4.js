@@ -139,8 +139,30 @@ function initializeFolder(level, lastNode, leftSide)
   } 
 } 
  
+function searchTocItem(id, toc) {
+	if (toc.idLearningActivity == id)
+		return toc;
+	
+	for (var i = 0; i < toc.children.length; i++) {
+		var r = searchTocItem(id, toc.children[i]);
+		if (r != null)
+			return r;
+	}
+		
+		
+	return null;
+}
+
 function drawFolder(insertAtObj) 
 { 
+  var toc = tableOfContent;
+  
+  var tocItem;
+  if (this.id == "treeID")
+	  tocItem = toc;
+  else
+	  tocItem = searchTocItem(this.id, toc);
+	
   var nodeName = ""
   var auxEv = ""
   var docW = ""
@@ -150,7 +172,7 @@ function drawFolder(insertAtObj)
 
   var leftSide = leftSideHTML(this.leftSideCoded)
 
-  if (browserVersion > 0) 
+  if (browserVersion > 0 && tocItem.visible == true) 
     auxEv = "<a class=\"tree_item_link\" href='javascript:clickOnNode(\""+this.getID()+"\")'>" 
   else 
     auxEv = "<a>" 
@@ -1173,6 +1195,8 @@ var supportsDeferral = false
 var cookieCutter = '^' //You can change this if you need to use ^ in your xID or treeID values
 var foldersTree;
 
+var tableOfContent;
+
 doc.yPos = 0
 
 // Main function
@@ -1180,8 +1204,9 @@ doc.yPos = 0
 
 // This function uses an object (navigator) defined in
 // ua.js, imported in the main html page (left frame).
-function initializeDocument(paramFoldersTree)
+function initializeDocument(paramFoldersTree, toc)
 {
+  tableOfContent = toc;
   foldersTree = paramFoldersTree;
   var domRoot = getElById("domRoot");
   domRoot.innerHTML = "";

@@ -157,8 +157,31 @@ public class Build20044thEdition implements BuildVersion {
 
 	@Override
 	public String[] getXSDFileNames() {
-		// TODO Auto-generated method stub
-		return null;
+		String folder = "/br/univali/celine/scorm";
+		
+		return new String[] { 
+				  folder + "/adlcp_v1p3.xsd", 
+				  folder + "/adlnav_v1p3.xsd",
+				  folder + "/adlseq_v1p3.xsd",
+				  folder + "/imscp_v1p1.xsd",
+				  folder + "/imsss_v1p0.xsd",
+
+				  folder + "/imsss_v1p0auxresource.xsd",
+				  folder + "/imsss_v1p0control.xsd",
+				  folder + "/imsss_v1p0delivery.xsd",
+				  folder + "/imsss_v1p0limit.xsd",
+				  folder + "/imsss_v1p0objective.xsd",
+				  folder + "/imsss_v1p0random.xsd",
+				  folder + "/imsss_v1p0rollup.xsd",
+				  folder + "/imsss_v1p0seqrule.xsd",
+				  
+				  folder + "/imsss_v1p0util.xsd"
+		};
+	}
+
+	@Override
+	public String getMetadataSchemaVersion() {
+		return "2004 4th Edition";
 	}
 
 }

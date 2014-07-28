@@ -204,11 +204,12 @@ public class XMLDAO implements DAO {
 	
 
 	
-	public void beginSaveTrackModel(String courseId, String learnerId, String suspendedActivityId)
+	public void beginSaveTrackModel(String courseId, String learnerId, String suspendedActivityId, String suspendedData)
 			throws Exception {
 
 		this.trackModelXML = new TrackModel(courseId, learnerId);
 		this.trackModelXML.setSuspendedActivity(suspendedActivityId);
+		this.trackModelXML.setSuspendedData(suspendedData);
 	}
 
 	private String getFolderFileName() {

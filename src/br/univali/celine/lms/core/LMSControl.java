@@ -188,13 +188,13 @@ public class LMSControl {
 
 	
 	
-	public void beginSaveTrackModel(String arg0, String arg1, String arg2)
+	public void beginSaveTrackModel(String arg0, String arg1, String arg2, String arg3)
 			throws Exception {
 
 		LMSConfig config = LMSConfig.getInstance();
 		DAO dao = config.getDAO();
 		
-		dao.beginSaveTrackModel(arg0, arg1, arg2);
+		dao.beginSaveTrackModel(arg0, arg1, arg2, arg3);
 		
 	}
 

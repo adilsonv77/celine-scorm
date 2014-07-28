@@ -63,9 +63,9 @@ public class Item20044th extends AbstractItem implements Item {
 			ret += "<adlcp:dataFromLMS>"+getDataFromLMS()+"</adlcp:dataFromLMS>\n";
 		}
 		if (getObjectCompletionThreshold() != null) {
-			ret += "<adlcp:completionThreshold completedByMeasure="+completionThreshold.isCompletedByMeasure()+
-							" minProgressMeasure="+completionThreshold.getMinProgressMeasure()+
-							" progressWeight="+completionThreshold.getProgressWeight()+"/>\n";
+			ret += "<adlcp:completionThreshold completedByMeasure=\""+completionThreshold.isCompletedByMeasure()+"\""+
+							" minProgressMeasure=\""+completionThreshold.getMinProgressMeasure()+"\""+
+							" progressWeight=\""+completionThreshold.getProgressWeight()+"\"/>\n";
 		}
 		if (getImsssSequencing() != null) {
 			ret += getImsssSequencing() + "\n";
@@ -73,6 +73,15 @@ public class Item20044th extends AbstractItem implements Item {
 		if (getAdlNavPresentation() != null) {
 			ret += getAdlNavPresentation() + "\n";
 		}
+		if (getAdlcpData().size() > 0) {
+			ret += "<adlcp:data> \n";
+			for (AdlcpMap m:getAdlcpData())
+				ret += "<adlcp:map targetID=\""+m.getTargetID()+"\" " +
+								  "readSharedData=\""+m.isReadSharedData()+"\" " +
+								  "writeSharedData=\""+m.isWriteSharedData()+"\"/>\n";
+			ret += "</adlcp:data> \n";
+		}
+		
 		return  ret + "</item>";
 		
 	}

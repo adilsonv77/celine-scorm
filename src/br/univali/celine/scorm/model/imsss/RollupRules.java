@@ -48,7 +48,7 @@ public class RollupRules {
 		if (rollupRules.isEmpty()) 
 			return "";
 		
-		String ret = "<rollupRules rollupObjectiveSatisfied=\"+rollupObjectiveSatisfied+\" " +
+		String ret = "<imsss:rollupRules rollupObjectiveSatisfied=\"+rollupObjectiveSatisfied+\" " +
 								  "rollupProgressCompletion=\"+rollupProgressCompletion+\" " +
 								  "objectiveMeasureWeight=\"+objectiveMeasureWeight+\">\n";
 		
@@ -56,7 +56,7 @@ public class RollupRules {
 			ret += rr + "\n";
 		}
 		
-		return ret + "</rollupRules>\n";
+		return ret + "</imsss:rollupRules>\n";
 	}
 
 	public void assign(RollupRules rollupRules2) {

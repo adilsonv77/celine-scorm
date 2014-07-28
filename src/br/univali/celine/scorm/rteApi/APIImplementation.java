@@ -10,6 +10,7 @@ import br.univali.celine.scorm.dataModel.DataModelCommandManager;
 import br.univali.celine.scorm.dataModel.adl.nav.Request;
 import br.univali.celine.scorm.dataModel.cmi.Exit;
 import br.univali.celine.scorm.dataModel.cmi.SessionTime;
+import br.univali.celine.scorm.dataModel.cmi.SuspendData;
 import br.univali.celine.scorm.dataModel.cmi.TotalTime;
 import br.univali.celine.scorm.model.cam.ContentPackage;
 import br.univali.celine.scorm.model.cam.Item;
@@ -58,7 +59,7 @@ public class APIImplementation implements API {
 		this.version = contentPackage.getContentPackageReader().buildVersion().getVersion();
 		
 		this.courseFolder = courseFolder;
-		//this.contentPackage = ContentPackageReader.ler(imsManifestFile);
+		
 		this.contentPackage = contentPackage;
 		this.tree = ActivityTreeFactory.build(contentPackage);
 		this.user = user;
@@ -72,9 +73,12 @@ public class APIImplementation implements API {
 		
 		NavigationRequest nr = null;
 		TrackModelManager tm = new TrackModelManager(tree, user.getName(), courseFolder);
-		String suspendedAct = tm.load(dao);
-		if (suspendedAct != null) {
-			tree.setSuspendActivity(tree.getLearningActivity(suspendedAct));
+		String[] suspendedAct = tm.load(dao);
+		if (suspendedAct[0] != null) {
+			
+			tree.setSuspendActivity(tree.getLearningActivity(suspendedAct[0]));
+			tree.putDataModel(SuspendData.name, suspendedAct[1]);
+			
 			nr = new NavigationRequest(NavigationRequestType.ResumeAll);
 			if (tree.getSuspendActivity() != null) {}
 				
@@ -90,6 +94,10 @@ public class APIImplementation implements API {
 		
 		ProcessProvider.getInstance().getOverallSequencingProcess().run(nr, tree);
 		this.errorManager = new ErrorManager(tree, user, courseFolder, version);
+		
+		if (suspendedAct[0] != null)
+			DataModelCommandManager.getGlobalInstance().setValue(SuspendData.name, suspendedAct[1], errorManager);
+		
 	}
 	
 	public String getCourseFolder() {

@@ -20,7 +20,7 @@ public class RollupCondition {
 	}
 	@Override
 	public String toString() {
-		return "<rollupCondition operator=\""+operator+"\" condition=\""+condition+"\"/>";
+		return "<imsss:rollupCondition operator=\""+operator+"\" condition=\""+condition+"\"/>";
 	}
 	public ConditionRollupCondition getEnumCondition() {
 		return this.condition;

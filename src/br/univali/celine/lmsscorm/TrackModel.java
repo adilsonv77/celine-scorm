@@ -9,6 +9,7 @@ public class TrackModel {
 	private String suspendedActivity;
 	private List<TrackObjective> objectives = new ArrayList<TrackObjective>();
 	private List<TrackActivityInfo> activitiesInfo = new ArrayList<TrackActivityInfo>();
+	private String suspendedData;
 
 	public TrackModel(String courseId, String learnerId) {
 		this.learnerId = learnerId;
@@ -74,6 +75,14 @@ public class TrackModel {
 
 	public void setSuspendedActivity(String currentActivity) {
 		this.suspendedActivity = currentActivity;
+	}
+
+	public void setSuspendedData(String suspendedData) {
+		this.suspendedData = suspendedData;
+	}
+	
+	public String getSuspendedData() {
+		return suspendedData;
 	}
 
 }
