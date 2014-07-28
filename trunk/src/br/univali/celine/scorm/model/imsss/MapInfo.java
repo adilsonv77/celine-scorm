@@ -39,7 +39,7 @@ public class MapInfo {
 		this.writeSatisfiedStatus = writeSatisfiedStatus;
 	}
 	public String toString() {
-		return String.format("<mapInfo targetObjectiveID=\"%s\" readSatisfiedStatus=\"%s\" " +
+		return String.format("<imsss:mapInfo targetObjectiveID=\"%s\" readSatisfiedStatus=\"%s\" " +
 									  "readNormalizedMeasure=\"%s\" writeSatisfiedStatus=\"%s\" " +
 									  "writeNormalizedMeasure=\"%s\"/>\n",
 									  

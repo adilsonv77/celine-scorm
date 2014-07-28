@@ -47,7 +47,7 @@ public class RuleCondition {
 			ret = "referencedObjective=\""+referencedObjective+"\"";
 		}
 		
-		return String.format("<ruleCondition %s condition=\"%s\" measureThreshold=\"%f\" operator=\"%s\"/>",
+		return String.format("<imsss:ruleCondition %s condition=\"%s\" measureThreshold=\"%f\" operator=\"%s\"/>",
 				new Object[]{ret, condition, measureThreshold, operator});
 	}
 

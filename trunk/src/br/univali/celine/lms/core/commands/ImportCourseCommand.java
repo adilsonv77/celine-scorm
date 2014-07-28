@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,8 +28,8 @@ import br.univali.celine.lmsscorm.User;
 
 public class ImportCourseCommand implements Command, ZipListener, ProgressListener {
 
-	String userName;
-
+	private String userName;
+	private Logger logger = Logger.getLogger("global");
 	
 	public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -63,7 +64,9 @@ public class ImportCourseCommand implements Command, ZipListener, ProgressListen
 				
 			}			
 
+			logger.info("mkdirs " + dir.getAbsolutePath());
 			dir.mkdirs();
+			logger.info("done mkdirs");
 			
 			ajaxInterface.updateProgress(userName, 0.0);
 			ajaxInterface.updateStatus(userName, 2);
@@ -102,6 +105,7 @@ public class ImportCourseCommand implements Command, ZipListener, ProgressListen
 			
 			LMSControl control = LMSControl.getInstance();
 			CourseImpl course = new CourseImpl(id, fileFolder, title, false, false);
+			logger.info("Inserting course");
 			control.insertCourse(course);
 			
 		}

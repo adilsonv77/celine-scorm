@@ -15,6 +15,7 @@ public class ContentPackage {
 	
 	public static ContentPackage buildBasic(String organizationName, String orgIdentifier, ContentPackageReader cpr) {
 		ContentPackage cp = new ContentPackage(cpr);
+		cp.setIdentifier(orgIdentifier + "_ims");
 
 		cp.setOrganizations(new Organizations());
 		cp.setResources(new Resources());

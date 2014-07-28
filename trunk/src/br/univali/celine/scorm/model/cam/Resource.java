@@ -57,8 +57,10 @@ public class Resource {
 	
 	public String toString() {
 		
-		String ret = String.format("<resource identifier=\"%s\" type=\"%s\" href=\"%s\" xml:base=\"%s\" adlcp:scormType=\"%s\">\n",
-							new Object[]{identifier, type, href, xmlBase, scormType}); 
+		String ret = String.format("<resource identifier=\"%s\" type=\"%s\" "+
+											(href!=null?"href=\""+href+"\"":"")+ 
+											" xml:base=\"%s\" adlcp:scormType=\"%s\">\n",
+							new Object[]{identifier, type, xmlBase, scormType}); 
 			
 		if (metadata != null) {
 			ret += metadata;

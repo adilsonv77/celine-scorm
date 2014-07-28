@@ -15,8 +15,9 @@ public class FillInInteraction extends Interaction {
 	@Override
 	protected void testPattern(int index, String pattern, boolean correct_responses) throws Exception {
 		/*
+		 * Para correct_responses = true
 			The following requirements shall be adhered to in building the characterstring:
-			o The array may contain one or more localized_string_types.
+			o The array may contain one or more localized_string_types. 
 			o If the array contains more than one localized_string_type (the interaction has
 			multiple correct answers – all of which are required), then they shall be
 			separated by the special reserved token “[,]”.
@@ -40,18 +41,19 @@ public class FillInInteraction extends Interaction {
 		 */
 
 		List<String> respostas = Arrays.asList(pattern.split("\\[,\\]"));
+		if (respostas.size() == 0) 
+			throw new Exception();
+		
+		testOrderMatters(pattern);
+		testCaseMatters(pattern);
+		
 		for (String resposta:respostas) {
 			
 			testLanguage(resposta);
-			testOrderMatters(resposta);
-			testCaseMatters(resposta);
 
 		}
 		
-		/*
-		if (respostas.size() == 0) // a especificacao diz uma coisa, mas os testes fazem outra coisa :(
-			throw new Exception();
-		*/
+		
 	}
 
 	private void testCaseMatters(String resposta) throws Exception {

@@ -38,7 +38,7 @@ function atualizarTOC(documento, toc) {
 	var api = getWindowMasterParent().API_1484_11;
 	if (api) {
 
-		if (api.NeedsRecreateTree()) {
+		if (api.NeedsRecreateTree()) { // if the system remakes the tree with the intelligent core 
 		  createTOC(documento, toc);
 		}
 	}
@@ -104,7 +104,7 @@ function createTOC(documento, toc) {
 	
 	iterateAddNode(niveis, toc.children);
 	
-	initializeDocument(foldersTree);
+	initializeDocument(foldersTree, toc);
 	return atualizarTOC(documento, toc);
 }
 

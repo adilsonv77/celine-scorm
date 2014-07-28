@@ -41,7 +41,7 @@ public class RandomizationControls {
 	@Override
 	public String toString() {
 		
-		return String.format("<randomizationControls randomizationTiming=\"%s\" " +
+		return String.format("<imsss:randomizationControls randomizationTiming=\"%s\" " +
 													"selectCount=\"%s\" " +
 													"reorderChildren=\"%s\" " +
 													"selectionTiming=\"%s\"/>\n", 

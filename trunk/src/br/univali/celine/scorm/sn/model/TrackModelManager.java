@@ -9,6 +9,7 @@ import br.univali.celine.lmsscorm.TrackActivityInfo;
 import br.univali.celine.lmsscorm.TrackModel;
 import br.univali.celine.lmsscorm.TrackObjective;
 import br.univali.celine.scorm.dataModel.adl.nav.Request;
+import br.univali.celine.scorm.dataModel.cmi.SuspendData;
 import br.univali.celine.scorm.sn.model.interaction.Interaction;
 
 public class TrackModelManager {
@@ -49,13 +50,19 @@ public class TrackModelManager {
 			if (Request.isRequest(activityTree, NavigationRequestType.AbandonAll) == false ) {
 				logger.info("saving trackmodel");
 				String suspendedActivity = null;
-				if (activityTree.getSuspendActivity() != null) {
-					suspendedActivity = activityTree.getSuspendActivity().getItem().getIdentifier();
+				if (activityTree.getSuspendActivity() != null || activityTree.getCurrentActivity().isSuspended()) {
+					
+					LearningActivity actSusp = activityTree.getSuspendActivity()!=null?activityTree.getSuspendActivity():activityTree.getCurrentActivity();
+					
+					suspendedActivity = actSusp.getItem().getIdentifier();
 				}
+				
+				String suspendedData = activityTree.getDataModel(SuspendData.name);
 				
 				dao.beginSaveTrackModel(courseId, 
 										learnerId, 
-										suspendedActivity);
+										suspendedActivity,
+										suspendedData);
 		
 				saveObjectives(courseId, learnerId, dao, null, activityTree.getGlobalObjectives());
 				
@@ -135,7 +142,7 @@ public class TrackModelManager {
 			
 	} 
 	
-	public String load(DAO dao) throws Exception {
+	public String[] load(DAO dao) throws Exception {
 		
 		logger.info(courseFolder);
 		Course course = dao.findCourseByFolderName(courseFolder);
@@ -144,6 +151,8 @@ public class TrackModelManager {
 
 		// as interactions não são carregadas por nao fazerem parte do TrackModel... essa é uma informacao que é guardada
 		//  única e exclusivamente para manter um registro do que o usuário preencheu nos exercicios
+		// as interactions não são carregadas como informacoes suspensas, e quando o usuario muda de SCO elas 
+		//    sao perdidas.
 		TrackModel trackModel = dao.loadTrackModel(course.getId(), learnerId);
 		logger.info("load : " + trackModel);
 		
@@ -151,6 +160,7 @@ public class TrackModelManager {
 			if (activityTree.getLearningActivity(trackModel.getSuspendedActivity()) == null) {
 				return null; // já que nao achou a atividade suspensa, é melhor nem continuar essa palhaçada
 			}
+			
 		}
 		
 		for (TrackActivityInfo trackAct:trackModel.getActivities()) {
@@ -197,7 +207,7 @@ public class TrackModelManager {
 			}
 		}
 		
-		return trackModel.getSuspendedActivity();
+		return new String[]{trackModel.getSuspendedActivity(), trackModel.getSuspendedData()};
 	}
 
 	private void populateObjective(Objective actobj, TrackObjective obj) {

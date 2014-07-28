@@ -69,8 +69,8 @@ public class RDBDAO implements DAO {
 	 private static final String deleteCoursesUsersSQL = "DELETE FROM COURSESUSERS WHERE ID_USER=? AND ID_COURSE=?";
 	
 
-	 private static final String updateSuspendedActivitySQL = "UPDATE COURSESUSERS SET ID_SUSPENDEDACTIVITY=? WHERE ID_USER=? AND ID_COURSE=?";
-	 private static final String selectSuspendedActivitySQL = "SELECT ID_SUSPENDEDACTIVITY FROM COURSESUSERS WHERE ID_USER=? AND ID_COURSE=?";
+	 private static final String updateSuspendedActivitySQL = "UPDATE COURSESUSERS SET ID_SUSPENDEDACTIVITY=?, DS_SUSPENDEDDATA=? WHERE ID_USER=? AND ID_COURSE=?";
+	 private static final String selectSuspendedActivitySQL = "SELECT ID_SUSPENDEDACTIVITY, DS_SUSPENDEDDATA FROM COURSESUSERS WHERE ID_USER=? AND ID_COURSE=?";
 
 	 private static final String insertTrackModelObjectiveSQL = "INSERT INTO TMOBJECTIVES " +
 			"(BOOL_PROGRESSSTATUS, BOOL_SATISFIEDSTATUS, " +
@@ -393,13 +393,13 @@ public class RDBDAO implements DAO {
 	}
 
 	
-	public void beginSaveTrackModel(String courseId, String learnerId, String suspendedActivityId) throws Exception {
+	public void beginSaveTrackModel(String courseId, String learnerId, String suspendedActivityId, String suspendedData) throws Exception {
 		
-		updateSuspendedActivity(getIDCourse(courseId), getIDUser(learnerId), suspendedActivityId);
+		updateSuspendedActivity(getIDCourse(courseId), getIDUser(learnerId), suspendedActivityId, suspendedData);
 		
 	}
 	
-	private void updateSuspendedActivity (int idCourse, int idUser, String suspendedActivityId) throws Exception {
+	private void updateSuspendedActivity (int idCourse, int idUser, String suspendedActivityId, String suspendedData) throws Exception {
 		
 		Connection connection = pool.getConnection();
 		PreparedStatement ps = null;
@@ -408,8 +408,10 @@ public class RDBDAO implements DAO {
 		
 			ps = connection.prepareStatement(updateSuspendedActivitySQL);
 			ps.setString(1, suspendedActivityId);
-			ps.setInt(2, idUser);
-			ps.setInt(3, idCourse); 
+			ps.setString(2, suspendedData);
+			
+			ps.setInt(3, idUser);
+			ps.setInt(4, idCourse); 
 		
 			logger.info(ps.toString());		
 			ps.executeUpdate();
@@ -585,6 +587,7 @@ public class RDBDAO implements DAO {
 			if (temTM) {
 				logger.info("temSuspendedAct " + rs.getString(1));
 				trackModel.setSuspendedActivity(rs.getString(1));
+				trackModel.setSuspendedData(rs.getString(2));
 			}
 			
 			try { rs.close(); } catch (Exception e) {}
@@ -897,7 +900,7 @@ public class RDBDAO implements DAO {
 			int idCourse = getIDCourse(courseId);
 			int idLearner = getIDUser(learnerId);
 			
-			updateSuspendedActivity(idCourse, idLearner, null);		
+			updateSuspendedActivity(idCourse, idLearner, null, null);		
 			eliminateTrackModelInteractions(idCourse, idLearner, null, null);		
 			
 			ps = connection.prepareStatement(deleteTrackModelObjectivesSQL);		

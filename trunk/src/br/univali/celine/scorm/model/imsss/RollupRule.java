@@ -70,19 +70,19 @@ public class RollupRule {
 
 	@Override
 	public String toString() {
-		String ret = "<rollupRule childActivitySet=\""+childActivitySet+"\""+
+		String ret = "<imsss:rollupRule childActivitySet=\""+childActivitySet+"\""+
 						" minimumCount="+minimumCount+"\""+
 						" minimumPercent="+minimumPercent+"\""+">";
 		
-		ret += "<rollupConditions conditionCombination=\""+conditionCombination+"\">";
+		ret += "<imsss:rollupConditions conditionCombination=\""+conditionCombination+"\">";
 		for (RollupCondition rc:rollupConditions) {
 			ret += rc+"\n";
 		}
-		ret += "</rollupConditions>\n";
+		ret += "</imsss:rollupConditions>\n";
 		
-		ret += "<rollupAction action=\""+rollupAction+"\"/>\n";
+		ret += "<imsss:rollupAction action=\""+rollupAction+"\"/>\n";
 		
-		return ret + "</rollupRule>";
+		return ret + "</imsss:rollupRule>";
 	}
 
 	public ConditionCombination getEnumConditionCombination() {

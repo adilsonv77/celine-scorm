@@ -20,9 +20,20 @@ public class FileCommand implements Command {
 			} else {
 				response.setContentType("image/png");
 			}
+			
+			
 			BinaryFileHandler bin = new BinaryFileHandler(request, fileName);
-			response.getOutputStream().write(bin.getContent());
+			byte[] file = bin.getContent();
+			
+			response.setContentLength(file.length);
+			response.setBufferSize(file.length);
+			
+			response.getOutputStream().write(file);
 			response.getOutputStream().flush();
+			
+			response.flushBuffer();
+			response.getOutputStream().close();
+			
 			return null;
 			
 		} else {

@@ -121,9 +121,10 @@ public class TableOfContentsFactory {
 			return NodeStatus.enabled;
 		*/
 		// Sequencing Control Choice
+		/*
 		if (sequencingControlChoice(activity) == false)
 			return NodeStatus.notVisible;
-		
+		*/
 		// Sequencing Control Choice Exit
 		if (sequencingControlChoiceExit(activity) == false) {
 			return NodeStatus.notVisible;

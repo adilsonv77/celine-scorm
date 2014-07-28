@@ -60,7 +60,7 @@ public interface DAO {
 			throws Exception;
 
 	void beginSaveTrackModel(String courseId, String learnerId,
-			String suspendedActivityId) throws Exception;
+			String suspendedActivityId, String suspendedData) throws Exception;
 
 	// SN Book 4.2.1.2
 	void saveObjectiveProgressInformation(String courseId, String learnerId,

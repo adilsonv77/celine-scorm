@@ -13,15 +13,18 @@ import java.util.List;
 import br.univali.celine.lms.utils.zip.Zip;
 import br.univali.celine.scorm.model.cam.AbstractItem;
 import br.univali.celine.scorm.model.cam.ContentPackage;
+import br.univali.celine.scorm.model.cam.Dependency;
 import br.univali.celine.scorm.model.cam.Item;
+import br.univali.celine.scorm.model.cam.Metadata;
 import br.univali.celine.scorm.model.cam.Organization;
 import br.univali.celine.scorm.model.cam.Resource;
-import br.univali.celine.scorm.model.cam.Resources;
 import br.univali.celine.scorm.model.imsss.ControlMode;
 import br.univali.celine.scorm.model.imsss.RandomizationControls;
 import br.univali.celine.scorm.model.imsss.RandomizationTiming;
 import br.univali.celine.scorm.model.imsss.SelectionTiming;
 import br.univali.celine.scorm.versions.BuildVersion;
+import br.univali.celine.scorm2004_4th.model.cam.AdlcpMap;
+import br.univali.celine.scorm2004_4th.model.cam.Item20044th;
 
 /***
  * 
@@ -36,12 +39,12 @@ public class EasyPackage {
 	private String destFolder;
 	private EasyContentPackage easyContentPackage;
 	private File fileDestFolder;
-	private Resources resources;
 	private List<String> files;
 	private String organizationName;
 	private String organizationIdentifier;
 	private BuildVersion scormVersion;
 	private AbstractItem root;
+	private String version;
 
 	public EasyPackage(BuildVersion version, String packageName,
 			String destFolder, String organizationName,
@@ -65,9 +68,20 @@ public class EasyPackage {
 		root.setTitle(organizationName);
 	}
 
+	public void setVersion(String version) {
+		this.version = version;
+		
+	}
+
 	public ContentPackage generate() throws Exception {
 		ContentPackage cp = easyContentPackage.build(organizationName,
 				organizationIdentifier);
+		cp.setVersion(version);
+		
+		cp.setMetadata(new Metadata());
+		cp.getMetadata().setSchema("ADL SCORM");
+		cp.getMetadata().setSchemaversion(scormVersion.getMetadataSchemaVersion());
+		
 		Organization org = cp.getOrganizations().getDefaultOrganization();
 		org.getImsssSequencing().assign(root.getImsssSequencing());
 
@@ -89,6 +103,7 @@ public class EasyPackage {
 	}
 
 	public void addFilesFromFolder(String folderName) throws IOException {
+
 		File folder = new File(folderName);
 		File[] files = folder.listFiles();
 		for (File f : files) {
@@ -110,27 +125,27 @@ public class EasyPackage {
 						
 			}
 		}
-
+		
 	}
 
-	public Resource createResourceSCO(String identifier, String... filesNames)
-			throws Exception {
+	private Resource createInternalResource(String scormType, String identifier, String... filesNames) throws Exception {
+		
 		if (identifier == null
 				|| easyContentPackage.getResources().getResource(identifier) != null)
 			throw new Exception(
 					"Identifier must not be null or exists another resource with the same identifier");
 
 		Resource res = new Resource();
-		res.setScormType("sco");
+		res.setScormType(scormType);
 		res.setIdentifier(identifier);
 
 		for (String f : filesNames) {
 			if (!files.contains(f))
-				throw new Exception("File " + f + "doesn't exists on list");
+				throw new Exception("File " + f + " doesn't exists on list");
 			res.addFile(new br.univali.celine.scorm.model.cam.File(f));
 		}
 
-		if (filesNames.length > 0)
+		if (scormType.equals("sco") && filesNames.length > 0)
 			res.setHref(filesNames[0]);
 
 		this.easyContentPackage.addResource(res);
@@ -138,24 +153,18 @@ public class EasyPackage {
 		return res;
 	}
 
-	public Resource createResourceAsset(String identifier, String fileName)
+	public Resource createResourceSCO(String identifier, String... filesNames)
 			throws Exception {
-		if (identifier == null || resources.getResource(identifier) != null)
-			throw new Exception(
-					"Identifier must not be null or exists another resource with the same identifier");
-
-		Resource res = new Resource();
-		res.setScormType("asset");
-		res.setIdentifier(identifier);
-		res.setHref(fileName);
-
-		if (!files.contains(fileName))
-			throw new Exception("File " + fileName + "doesn't exists on list");
-		res.addFile(new br.univali.celine.scorm.model.cam.File(fileName));
-
-		this.easyContentPackage.addResource(res);
-
-		return res;
+		
+		return createInternalResource("sco", identifier, filesNames);
+		
+	}
+	
+	public Resource createResourceAsset(String identifier, String... filesNames)
+			throws Exception {
+		
+		return createInternalResource("asset", identifier, filesNames);
+		
 	}
 
 	public void addFileSCO(Resource res, String fileName) throws Exception {
@@ -209,6 +218,25 @@ public class EasyPackage {
 
 	public AbstractItem getOrganization() {
 		return root;
+	}
+
+	public void createDataMap(AbstractItem item, String mapId) {
+		
+		// suppose EasyPackage is configurated for 2004 4Ed
+		// TODO no futuro criar o easy pensando nas diferentes versoes do SCORM
+		
+		AdlcpMap map = new AdlcpMap();
+		map.setTargetID(mapId);
+		
+		Item20044th item4 = (Item20044th)item;
+		item4.addAdlcpMap(map);
+		
+	}
+
+	public void createDependency(Resource resSource, Resource ...resDependency) {
+		for (Resource r:resDependency)
+			resSource.addDependency(new Dependency(r.getIdentifier()));
+		
 	}
 
 	/* ***************************************************************************** */
