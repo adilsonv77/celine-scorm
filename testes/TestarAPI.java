@@ -84,6 +84,14 @@ public class TestarAPI {
 		System.out.println(api.getLastError());
 		*/
 		api.processRequest("activity_3");
+		api.initialize("");
+		/*
+		System.out.println(api.getLastError());
+		System.out.println(api.getValue("cmi.completion_threshold"));
+		System.out.println(api.getLastError());
+		System.out.println(api.setValue("cmi.interactions", "illegal"));
+		System.out.println(api.getLastError());
+		*/
 		api.setValue("cmi.interactions.0.id", "INT0");
 		api.setValue("cmi.interactions.1.id", "INT1");
 		/*
@@ -102,11 +110,18 @@ public class TestarAPI {
 		api.setValue("cmi.interactions.2.type", "choice");
 		System.out.println(api.setValue("cmi.interactions.2.learner_response", 
 				"a[,]asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50[,]asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50[,]a[,]asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50fdsatyuioplkjhgfdsazxcvbnm0987654321qwertyuiopl49"));
+		api.setValue("cmi.interactions.2.correct_responses.0.pattern", "a[,]asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50[,]asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50[,]a[,]asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50fdsatyuioplkjhgfdsazxcvbnm0987654321qwertyuiopl49"); 
+		//System.out.println(api.getLastError());
+		System.out.println("cmi.interactions.2.correct_responses.3.pattern : " + api.setValue("cmi.interactions.2.correct_responses.3.pattern", "b")); 
+		//System.out.println(api.getLastError());
 		
+		api.setValue("cmi.interactions.3.id", "INT3");
+		api.setValue("cmi.interactions.3.type", "fill-in");
+		System.out.println(api.setValue("cmi.interactions.3.correct_responses.0.pattern", "{lang=eng}{order_matters=true}{case_matters=invalid}a[,]asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50[,]asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50[,]a[,]asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50fdsatyuioplkjhgfdsazxcvbnm0987654321qwertyuiopl49[,]{case_matters=true}{case_matters=invalid}a[,]asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50[,]asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50[,]a[,]asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50fdsatyuioplkjhgfdsazxcvbnm0987654321qwertyuiopl49"));
+
 		System.out.println(api.getLastError());
-		
-		System.out.println("{lang=en}7r61bLD4PC3Hdf6GY1WXF1DRaRD3a5Fmw3VbXXYR5PE4DZ4aY9sVZ6PIjTBMt7ELux0YLG7R1h6TP1AvHY1mCbFDcPRWQEae9u0uHF9USHX7pgbDyW06RrZY8DTALwm5AH2C6xM3v3KOG0J7GlAJ85V51Icj514IRRpEDJ3n3R3bTBHONIZPG9xA9zDkWi4Jw5ZVZ5aBmnOot5DqQ4FNhUADILTBh9GRqscwdvefblengthOfString250".length());
 		/*
+		System.out.println("{lang=en}7r61bLD4PC3Hdf6GY1WXF1DRaRD3a5Fmw3VbXXYR5PE4DZ4aY9sVZ6PIjTBMt7ELux0YLG7R1h6TP1AvHY1mCbFDcPRWQEae9u0uHF9USHX7pgbDyW06RrZY8DTALwm5AH2C6xM3v3KOG0J7GlAJ85V51Icj514IRRpEDJ3n3R3bTBHONIZPG9xA9zDkWi4Jw5ZVZ5aBmnOot5DqQ4FNhUADILTBh9GRqscwdvefblengthOfString250".length());
 		api.setValue("cmi.interactions.2.type", "fill-in");
 		s = "{lang=eng}{order_matters=true}{case_matters=invalid}a[,]asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50[,]asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50[,]a[,]asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50fdsatyuioplkjhgfdsazxcvbnm0987654321qwertyuiopl49[,]{case_matters=true}{case_matters=invalid}a[,]asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50[,]asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50[,]a[,]asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50asdftyuioplkjhgfdsazxcvbnm0987654321qwertyuioplk50fdsatyuioplkjhgfdsazxcvbnm0987654321qwertyuiopl49";
 		api.setValue("cmi.interactions.2.correct_responses.0.pattern", s);
@@ -120,8 +135,6 @@ public class TestarAPI {
 		System.out.println(api.getValue("cmi.completion_threshold"));
 		System.out.println(api.getLastError());
 		
-		System.out.println(api.setValue("cmi.interactions", "illegal"));
-		System.out.println(api.getLastError());
 
 		System.out.println(api.setValue("cmi.interactions._count", "illegal"));
 		System.out.println(api.getLastError());

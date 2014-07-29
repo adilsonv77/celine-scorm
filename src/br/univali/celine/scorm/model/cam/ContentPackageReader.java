@@ -5,9 +5,9 @@ import br.univali.celine.scorm.versions.BuildVersion;
 
 public interface ContentPackageReader {
 
-	ContentPackage ler(String fileName) throws Exception;
+	ContentPackage read(String fileName) throws Exception;
 
-	ContentPackage ler(java.io.InputStream fileByte) throws Exception;
+	ContentPackage read(java.io.InputStream fileByte) throws Exception;
 
 	BuildVersion buildVersion() throws Exception;
 }

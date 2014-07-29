@@ -118,7 +118,7 @@ public class ContentPackage {
 		return resources.getResource(identifierref); 
 	}
 
-	public Organization organizationAtual() {
+	public Organization getCurrentOrganization() {
 		
 		return orgAtual;
 	}

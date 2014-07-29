@@ -31,7 +31,7 @@ public class ContentPackageReader20043rd implements ContentPackageReader {
 	protected Class<?> organizationClass = Organization20043rd.class;
 	protected BuildVersion version;
 	
-	public ContentPackage ler(String nomeArquivo) throws Exception {
+	public ContentPackage read(String nomeArquivo) throws Exception {
 		if (nomeArquivo.startsWith("file:")) {
 			nomeArquivo = (new URL(nomeArquivo)).getFile();
 		}
@@ -39,10 +39,10 @@ public class ContentPackageReader20043rd implements ContentPackageReader {
 	}
 	
 	public ContentPackage ler(java.io.File arquivo) throws Exception {
-		return ler(new FileInputStream(arquivo));
+		return read(new FileInputStream(arquivo));
 	}
 	
-	public ContentPackage ler(java.io.InputStream stream) throws Exception {
+	public ContentPackage read(java.io.InputStream stream) throws Exception {
         // Create a Digester instance
         Digester d = new Digester();
         d.setNamespaceAware(true); // desconsidera todos os namespaces !!!
