@@ -4,7 +4,6 @@
 
 A basic feature of CELINE is reading an IMS manifest. This page examplifies how it is possible read a manifest and print the titles of the items.
 
-
 = Details =
 
 First, we need to download the following files from [https://drive.google.com/folderview?id=0BzNO6qBfK-pGOWY1bV9KYUNvaGc&usp=sharing here]:
@@ -33,4 +32,12 @@ while (items.hasNext()) {
   System.out.println(item.getTitle());
 
 }
+}}}
+
+From here it is possible to access any information from the Item. If the information is from an specific SCORM version, then you need to cast the object.
+
+{{{
+Item20043rd i3rd = (Item20043rd) item;
+
+Item20044th i4th = (Item20044th) item;
 }}}
