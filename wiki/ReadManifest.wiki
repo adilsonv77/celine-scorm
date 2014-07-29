@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary To read and print the IMS manifest structure.
 
 = Introduction =
 
