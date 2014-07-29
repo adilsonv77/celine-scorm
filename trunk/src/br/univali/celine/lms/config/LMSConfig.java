@@ -207,7 +207,7 @@ public class LMSConfig {
 		String fileName = LMSConfig.getInstance().getContentPackageFile(courseFolder);
 		ContentPackageReader cpr = ContentPackageReaderFactory.getContentPackageReader(fileName);
 		
-		return cpr.ler(fileName);
+		return cpr.read(fileName);
 		
 	}
 	
@@ -226,7 +226,7 @@ public class LMSConfig {
 	
 		ByteArrayInputStream bytes = new ByteArrayInputStream(packageStr.getBytes());
 		ContentPackageReader cpr = ContentPackageReaderFactory.getContentPackageReader(bytes);
-		return cpr.ler(bytes);		
+		return cpr.read(bytes);		
 	}
 	
 	

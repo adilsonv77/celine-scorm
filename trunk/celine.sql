@@ -15,7 +15,7 @@
 
 
 --
--- Create schema astro
+-- Create schema CELINE
 --
 DROP DATABASE IF EXISTS CELINE ;
 CREATE DATABASE CELINE;

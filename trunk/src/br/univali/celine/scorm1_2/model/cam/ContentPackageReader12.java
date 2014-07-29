@@ -17,8 +17,8 @@ public class ContentPackageReader12 extends ContentPackageReader20043rd {
 	private Build1_2 version;
 
 	@Override
-	public ContentPackage ler(InputStream stream) throws Exception {
-		ContentPackage cp = super.ler(stream);
+	public ContentPackage read(InputStream stream) throws Exception {
+		ContentPackage cp = super.read(stream);
 		
 		cp.getOrganizations().initIteration();
 		Organization co = cp.getOrganizations().nextContentOrganization();
@@ -37,7 +37,7 @@ public class ContentPackageReader12 extends ContentPackageReader20043rd {
 	@Override
 	protected void addResource(Digester d) {
 		super.addResource(d);
-        d.addSetProperties("manifest/resources/resource", "adlcp:scormtype", "scormType");
+        d.addSetProperties("manifest/resources/resource", "scormtype", "scormType");
 	}
 	
 	private void iterar(Iterator<Item> c) {

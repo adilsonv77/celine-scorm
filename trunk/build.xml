@@ -20,7 +20,11 @@
 		<jar jarfile="etc/celine.jar" basedir="dist" />
 	</target>
 	
-	<target name="deploy" depends="undeploy,init,jar"/>
+	<target name="copyjar">
+		<copy file="etc/celine.jar" todir="D:/doutoramento/drive/Downloads for Celine-Scorm" />
+	</target>
+	
+	<target name="deploy" depends="undeploy,init,jar,copyjar"/>
 	
 	<!--
 	<target name="deploy" depends="undeploy,init,jar">

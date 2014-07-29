@@ -14,9 +14,6 @@ import br.univali.celine.scorm1_2.model.cam.ContentPackageReader12;
 
 public class ContentPackageReaderFactory {
 
-	private static String version;
-	private static boolean chegouVersao;
-	
 	public static ContentPackageReader getContentPackageReader(String fileName)
 			throws Exception {
 		
@@ -28,8 +25,10 @@ public class ContentPackageReaderFactory {
 	}
 
 	private static ContentPackageReader processar(InputSource inputSource) throws Exception {
+		final Object[] data = new Object[2];
+		data[0] = false; // flag
+		data[1] = "";    // version
 		
-		version = "";
 		SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
 		try {
 			parser.parse(
@@ -39,8 +38,8 @@ public class ContentPackageReaderFactory {
 						@Override
 						public void characters(char[] ch, int start, int length)
 								throws SAXException {
-							if (chegouVersao) {
-								version = new String(ch, start, length);
+							if ((Boolean)data[0]) {
+								data[1] = new String(ch, start, length);
 							}
 						}
 						
@@ -50,7 +49,7 @@ public class ContentPackageReaderFactory {
 								throws SAXException {
 
 							if (qName.equals("schemaversion")) {
-								chegouVersao = true;
+								data[0] = true;
 							}
 
 						}
@@ -58,7 +57,7 @@ public class ContentPackageReaderFactory {
 						@Override
 						public void endElement(String uri, String localName,
 								String qName) throws SAXException {
-							if (chegouVersao)
+							if ((Boolean)data[0])
 								throw new SAXException("Parando");
 						}
 					});
@@ -67,6 +66,8 @@ public class ContentPackageReaderFactory {
 				throw e;
 			}
 		} 
+		
+		String version = (String)data[1];
 		
 		// TODO needs make more sophisticated
 		if (version.equals("1.2"))
