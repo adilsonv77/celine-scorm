@@ -16,13 +16,24 @@ public class EasyContentPackage {
 
 	private List<Item> itens = new ArrayList<Item>();
 	private Resources resources = new Resources();
+	private boolean modifyId = true;
+	
+	public EasyContentPackage() {
+	}
 
+	public EasyContentPackage(boolean modifyId) {
+		this.modifyId = modifyId;
+	}
+	
 	public void addItem(String contentPackageId, Item item) {
 		updateIdentifier(contentPackageId, item);
 		itens.add(item);
 	}
 
 	private void updateIdentifier(String contentPackageId, Item item) {
+		if (!modifyId)
+			return;
+		
 		// garantir que os itens sejam unicos dentro do novo ContentPackage pois, nada impede que itens de CP diferentes tenham o mesmo id !!!
 		item.setIdentifier(contentPackageId+"_"+item.getIdentifier());
 		
@@ -91,7 +102,7 @@ public class EasyContentPackage {
 		
 	}
 
-	private Item findItem(String itemIdentifier) {
+	public Item findItem(String itemIdentifier) {
 
 		for (Item item:itens) {
 			if (item.getIdentifier().equals(itemIdentifier)) {
@@ -111,7 +122,8 @@ public class EasyContentPackage {
 		Resource res = resources.getResource(item.getIdentifierref());
 		if (res != null) {
 			res = res.clonar(); // isso daqui para nao afetar o ContentPackage original
-			res.setXmlBase("../" + courseFolder + "/" + res.getXmlBase());
+			// i dont understand why this line below 
+			// res.setXmlBase("../" + courseFolder + "/" + res.getXmlBase());
 			res.setIdentifier(item.getIdentifier() + "_" + res.getIdentifier());
 			item.setIdentifierref(res.getIdentifier());
 			addResource(res);

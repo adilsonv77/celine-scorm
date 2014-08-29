@@ -31,6 +31,8 @@ public class SequencingPostConditionRulesSubprocess {
 					
 				case retryAll:
 					return new SequencingPostConditionRulesSubprocessResult(RuleAction.exitAll, RuleAction.retry);
+			default:
+				break;
 			}
 		}
 		

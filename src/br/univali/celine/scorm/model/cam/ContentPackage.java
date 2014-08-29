@@ -55,6 +55,9 @@ public class ContentPackage {
 	
 	private String version;
 	
+	/**
+	 * @return The version of the file. For the version of SCORM, use getMetadata().getSchemaVersion()
+	 */
 	public String getVersion() {
 		return version;
 	}
@@ -97,7 +100,8 @@ public class ContentPackage {
 			"xmlns:adlseq=\"http://www.adlnet.org/xsd/adlseq_v1p3\"\n"+
 			"xmlns:adlnav=\"http://www.adlnet.org/xsd/adlnav_v1p3\"\n"+
 			"xmlns:imsss=\"http://www.imsglobal.org/xsd/imsss\"\n"+
-			"xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n";
+			"xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"+
+			"version=\""+version+"\">\n";
 		if (metadata != null)
 			s += metadata + "\n";
 		s += organizations + "\n" + 

@@ -314,7 +314,7 @@ public class ContentPackageReader20043rd implements ContentPackageReader {
 	@Override
 	public BuildVersion buildVersion() throws Exception {
 		if (this.version == null)
-			this.version = new Build20043rdEdition(); 
+			this.version = Build20043rdEdition.create(); 
 		return this.version;
 	}
 

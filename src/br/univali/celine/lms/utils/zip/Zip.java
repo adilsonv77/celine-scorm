@@ -62,7 +62,6 @@ public class Zip {
 
 	}
 
-	@SuppressWarnings("unchecked")
 	public void unzip(File zipFile, File dir) throws Exception {
 
 		InputStream is = null;
@@ -72,7 +71,7 @@ public class Zip {
 		try {
 
 			zip = new ZipFile(zipFile);
-			Enumeration e = zip.entries();
+			Enumeration<? extends ZipEntry> e = zip.entries();
 
 			byte[] buffer = new byte[2048];
 			int currentEntry = 0;

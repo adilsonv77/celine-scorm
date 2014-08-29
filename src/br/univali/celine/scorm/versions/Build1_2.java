@@ -1,4 +1,4 @@
-package br.univali.celine.scorm1_2.versions;
+package br.univali.celine.scorm.versions;
 
 import br.univali.celine.scorm.dataModel.DataModelCommandManager;
 import br.univali.celine.scorm.dataModel.adl.nav.Request;
@@ -40,12 +40,19 @@ import br.univali.celine.scorm.sn.up.LimitConditionsCheckProcess;
 import br.univali.celine.scorm.sn.up.SequencingRuleCheckSubprocess;
 import br.univali.celine.scorm.sn.up.SequencingRulesCheckProcess;
 import br.univali.celine.scorm.sn.up.TerminateDescendentAttemptsProcess;
-import br.univali.celine.scorm.versions.BuildVersion;
 import br.univali.celine.scorm1_2.dataModel.cmi.Core;
 
 public class Build1_2 implements BuildVersion {
 
-	public Build1_2() {
+	public static Build1_2 create() {
+		if (build == null)
+			build = new Build1_2();
+		return build;
+	}
+	
+	private static Build1_2 build;
+	
+	private Build1_2() {
 		
 		buildDM();
 		buildSN();

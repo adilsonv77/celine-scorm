@@ -3,8 +3,8 @@ package br.univali.celine.scorm2004_4th.model.cam;
 import org.apache.commons.digester3.Digester;
 
 import br.univali.celine.scorm.model.cam.CompletionThreshold;
+import br.univali.celine.scorm.versions.Build20044thEdition;
 import br.univali.celine.scorm.versions.BuildVersion;
-import br.univali.celine.scorm2004_4th.versions.Build20044thEdition;
 
 public class ContentPackageReader20044th extends br.univali.celine.scorm.model.cam.ContentPackageReader20043rd{
 
@@ -43,7 +43,7 @@ public class ContentPackageReader20044th extends br.univali.celine.scorm.model.c
 	@Override
 	public BuildVersion buildVersion() throws Exception {
 		if (this.version == null)
-			this.version = new Build20044thEdition(); 
+			this.version = Build20044thEdition.create(); 
 		return this.version;
 	}
    	

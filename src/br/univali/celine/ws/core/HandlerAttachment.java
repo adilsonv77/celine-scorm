@@ -37,7 +37,6 @@ public class HandlerAttachment implements SOAPHandler<SOAPMessageContext> {
 		return false;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean handleMessage(SOAPMessageContext messageContext) {
 		try {
@@ -49,9 +48,10 @@ public class HandlerAttachment implements SOAPHandler<SOAPMessageContext> {
 				//SOAPElement anexo = (SOAPElement) helem.next();
 				//SOAPElement dadosArq = (SOAPElement) anexo.getChildElements().next();
 				//SOAPElement nomeArq = (SOAPElement) dadosArq.getChildElements(new QName("nomearq")).next();
-				Iterator it = msg.getAttachments();
+				@SuppressWarnings("unchecked")
+				Iterator<AttachmentPart> it = msg.getAttachments();
 				while (it.hasNext()) {
-					AttachmentPart att = (AttachmentPart) it.next();
+					AttachmentPart att = it.next();
 					String[] mh = att.getMimeHeader("content-transfer-encoding");
 //					System.out.println("content-transfer-encoding : " + mh[0]);
 					boolean isBinary = mh[0].equals("binary"); // senao é base64 !!!

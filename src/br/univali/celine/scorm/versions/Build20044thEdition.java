@@ -1,4 +1,4 @@
-package br.univali.celine.scorm2004_4th.versions;
+package br.univali.celine.scorm.versions;
 
 import br.univali.celine.scorm.dataModel.DataModelCommandManager;
 import br.univali.celine.scorm.dataModel.adl.nav.Request;
@@ -57,7 +57,6 @@ import br.univali.celine.scorm.sn.up.LimitConditionsCheckProcess;
 import br.univali.celine.scorm.sn.up.SequencingRuleCheckSubprocess;
 import br.univali.celine.scorm.sn.up.SequencingRulesCheckProcess;
 import br.univali.celine.scorm.sn.up.TerminateDescendentAttemptsProcess;
-import br.univali.celine.scorm.versions.BuildVersion;
 import br.univali.celine.scorm2004_4th.dataModel.adl.Data;
 import br.univali.celine.scorm2004_4th.model.cam.Item20044th;
 import br.univali.celine.scorm2004_4th.sn.nb.NavigationRequestProcess20044th;
@@ -65,7 +64,15 @@ import br.univali.celine.scorm2004_4th.sn.sb.seqreqprocess.SequencingRequestProc
 
 public class Build20044thEdition implements BuildVersion {
 
-	public Build20044thEdition() {
+	public static Build20044thEdition create() {
+		if (build == null)
+			build = new Build20044thEdition();
+		return build;
+	}
+	
+	private static Build20044thEdition build;
+	
+	private Build20044thEdition() {
 		
 		buildDM();
 		buildSN();

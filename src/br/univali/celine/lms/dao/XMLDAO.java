@@ -489,6 +489,7 @@ public class XMLDAO implements DAO {
 		while ( (charsRead = reader.read(buffer, 0, 1024)) > 0) {
 			writer.write(buffer, 0, charsRead);
 		}
+		reader.close();
 		return new String(writer.getBuffer());
 	}
 

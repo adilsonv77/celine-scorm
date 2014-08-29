@@ -149,6 +149,7 @@ public class TableOfContentsFactory {
 		return NodeStatus.enabled;
 	}
 
+	@SuppressWarnings("unused")
 	private boolean sequencingControlChoice(LearningActivity activity) {
 		
 		// The Sequencing Control Choice control mode has no affect when defined on a leaf activity.
