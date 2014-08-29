@@ -40,5 +40,15 @@ public class Metadata {
 		return "<metadata>\n" + ret + "</metadata>";
 	}
 	
+	public Metadata clonar() {
+		Metadata md = new Metadata();
+		
+		md.setLocation(location);
+		md.setSchema(schema);
+		md.setSchemaversion(schemaversion);
+		
+		return md;
+	}
+	
 	
 }

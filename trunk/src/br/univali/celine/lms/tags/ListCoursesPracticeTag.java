@@ -23,7 +23,6 @@ public class ListCoursesPracticeTag extends BodyTagSupport {
 	private String varSuccessStatus="varSuccessStatus";
 	private String varScoreScaled="varScoreScaled";
 
-	private int index = -1;
 	private Iterator<CoursePractice> courses;
 		
 	@Override
@@ -51,7 +50,6 @@ public class ListCoursesPracticeTag extends BodyTagSupport {
 	private void setAttributes() throws JspException {
 		
 		CoursePractice course = courses.next();
-		index++; 
 		
 		pageContext.setAttribute(varCourse, course.getCourse());
 		pageContext.setAttribute(varTime, course.getTime());
@@ -79,7 +77,6 @@ public class ListCoursesPracticeTag extends BodyTagSupport {
 			return EVAL_BODY_AGAIN;
 		}		
 		
-		index = -1;			
 		return SKIP_BODY;
 	}
 

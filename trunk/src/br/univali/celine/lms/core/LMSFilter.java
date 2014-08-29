@@ -8,7 +8,6 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.logging.Logger;
 
 import javax.servlet.Filter;
@@ -52,6 +51,7 @@ public class LMSFilter implements Filter {
 				FileInputStream fio = new FileInputStream(f);
 				byte b[] = new byte[(int) f.length()];
 				fio.read(b);
+				fio.close();
 
 				servletResponse.getOutputStream().write(b);
 				servletResponse.setContentType(svlCtxt.getMimeType(f.toString()));

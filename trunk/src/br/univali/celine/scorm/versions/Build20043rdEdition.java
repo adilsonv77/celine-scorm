@@ -63,7 +63,15 @@ import br.univali.celine.scorm.sn.up.TerminateDescendentAttemptsProcess;
 
 public class Build20043rdEdition implements BuildVersion {
 
-	public Build20043rdEdition() {
+	public static Build20043rdEdition create() {
+		if (build == null)
+			build = new Build20043rdEdition();
+		return build;
+	}
+	
+	private static Build20043rdEdition build;
+	
+	private Build20043rdEdition() {
 		
 		buildDM();
 		buildSN();

@@ -23,6 +23,7 @@ import br.univali.celine.scorm.model.imsss.RandomizationControls;
 import br.univali.celine.scorm.model.imsss.RandomizationTiming;
 import br.univali.celine.scorm.model.imsss.SelectionTiming;
 import br.univali.celine.scorm.versions.BuildVersion;
+import br.univali.celine.scorm.versions.BuildVersionFactory;
 import br.univali.celine.scorm2004_4th.model.cam.AdlcpMap;
 import br.univali.celine.scorm2004_4th.model.cam.Item20044th;
 
@@ -45,29 +46,66 @@ public class EasyPackage {
 	private BuildVersion scormVersion;
 	private AbstractItem root;
 	private String version;
+	private Metadata metadata;
 
 	public EasyPackage(BuildVersion version, String packageName,
 			String destFolder, String organizationName,
-			String organizationIdentifier) {
+			String organizationIdentifier, boolean modifyId) {
 		this.scormVersion = version;
 
 		this.packageName = packageName;
-		this.destFolder = destFolder;
+
 		this.organizationName = organizationName;
 		this.organizationIdentifier = organizationIdentifier;
 
-		this.fileDestFolder = new File(destFolder);
-		deleteFolder(fileDestFolder);
-		fileDestFolder.mkdirs();
-
-		this.easyContentPackage = new EasyContentPackage();
-		this.files = new ArrayList<String>();
+		init(destFolder, modifyId);
 
 		root = scormVersion.buildItem();
 		root.setIdentifier(this.organizationIdentifier);
 		root.setTitle(organizationName);
+		
+		this.metadata = new Metadata();
+		this.metadata.setSchema("ADL SCORM");
+		this.metadata.setSchemaversion(scormVersion.getMetadataSchemaVersion());
+
+	}
+	
+	/**
+	 * 
+	 * @param contentPackage The original Content Package from where the information will extract
+	 * @param destFileName The final zip file.
+	 * @param sourceFolder The original source folder, from where the files will be copy. 
+	 * @param destFolder A new destination folder: all the original files will copy from the source folder to this folder.
+	 * @param modifyId Use "true" to guarantee that no duplicated id will be in the imsmanifest if you merge two imsmanifest
+	 * @throws IOException Throws when is some problem while copy the files from the source folder.
+	 */
+	public EasyPackage(ContentPackage contentPackage, String destFileName, String sourceFolder, String destFolder, boolean modifyId) throws IOException {
+		this.scormVersion = BuildVersionFactory.create(contentPackage.getMetadata().getSchemaversion());
+		this.packageName = destFileName;
+		
+		this.organizationName = contentPackage.getOrganizations().getDefaultOrganization().getTitle();
+		this.organizationIdentifier = contentPackage.getOrganizations().getDefaultOrganization().getIdentifier();
+		this.version = contentPackage.getVersion();
+		
+		init(destFolder, modifyId);
+
+		this.root = (AbstractItem) this.easyContentPackage.addContentPackage(contentPackage, sourceFolder);
+		this.metadata = contentPackage.getMetadata().clonar();
+		
+		addFilesFromFolder(sourceFolder);
 	}
 
+	private void init(String destFolder, boolean modifyId) {
+		this.destFolder = destFolder;
+		this.fileDestFolder = new File(destFolder);
+		deleteFolder(fileDestFolder);
+		fileDestFolder.mkdirs();
+
+		this.easyContentPackage = new EasyContentPackage(modifyId);
+		this.files = new ArrayList<String>();
+		
+	}
+	
 	public void setVersion(String version) {
 		this.version = version;
 		
@@ -353,6 +391,12 @@ public class EasyPackage {
 		// The directory is now empty so delete it
 		return dir.delete();
 
+	}
+
+	public AbstractItem getSCO(String identifier) {
+
+		return (AbstractItem) this.easyContentPackage.findItem(identifier);
+		
 	}
 
 }

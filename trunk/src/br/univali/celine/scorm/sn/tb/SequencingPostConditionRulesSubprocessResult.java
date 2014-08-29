@@ -29,6 +29,8 @@ public class SequencingPostConditionRulesSubprocessResult {
 				
 			case previous:
 				return SequencingRequest.PREVIOUS;
+	  		default:
+				break;
 				
 		}
 		
@@ -42,6 +44,7 @@ public class SequencingPostConditionRulesSubprocessResult {
 		switch (terminationRuleAction) {
 			case exitParent : return TerminationRequest.EXITPARENT;
 			case exitAll    : return TerminationRequest.EXITALL;
+			default			: break;
 		}
 		return null;
 	}

@@ -17,7 +17,6 @@ public class ListUsersPracticeTag extends BodyTagSupport {
 	private String varTime="varTime";
 	private String varLastTime="varLastTime";
 
-	private int index = -1;
 	private Iterator<UserPractice> users;
 	
 		
@@ -47,7 +46,6 @@ public class ListUsersPracticeTag extends BodyTagSupport {
 	private void setAttributes() {
 		
 		UserPractice user = users.next();
-		index++; 
 		
 		pageContext.setAttribute(varUser, user.getUser());
 		pageContext.setAttribute(varQuantity, user.getQuantity());
@@ -65,7 +63,6 @@ public class ListUsersPracticeTag extends BodyTagSupport {
 			return EVAL_BODY_AGAIN;
 		}		
 		
-		index = -1;			
 		return SKIP_BODY;
 	}
 

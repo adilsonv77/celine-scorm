@@ -9,8 +9,8 @@ import br.univali.celine.scorm.model.cam.ContentPackage;
 import br.univali.celine.scorm.model.cam.ContentPackageReader20043rd;
 import br.univali.celine.scorm.model.cam.Item;
 import br.univali.celine.scorm.model.cam.Organization;
+import br.univali.celine.scorm.versions.Build1_2;
 import br.univali.celine.scorm.versions.BuildVersion;
-import br.univali.celine.scorm1_2.versions.Build1_2;
 
 public class ContentPackageReader12 extends ContentPackageReader20043rd {
 
@@ -58,7 +58,7 @@ public class ContentPackageReader12 extends ContentPackageReader20043rd {
 	@Override
 	public BuildVersion buildVersion() throws Exception {
 		if (this.version == null)
-			this.version = new Build1_2(); 
+			this.version = Build1_2.create(); 
 		return this.version;
 	}
 }
