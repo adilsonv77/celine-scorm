@@ -41,7 +41,7 @@ function xbDetectBrowser()
   var element = null;
 
   window.onerror = null;
-  
+
   // work around bug in xpcdom Mozilla 0.9.1
   window.saveNavigator = window.navigator;
 
@@ -64,7 +64,7 @@ function xbDetectBrowser()
 
   var i = 0;
   var ua = window.navigator.userAgent.toLowerCase();
-  
+
   if (ua.indexOf('safari') != -1)
   {
     i = ua.indexOf('safari');
@@ -83,7 +83,7 @@ function xbDetectBrowser()
   {
     navigator.org    = 'microsoft';
     navigator.version  = parseFloat('0' + ua.substr(i+5), 10);
-    
+
     if (navigator.version < 4)
       navigator.family = 'ie3';
     else
@@ -117,7 +117,7 @@ function xbDetectBrowser()
   else if ((ua.indexOf('mozilla') !=-1) && (ua.indexOf('spoofer')==-1) && (ua.indexOf('compatible') == -1) && (ua.indexOf('opera')==-1)&& (ua.indexOf('webtv')==-1) && (ua.indexOf('hotjava')==-1))
   {
     var is_major = parseFloat(navigator.appVersion);
-    
+
     if (is_major < 4)
       navigator.version = is_major;
     else
