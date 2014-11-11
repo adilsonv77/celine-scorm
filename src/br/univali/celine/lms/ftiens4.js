@@ -1,4 +1,5 @@
-//**************************************************************** 
+
+//****************************************************************
 // You must keep this copyright notice:
 //
 // This script is Copyright (c) 2006 by Conor O'Mahony.
@@ -6,12 +7,12 @@
 // GubuSoft is owned and operated by Conor O'Mahony.
 // Original author of TreeView script is Marcelino Martins.
 //
-// Do not download the script's files from here.  For a free 
-// download and full instructions go to the following site: 
+// Do not download the script's files from here.  For a free
+// download and full instructions go to the following site:
 // http://www.TreeView.net
-//**************************************************************** 
+//****************************************************************
 
-// Log of changes: 
+// Log of changes:
 //      26 Sep 06 - Updated preLoadIcons function;
 //                  Fix small bugs or typos (in the Folder, InitializeFolder,
 //                  and blockStartHTML functions)
@@ -24,12 +25,12 @@
 //      22 Sep 02 - Added maySelect member for node-by-node control
 //                  of selection and highlight
 //      21 Sep 02 - Cookie values are now separated by cookieCutter
-//      12 Sep 02 - VERSION 4.2 - Can highlight Selected Nodes and 
+//      12 Sep 02 - VERSION 4.2 - Can highlight Selected Nodes and
 //                  can preserve state through external (DB) IDs
 //      29 Aug 02 - Fine tune 'supportDeferral' for IE4 and IE Mac
 //      25 Aug 02 - Fixes: STARTALLOPEN, and multi-page frameless
 //      09 Aug 02 - Fix repeated folder on Mozilla 1.x
-//      31 Jul 02 - VERSION 4.1 - Dramatic speed increase for trees 
+//      31 Jul 02 - VERSION 4.1 - Dramatic speed increase for trees
 //      with hundreds or thousands of nodes; changes to the control
 //      flags of the gLnk function
 //      18 Jul 02 - Changes in pre-load images function
@@ -38,16 +39,16 @@
 //      07 Apr 02 - Minor changes to support server-side dynamic feeding
 //                  (example: FavoritesManagerASP)
 
-// Definition of class Folder 
-// ***************************************************************** 
-function Folder(folderDescription, hreference) //constructor 
-{ 
-  //constant data 
-  this.desc = folderDescription; 
+// Definition of class Folder
+// *****************************************************************
+function Folder(folderDescription, hreference) //constructor
+{
+  //constant data
+  this.desc = folderDescription;
   this.hreference = hreference;
   this.id = -1;
   this.navObj = 0;
-  this.iconImg = 0; 
+  this.iconImg = 0;
   this.nodeImg = 0;
   this.iconSrc = ICONPATH + "ftv2folderopen.gif";
   this.iconSrcClosed = ICONPATH + "ftv2folderclosed.gif";
@@ -62,26 +63,26 @@ function Folder(folderDescription, hreference) //constructor
   this.pospendHTML = "";
   this.classEstilo = "";
   this.hasLink = false;
- 
-  //dynamic data 
+
+  //dynamic data
   this.isOpen = false;
   this.isLastOpenedFolder = false;
   this.isRendered = 0;
- 
-  //methods 
+
+  //methods
   this.initialize = initializeFolder ;
   this.setState = setStateFolder ;
-  this.addChild = addChild 
+  this.addChild = addChild
   this.addChildren = addChildren
-  this.createIndex = createEntryIndex 
+  this.createIndex = createEntryIndex
   this.esconderBlock = esconderBlock
   this.aparecerBlock = aparecerBlock
-  this.esconder = escondeFolder 
+  this.esconder = escondeFolder
   this.aparecer = aparecerFolder
-  this.folderMstr = folderMstr 
-  this.renderOb = drawFolder 
-  this.totalHeight = totalHeight 
-  this.subEntries = folderSubEntries 
+  this.folderMstr = folderMstr
+  this.renderOb = drawFolder
+  this.totalHeight = totalHeight
+  this.subEntries = folderSubEntries
   this.linkHTML = linkFolderHTML
   this.blockStartHTML = blockStartHTML
   this.blockEndHTML = blockEndHTML
@@ -89,14 +90,14 @@ function Folder(folderDescription, hreference) //constructor
   this.iconImageSrc = iconImageSrc
   this.getID = getID
   this.forceOpeningOfAncestorFolders = forceOpeningOfAncestorFolders
-} 
- 
-function initializeFolder(level, lastNode, leftSide) 
-{ 
-  var i=0       
-  nc = this.nChildren 
-   
-  this.createIndex() 
+}
+
+function initializeFolder(level, lastNode, leftSide)
+{
+  var i=0
+  nc = this.nChildren
+
+  this.createIndex()
   this.level = level
   this.leftSideCoded = leftSide
 
@@ -104,17 +105,17 @@ function initializeFolder(level, lastNode, leftSide)
     this.isOpen=true;
 
   if (level>0)
-    if (lastNode) //the last child in the children array 
+    if (lastNode) //the last child in the children array
 		leftSide = leftSide + "0"
 	else
 		leftSide = leftSide + "1"
 
   this.isLastNode = lastNode
- 
-  if (nc > 0) 
-  { 
-    level = level + 1 
-    for (i=0 ; i < this.nChildren; i++)  
+
+  if (nc > 0)
+  {
+    level = level + 1
+    for (i=0 ; i < this.nChildren; i++)
     {
       if (typeof this.children[i].initialize == 'undefined') //document node was specified using the addChildren function
       {
@@ -131,38 +132,38 @@ function initializeFolder(level, lastNode, leftSide)
           this.children[i].maySelect=true
         this.children[i].forceOpeningOfAncestorFolders = forceOpeningOfAncestorFolders
       }
-      if (i == this.nChildren-1) 
+      if (i == this.nChildren-1)
         this.children[i].initialize(level, 1, leftSide)
-      else 
+      else
         this.children[i].initialize(level, 0, leftSide)
-    } 
-  } 
-} 
- 
+    }
+  }
+}
+
 function searchTocItem(id, toc) {
 	if (toc.idLearningActivity == id)
 		return toc;
-	
+
 	for (var i = 0; i < toc.children.length; i++) {
 		var r = searchTocItem(id, toc.children[i]);
 		if (r != null)
 			return r;
 	}
-		
-		
+
+
 	return null;
 }
 
-function drawFolder(insertAtObj) 
-{ 
+function drawFolder(insertAtObj)
+{
   var toc = tableOfContent;
-  
+
   var tocItem;
   if (this.id == "treeID")
 	  tocItem = toc;
   else
 	  tocItem = searchTocItem(this.id, toc);
-	
+
   var nodeName = ""
   var auxEv = ""
   var docW = ""
@@ -172,32 +173,32 @@ function drawFolder(insertAtObj)
 
   var leftSide = leftSideHTML(this.leftSideCoded)
 
-  if (browserVersion > 0 && tocItem.visible == true) 
-    auxEv = "<a class=\"tree_item_link\" href='javascript:clickOnNode(\""+this.getID()+"\")'>" 
-  else 
-    auxEv = "<a>" 
+  if (browserVersion > 0 && tocItem.visible == true)
+    auxEv = "<a class=\"tree_item_link\" href='javascript:clickOnNode(\""+this.getID()+"\")'>"
+  else
+    auxEv = "<a>"
 
   nodeName = this.nodeImageSrc()
- 
-  if (this.level>0) 
-    if (this.isLastNode) //the last child in the children array 
+
+  if (this.level>0)
+    if (this.isLastNode) //the last child in the children array
 	    leftSide = leftSide + "<td valign=top>" + auxEv + "<img name='nodeIcon" + this.id + "' id='nodeIcon" + this.id + "' src='" + nodeName + "' width=16 height=22 border=0></a></td>"
-    else 
+    else
       leftSide = leftSide + "<td valign=top background=" + ICONPATH + "ftv2vertline.gif>" + auxEv + "<img name='nodeIcon" + this.id + "' id='nodeIcon" + this.id + "' src='" + nodeName + "' width=16 height=22 border=0></a></td>"
 
   this.isRendered = 1
 
-  if (browserVersion == 2) { 
-    if (!doc.yPos) 
-      doc.yPos=20 
-  } 
+  if (browserVersion == 2) {
+    if (!doc.yPos)
+      doc.yPos=20
+  }
 
   docW = this.blockStartHTML("item");// this.blockStartHTML("folder");
 
   docW = docW + "<tr>" + leftSide + "<td valign=top>";
   if (USEICONS)
   {
-    docW = docW + this.linkHTML(false) 
+    docW = docW + this.linkHTML(false)
     docW = docW + "<img id='folderIcon" + this.id + "' name='folderIcon" + this.id + "' src='" + this.iconImageSrc() + "' border=0></a>"
   }
   else
@@ -215,12 +216,12 @@ function drawFolder(insertAtObj)
 	  docW = docW + "</td>"+this.prependHTML+"<td valign=middle "+swidth+" class='"+this.classEstilo+"'>"
   else
 	  docW = docW + "</td>"+this.prependHTML+"<td valign=middle nowrap "+swidth+" class='"+this.classEstilo+"'>"
-  if (USETEXTLINKS && this.hasLink) 
-  { 
-    docW = docW + this.linkHTML(true) 
+  if (USETEXTLINKS && this.hasLink)
+  {
+    docW = docW + this.linkHTML(true)
     docW = docW + this.desc + "</a>"
-  } 
-  else 
+  }
+  else
     docW = docW + this.desc
   docW = docW + "</td>"
 
@@ -246,46 +247,46 @@ function drawFolder(insertAtObj)
   {
       insertAtObj.insertAdjacentHTML("afterEnd", docW)
   }
- 
-  if (browserVersion == 2) 
-  { 
-    this.navObj = doc.layers["item"+this.id]; //doc.layers["folder"+this.id] 
+
+  if (browserVersion == 2)
+  {
+    this.navObj = doc.layers["item"+this.id]; //doc.layers["folder"+this.id]
     if (USEICONS)
-      this.iconImg = this.navObj.document.images["folderIcon"+this.id] 
-    this.nodeImg = this.navObj.document.images["nodeIcon"+this.id] 
-    doc.yPos=doc.yPos+this.navObj.clip.height 
-  } 
+      this.iconImg = this.navObj.document.images["folderIcon"+this.id]
+    this.nodeImg = this.navObj.document.images["nodeIcon"+this.id]
+    doc.yPos=doc.yPos+this.navObj.clip.height
+  }
   else if (browserVersion != 0)
-  { 
+  {
     this.navObj = getElById("item"+this.id);//getElById("folder"+this.id)
     if (USEICONS)
-      this.iconImg = getElById("folderIcon"+this.id) 
+      this.iconImg = getElById("folderIcon"+this.id)
     this.nodeImg = getElById("nodeIcon"+this.id)
-  } 
-} 
- 
-function setStateFolder(isOpen) 
-{ 
-  var subEntries 
-  var totalHeight 
-  var fIt = 0 
-  var i=0 
+  }
+}
+
+function setStateFolder(isOpen)
+{
+  var subEntries
+  var totalHeight
+  var fIt = 0
+  var i=0
   var currentOpen
- 
-  if (isOpen == this.isOpen) 
-    return 
- 
-  if (browserVersion == 2)  
-  { 
-    totalHeight = 0 
-    for (i=0; i < this.nChildren; i++) 
-      totalHeight = totalHeight + this.children[i].navObj.clip.height 
-      subEntries = this.subEntries() 
-    if (this.isOpen) 
-      totalHeight = 0 - totalHeight 
-    for (fIt = this.id + subEntries + 1; fIt < nEntries; fIt++) 
-      indexOfEntries[fIt].navObj.moveBy(0, totalHeight) 
-  }  
+
+  if (isOpen == this.isOpen)
+    return
+
+  if (browserVersion == 2)
+  {
+    totalHeight = 0
+    for (i=0; i < this.nChildren; i++)
+      totalHeight = totalHeight + this.children[i].navObj.clip.height
+      subEntries = this.subEntries()
+    if (this.isOpen)
+      totalHeight = 0 - totalHeight
+    for (fIt = this.id + subEntries + 1; fIt < nEntries; fIt++)
+      indexOfEntries[fIt].navObj.moveBy(0, totalHeight)
+  }
   this.isOpen = isOpen;
 
   if (this.getID()!=foldersTree.getID() && PRESERVESTATE && !this.isOpen) //closing
@@ -296,18 +297,18 @@ function setStateFolder(isOpen)
          SetCookie("clickedFolder", currentOpen)
      }
   }
-	
+
   if (!this.isOpen && this.isLastOpenedfolder)
   {
 		lastOpenedFolder = null;
 		this.isLastOpenedfolder = false;
   }
-  propagateChangesInState(this) 
-} 
- 
-function propagateChangesInState(folder) 
-{   
-  var i=0 
+  propagateChangesInState(this)
+}
+
+function propagateChangesInState(folder)
+{
+  var i=0
 
   //Change icon
   if (folder.nChildren > 0 && folder.level>0)  //otherwise the one given at render stays
@@ -319,98 +320,98 @@ function propagateChangesInState(folder)
 
   //Propagate changes
   for (i=folder.nChildren-1; i>=0; i--) {
-    if (folder.isOpen) 
+    if (folder.isOpen)
       folder.children[i].folderMstr(folder.navObj)
-    else 
-  	  folder.children[i].esconder() 
+    else
+  	  folder.children[i].esconder()
   }
-} 
- 
-function escondeFolder() 
-{ 
+}
+
+function escondeFolder()
+{
   this.esconderBlock()
-   
-  this.setState(0) 
-} 
- 
-function aparecerFolder() 
+
+  this.setState(0)
+}
+
+function aparecerFolder()
 {
   this.aparecerBlock()
-   
-  this.setState(1) 
-} 
- 
-function linkFolderHTML(isTextLink) 
-{ 
+
+  this.setState(1)
+}
+
+function linkFolderHTML(isTextLink)
+{
   var docW = "";
 
-  if (this.hreference) 
-  { 
+  if (this.hreference)
+  {
 	if (USEFRAMES)
 	  docW = docW + "<a href=\"" + this.hreference + "\" TARGET=\"basefrm\" class=\"tree_item_link\" "
 	else
 	  docW = docW + "<a href=\"" + this.hreference + "\" TARGET=_top class=\"tree_item_link\" "
-        
+
     if (isTextLink) {
         docW += "id=\"itemTextLink"+this.id+"\" ";
     }
 
-    if (browserVersion > 0) 
+    if (browserVersion > 0)
       docW = docW + "onClick='javascript:clickOnFolder(\""+this.getID()+"\")'"
 
     docW = docW + ">"
-  } 
-  else 
-    docW = docW + "<a id=\"tree_root_title\">" 
+  }
+  else
+    docW = docW + "<a id=\"tree_root_title\">"
 
   return docW;
-} 
- 
-function addChild(childNode) 
-{ 
-  this.children[this.nChildren] = childNode 
-  childNode.parentObj = this
-  this.nChildren++ 
-  return childNode 
-} 
+}
 
-//The list can contain either a Folder object or a sub list with the arguments for Item 
-function addChildren(listOfChildren) 
-{ 
-  this.children = listOfChildren 
+function addChild(childNode)
+{
+  this.children[this.nChildren] = childNode
+  childNode.parentObj = this
+  this.nChildren++
+  return childNode
+}
+
+//The list can contain either a Folder object or a sub list with the arguments for Item
+function addChildren(listOfChildren)
+{
+  this.children = listOfChildren
   this.nChildren = listOfChildren.length
   for (i=0; i<this.nChildren; i++)
     this.children[i].parentObj = this
-} 
+}
 
-function folderSubEntries() 
-{ 
-  var i = 0 
-  var se = this.nChildren 
- 
-  for (i=0; i < this.nChildren; i++){ 
-    if (this.children[i].children) //is a folder 
-      se = se + this.children[i].subEntries() 
-  } 
- 
-  return se 
-} 
+function folderSubEntries()
+{
+  var i = 0
+  var se = this.nChildren
+
+  for (i=0; i < this.nChildren; i++){
+    if (this.children[i].children) //is a folder
+      se = se + this.children[i].subEntries()
+  }
+
+  return se
+}
 
 function nodeImageSrc() {
   var srcStr = "";
 
-  if (this.isLastNode) //the last child in the children array 
-  { 
+  if (this.isLastNode) //the last child in the children array
+  {
     if (this.nChildren == 0)
       srcStr = ICONPATH + "ftv2lastnode.gif"
     else
       if (this.isOpen)
-        srcStr = ICONPATH + "ftv2mlastnode.gif"  
+        srcStr = ICONPATH + "ftv2mlastnode.gif"
       else
-        srcStr = ICONPATH + "ftv2plastnode.gif"  
-  } 
-  else 
-  { 
+        srcStr = ICONPATH + "ftv2plastnode.gif"
+  }
+  else
+  {
     if (this.nChildren == 0)
       srcStr = ICONPATH + "ftv2node.gif"
     else
@@ -418,7 +419,7 @@ function nodeImageSrc() {
         srcStr = ICONPATH + "ftv2mnode.gif"
       else
         srcStr = ICONPATH + "ftv2pnode.gif"
-  }   
+  }
   return srcStr;
 }
 
@@ -427,15 +428,15 @@ function iconImageSrc() {
     return(this.iconSrc)
   else
     return(this.iconSrcClosed)
-} 
- 
-// Definition of class Item (a document or link inside a Folder) 
-// ************************************************************* 
- 
-function Item(itemDescription) // Constructor 
-{ 
-  // constant data 
-  this.desc = itemDescription 
+}
+
+// Definition of class Item (a document or link inside a Folder)
+// *************************************************************
+
+function Item(itemDescription) // Constructor
+{
+  // constant data
+  this.desc = itemDescription
 
   this.level = 0
   this.isLastNode = false
@@ -450,61 +451,61 @@ function Item(itemDescription) // Constructor
   this.forceOpeningOfAncestorFolders = forceOpeningOfAncestorFolders;
 
   finalizeCreationOfItem(this)
-} 
+}
 
 //Assignments that can be delayed when the item is created with folder.addChildren
 //The assignments that cannot be delayed are done in addChildren and in initializeFolder
 //Additionaly, some assignments are also done in finalizeCreationOfChildDocs itself
 function finalizeCreationOfItem(itemArray)
 {
-  itemArray.navObj = 0 //initialized in render() 
-  itemArray.iconImg = 0 //initialized in render() 
-  itemArray.iconSrc = ICONPATH + "ftv2doc.gif" 
+  itemArray.navObj = 0 //initialized in render()
+  itemArray.iconImg = 0 //initialized in render()
+  itemArray.iconSrc = ICONPATH + "ftv2doc.gif"
   itemArray.isRendered = 0
   itemArray.nChildren = 0
   itemArray.prependHTML = ""
   itemArray.pospendHTML = ""
- 
-  // methods 
+
+  // methods
   itemArray.esconderBlock = esconderBlock
   itemArray.esconder = esconderBlock
   itemArray.aparecerBlock = aparecerBlock
   itemArray.aparecer = aparecerBlock
   itemArray.marcar = marcarTextLink;
   itemArray.desmarcar = desmarcarTextLink
-  itemArray.folderMstr = folderMstr 
-  itemArray.renderOb = drawItem 
-  itemArray.totalHeight = totalHeight 
+  itemArray.folderMstr = folderMstr
+  itemArray.renderOb = drawItem
+  itemArray.totalHeight = totalHeight
   itemArray.blockStartHTML = blockStartHTML
   itemArray.blockEndHTML = blockEndHTML
   itemArray.getID = getID
 }
 
-function initializeItem(level, lastNode, leftSide) 
-{  
-  this.createIndex() 
+function initializeItem(level, lastNode, leftSide)
+{
+  this.createIndex()
   this.level = level
   this.leftSideCoded = leftSide
   this.isLastNode = lastNode
-} 
- 
-function drawItem(insertAtObj) 
-{ 
+}
+
+function drawItem(insertAtObj)
+{
   var leftSide = leftSideHTML(this.leftSideCoded)
   var docW = ""
 
   var fullLink = "href=\""+this.link+"\" target=\""+this.target+"\""; // só atrapalhou isso onClick=\"clickOnLink('"+this.getID()+"\', \'"+this.link+"\','"+this.target+"');return false;\"";
   this.isRendered = 1
 
-  if (this.level>0) 
-    if (this.isLastNode) //the last 'brother' in the children array 
-    { 
+  if (this.level>0)
+    if (this.isLastNode) //the last 'brother' in the children array
+    {
       leftSide = leftSide + "<td valign=top><img src='" + ICONPATH + "ftv2lastnode.gif' width=16 height=22></td>"
-    } 
-    else 
-    { 
+    }
+    else
+    {
       leftSide = leftSide + "<td valign=top background=" + ICONPATH + "ftv2vertline.gif><img src='" + ICONPATH + "ftv2node.gif' width=16 height=22></td>"
-    } 
+    }
 
   docW = docW + this.blockStartHTML("item")
 
@@ -521,15 +522,15 @@ function drawItem(insertAtObj)
 	  swidth = "width=200px";
   }
 
-	
+
   if (WRAPTEXT)
     docW = docW + "</td>"+this.prependHTML+"<td valign=middle "+swidth+" >"
   else
     docW = docW + "</td>"+this.prependHTML+"<td valign=middle nowrap "+swidth+">"
 
-  if (USETEXTLINKS) 
+  if (USETEXTLINKS)
     docW = docW + "<a class=\"tree_item_link\" " + fullLink + " id=\"itemTextLink"+this.id+"\">" + this.desc + "</a>"
-  else 
+  else
     docW = docW + this.desc
 
   docW = docW + "</td>"
@@ -538,7 +539,7 @@ function drawItem(insertAtObj)
   	docW = docW + this.pospendHTML;
 
   docW = docW + this.blockEndHTML()
- 
+
   if (insertAtObj == null)
   {
 	//  doc.write(docW)
@@ -550,22 +551,22 @@ function drawItem(insertAtObj)
       insertAtObj.insertAdjacentHTML("afterEnd", docW)
   }
 
-  if (browserVersion == 2) { 
-    this.navObj = doc.layers["item"+this.id] 
+  if (browserVersion == 2) {
+    this.navObj = doc.layers["item"+this.id]
     if (USEICONS)
-      this.iconImg = this.navObj.document.images["itemIcon"+this.id] 
-    doc.yPos=doc.yPos+this.navObj.clip.height 
-  } else if (browserVersion != 0) { 
+      this.iconImg = this.navObj.document.images["itemIcon"+this.id]
+    doc.yPos=doc.yPos+this.navObj.clip.height
+  } else if (browserVersion != 0) {
     this.navObj = getElById("item"+this.id)
     if (USEICONS)
       this.iconImg = getElById("itemIcon"+this.id)
-  } 
-} 
- 
- 
-// Methods common to both objects (pseudo-inheritance) 
-// ******************************************************** 
- 
+  }
+}
+
+
+// Methods common to both objects (pseudo-inheritance)
+// ********************************************************
+
 function forceOpeningOfAncestorFolders() {
   if (this.parentObj == null || this.parentObj.isOpen)
     return
@@ -575,47 +576,47 @@ function forceOpeningOfAncestorFolders() {
   }
 }
 
-function esconderBlock() 
-{ 
-  if (browserVersion == 1 || browserVersion == 3) { 
-    if (this.navObj.style.display == "none") 
-      return 
-    this.navObj.style.display = "none" 
-  } else { 
-    if (this.navObj.visibility == "hidden") 
-      return 
-    this.navObj.visibility = "hidden" 
-  }     
-} 
- 
-function aparecerBlock() 
+function esconderBlock()
 {
-  if (browserVersion == 1 || browserVersion == 3) { 
-    this.navObj.style.display = "block" 
-  } else { 
-  	this.navObj.visibility = "show";
-  } 
+  if (browserVersion == 1 || browserVersion == 3) {
+    if (this.navObj.style.display == "none")
+      return
+    this.navObj.style.display = "none"
+  } else {
+    if (this.navObj.visibility == "hidden")
+      return
+    this.navObj.visibility = "hidden"
+  }
 }
- 
-function marcarTextLink() 
+
+function aparecerBlock()
+{
+  if (browserVersion == 1 || browserVersion == 3) {
+    this.navObj.style.display = "block"
+  } else {
+  	this.navObj.visibility = "show";
+  }
+}
+
+function marcarTextLink()
 {
 	var itemTextLink = document.getElementById("itemTextLink"+this.id);
 
 	itemTextLink.style.fontWeight = "bold";
-	
+
 }
- 
+
 function desmarcarTextLink()
 {
-	var itemTextLink = document.getElementById("itemTextLink"+this.id);	
-	
+	var itemTextLink = document.getElementById("itemTextLink"+this.id);
+
 	itemTextLink.style.fontWeight = "normal";
 }
- 
-function folderMstr(domObj) 
-{ 
+
+function folderMstr(domObj)
+{
 /*
-  if (browserVersion == 1 || browserVersion == 3) { 
+  if (browserVersion == 1 || browserVersion == 3) {
     if (t==-1)
       return
     var str = new String(doc.links[t])
@@ -627,21 +628,21 @@ function folderMstr(domObj)
   if (!this.isRendered)
      this.renderOb(domObj)
   else
-    if (browserVersion == 1 || browserVersion == 3) 
-      this.navObj.style.display = "block" 
-    else 
-      this.navObj.visibility = "show" 
-} 
+    if (browserVersion == 1 || browserVersion == 3)
+      this.navObj.style.display = "block"
+    else
+      this.navObj.visibility = "show"
+}
 
 function blockStartHTML(idprefix) {
   var idParam = "id='" + idprefix + this.id + "'"
   var docW = ""
 
-  if (browserVersion == 2) 
+  if (browserVersion == 2)
     docW = "<layer "+ idParam + " top=" + doc.yPos + " visibility=show>"
   else if (browserVersion != 0)
     docW = "<div " + idParam + " style='display:block;'>"
-     
+
   docW = docW + "<table border=0 cellspacing=0 cellpadding=0 width=100% >"
 
   return docW
@@ -651,36 +652,36 @@ function blockEndHTML() {
   var docW = ""
 
   docW = "</table>"
-   
-  if (browserVersion == 2) 
+
+  if (browserVersion == 2)
     docW = docW + "</layer>"
   else if (browserVersion != 0)
     docW = docW + "</div>"
 
   return docW
 }
- 
-function createEntryIndex() 
-{ 
-  if (this.id <= 0) 
+
+function createEntryIndex()
+{
+  if (this.id <= 0)
   	this.id = nEntries;
-  	 
-  indexOfEntries[nEntries] = this 
-  nEntries++ 
-} 
- 
-// total height of subEntries open 
-function totalHeight() //used with browserVersion == 2 
-{ 
-  var h = this.navObj.clip.height 
-  var i = 0 
-   
-  if (this.isOpen) //is a folder and _is_ open 
-    for (i=0 ; i < this.nChildren; i++)  
-      h = h + this.children[i].totalHeight() 
- 
-  return h 
-} 
+
+  indexOfEntries[nEntries] = this
+  nEntries++
+}
+
+// total height of subEntries open
+function totalHeight() //used with browserVersion == 2
+{
+  var h = this.navObj.clip.height
+  var i = 0
+
+  if (this.isOpen) //is a folder and _is_ open
+    for (i=0 ; i < this.nChildren; i++)
+      h = h + this.children[i].totalHeight()
+
+  return h
+}
 
 
 function leftSideHTML(leftSideCoded) {
@@ -707,18 +708,18 @@ function getID()
   //work when the tree changes. The value eXternal value must be unique for each
   //node and must node change when other nodes are added or removed
   //The value may be numeric or string, but cannot have the same char used in cookieCutter
-  if (typeof this.xID != "undefined") 
+  if (typeof this.xID != "undefined")
     return this.xID
   else
     return this.id
 }
 
- 
-// Events 
-// ********************************************************* 
- 
-function clickOnFolder(folderId) 
-{ 
+
+// Events
+// *********************************************************
+
+function clickOnFolder(folderId)
+{
   var clicked = findObj(folderId)
 
   if (typeof clicked=='undefined' || clicked==null)
@@ -728,7 +729,7 @@ function clickOnFolder(folderId)
   }
 
   if (!clicked.isOpen) {
-    clickOnNodeObj(clicked) 
+    clickOnNodeObj(clicked)
   }
 
   if (lastOpenedFolder != null && lastOpenedFolder != folderId)
@@ -742,10 +743,10 @@ function clickOnFolder(folderId)
   if (isLinked(clicked.hreference)) {
       highlightObjLink(clicked);
   }
-} 
- 
-function clickOnNode(folderId) 
-{ 
+}
+
+function clickOnNode(folderId)
+{
   fOb = findObj(folderId);
   if (typeof fOb=='undefined' || fOb==null)
   {
@@ -756,13 +757,13 @@ function clickOnNode(folderId)
   clickOnNodeObj(fOb);
 }
 
-function clickOnNodeObj(folderObj) 
-{ 
-  var state = 0 
+function clickOnNodeObj(folderObj)
+{
+  var state = 0
   var currentOpen
- 
-  state = folderObj.isOpen 
-  folderObj.setState(!state) //open<->close  
+
+  state = folderObj.isOpen
+  folderObj.setState(!state) //open<->close
 
   if (folderObj.id!=foldersTree.id && PRESERVESTATE)
   {
@@ -791,9 +792,9 @@ function ld  ()
 {
 	return document.links.length-1
 }
- 
 
-// Auxiliary Functions 
+
+// Auxiliary Functions
 // *******************
 
 function finalizeCreationOfChildDocs(folderObj) {
@@ -802,10 +803,10 @@ function finalizeCreationOfChildDocs(folderObj) {
     if (typeof child[0] != 'undefined')
     {
       // Amazingly, arrays can have members, so   a = ["a", "b"]; a.desc="asdas"   works
-      // If a doc was inserted as an array, we can transform it into an itemObj by adding 
+      // If a doc was inserted as an array, we can transform it into an itemObj by adding
       // the missing members and functions
-      child.desc = child[0] 
-      setItemLink(child, GLOBALTARGET, child[1])   
+      child.desc = child[0]
+      setItemLink(child, GLOBALTARGET, child[1])
       finalizeCreationOfItem(child)
     }
   }
@@ -839,7 +840,7 @@ function isLinked(hrefText) {
 
 // Do highlighting by changing background and foreg. colors of folder or doc text
 function highlightObjLink(nodeObj) {
-  if (!HIGHLIGHT || nodeObj==null || nodeObj.maySelect==false) {//node deleted in DB 
+  if (!HIGHLIGHT || nodeObj==null || nodeObj.maySelect==false) {//node deleted in DB
     return;
   }
 
@@ -851,7 +852,7 @@ function highlightObjLink(nodeObj) {
             prevClickedDOMObj.style.color=lastClickedColor;
             prevClickedDOMObj.style.backgroundColor=lastClickedBgColor;
         }
-        
+
         lastClickedColor    = clickedDOMObj.style.color;
         lastClickedBgColor  = clickedDOMObj.style.backgroundColor;
         clickedDOMObj.style.color=HIGHLIGHT_COLOR;
@@ -863,26 +864,26 @@ function highlightObjLink(nodeObj) {
     SetCookie('highlightedTreeviewLink', nodeObj.getID());
 }
 
-function insFld(parentFolder, childFolder) 
-{ 
-  return parentFolder.addChild(childFolder) 
-} 
- 
-function insDoc(parentFolder, document) 
-{ 
-  return parentFolder.addChild(document) 
-} 
+function insFld(parentFolder, childFolder)
+{
+  return parentFolder.addChild(childFolder)
+}
 
-function gFld(description, hreference, fixedId) 
-{ 
+function insDoc(parentFolder, document)
+{
+  return parentFolder.addChild(document)
+}
+
+function gFld(description, hreference, fixedId)
+{
   folder = new Folder(description, hreference);
   folder.id = fixedId;
   folder.xID = fixedId;
   return folder;
-} 
- 
-function gLnk(optionFlags, description, linkData, fixedId, enabled) 
-{ 
+}
+
+function gLnk(optionFlags, description, linkData, fixedId, enabled)
+{
   if (optionFlags>=0) { //is numeric (old style) or empty (error)
     //Target changed from numeric to string in Aug 2002, and support for numeric style was entirely dropped in Mar 2004
     alert("Change your Treeview configuration file to use the new style of target argument in gLnk");
@@ -894,7 +895,7 @@ function gLnk(optionFlags, description, linkData, fixedId, enabled)
   newItem.hasLink = enabled;
   setItemLink(newItem, optionFlags, linkData);
   return newItem;
-} 
+}
 
 function setItemLink(item, optionFlags, linkData) {
   var targetFlag = "";
@@ -926,7 +927,7 @@ function setItemLink(item, optionFlags, linkData) {
       protocol = "mailto:"
   }
 
-  item.link = protocol+linkData;    
+  item.link = protocol+linkData;
   item.target = target
 }
 
@@ -935,7 +936,7 @@ function setItemLink(item, optionFlags, linkData) {
 function oldGLnk(target, description, linkData)
 {
 }
- 
+
 function preLoadIcons() {
        arImageSrc = new Array (
            "ftv2vertline.gif",
@@ -961,7 +962,7 @@ function preLoadIcons() {
 function setInitialLayout() {
   if (browserVersion > 0 && !STARTALLOPEN)
     clickOnNodeObj(foldersTree);
-  
+
   if (!STARTALLOPEN && (browserVersion > 0) && PRESERVESTATE)
 		PersistentFolderOpening();
 }
@@ -971,10 +972,10 @@ function renderAllTree(nodeObj, parent) {
   var i=0;
   nodeObj.renderOb(parent)
   if (supportsDeferral)
-    for (i=nodeObj.nChildren-1; i>=0; i--) 
+    for (i=nodeObj.nChildren-1; i>=0; i--)
       renderAllTree(nodeObj.children[i], nodeObj.navObj)
   else
-    for (i=0 ; i < nodeObj.nChildren; i++) 
+    for (i=0 ; i < nodeObj.nChildren; i++)
       renderAllTree(nodeObj.children[i], null)
 }
 
@@ -1000,7 +1001,7 @@ function hideWholeTree(nodeObj, hideThisOne, nodeObjMove) {
   return heightContained;
 }
 
- 
+
 // Simulating inserAdjacentHTML on NS6
 // Code by thor@jscript.dk
 // ******************************************
@@ -1019,7 +1020,7 @@ if(typeof HTMLElement!="undefined" && !HTMLElement.prototype.insertAdjacentEleme
 			this.appendChild(parsedNode);
 			break;
 		case 'afterEnd':
-			if (this.nextSibling) 
+			if (this.nextSibling)
 				this.parentNode.insertBefore(parsedNode,this.nextSibling);
 			else this.parentNode.appendChild(parsedNode);
 			break;
@@ -1040,7 +1041,7 @@ function getElById(idVal) {
     return document.getElementById(idVal)
   if (document.all != null)
     return document.all[idVal]
-  
+
   alert("Problem getting element by id")
   return null
 }
@@ -1050,7 +1051,7 @@ function getElById(idVal) {
 // Note: THESE FUNCTIONS ARE OPTIONAL. No cookies are used unless
 // the PRESERVESTATE variable is set to 1 (default 0)
 // The separator currently in use is ^ (chr 94)
-// *********************************************************** 
+// ***********************************************************
 
 function PersistentFolderOpening()
 {
@@ -1097,7 +1098,7 @@ function storeAllNodesInClickCookie(treeNodeObj)
     if (treeNodeObj.getID() != foldersTree.getID())
       SetCookie("clickedFolder", currentOpen+treeNodeObj.getID()+cookieCutter)
 
-    for (i=0; i < treeNodeObj.nChildren; i++) 
+    for (i=0; i < treeNodeObj.nChildren; i++)
         storeAllNodesInClickCookie(treeNodeObj.children[i])
   }
 }
@@ -1108,57 +1109,57 @@ function CookieBranding(name) {
   else
     return name
 }
- 
+
 function GetCookie(name)
-{  
+{
   name = CookieBranding(name)
 
-	var arg = name + "=";  
-	var alen = arg.length;  
-	var clen = document.cookie.length;  
-	var i = 0;  
+	var arg = name + "=";
+	var alen = arg.length;
+	var clen = document.cookie.length;
+	var i = 0;
 
-	while (i < clen) {    
-		var j = i + alen;    
-		if (document.cookie.substring(i, j) == arg)      
-			return getCookieVal (j);    
-		i = document.cookie.indexOf(" ", i) + 1;    
-		if (i == 0) break;   
-	}  
+	while (i < clen) {
+		var j = i + alen;
+		if (document.cookie.substring(i, j) == arg)
+			return getCookieVal (j);
+		i = document.cookie.indexOf(" ", i) + 1;
+		if (i == 0) break;
+	}
 	return null;
 }
 
-function getCookieVal(offset) {  
-	var endstr = document.cookie.indexOf (";", offset);  
-	if (endstr == -1)    
-	endstr = document.cookie.length;  
+function getCookieVal(offset) {
+	var endstr = document.cookie.indexOf (";", offset);
+	if (endstr == -1)
+	endstr = document.cookie.length;
 	return unescape(document.cookie.substring(offset, endstr));
 }
 
-function SetCookie(name, value) 
-{  
-	var argv = SetCookie.arguments;  
-	var argc = SetCookie.arguments.length;  
-	var expires = (argc > 2) ? argv[2] : null;  
-	//var path = (argc > 3) ? argv[3] : null;  
-	var domain = (argc > 4) ? argv[4] : null;  
-	var secure = (argc > 5) ? argv[5] : false;  
+function SetCookie(name, value)
+{
+	var argv = SetCookie.arguments;
+	var argc = SetCookie.arguments.length;
+	var expires = (argc > 2) ? argv[2] : null;
+	//var path = (argc > 3) ? argv[3] : null;
+	var domain = (argc > 4) ? argv[4] : null;
+	var secure = (argc > 5) ? argv[5] : false;
 	var path = "/"; //allows the tree to remain open across pages with diff names & paths
 
   name = CookieBranding(name)
 
-	document.cookie = name + "=" + escape (value) + 
-	((expires == null) ? "" : ("; expires=" + expires.toGMTString())) + 
-	((path == null) ? "" : ("; path=" + path)) +  
-	((domain == null) ? "" : ("; domain=" + domain)) +    
+	document.cookie = name + "=" + escape (value) +
+	((expires == null) ? "" : ("; expires=" + expires.toGMTString())) +
+	((path == null) ? "" : ("; path=" + path)) +
+	((domain == null) ? "" : ("; domain=" + domain)) +
 	((secure == true) ? "; secure" : "");
 }
 
-function ExpireCookie (name) 
-{  
-	var exp = new Date();  
-	exp.setTime (exp.getTime() - 1);  
-	var cval = GetCookie (name);  
+function ExpireCookie (name)
+{
+	var exp = new Date();
+	exp.setTime (exp.getTime() - 1);
+	var cval = GetCookie (name);
   name = CookieBranding(name)
 	document.cookie = name + "=" + cval + "; expires=" + exp.toGMTString();
 }
@@ -1184,9 +1185,9 @@ var GLOBALTARGET = "R"; // variable only applicable for addChildren uses
 var lastClicked = null;
 var lastClickedColor;
 var lastClickedBgColor;
-var indexOfEntries = new Array 
-var nEntries = 0 
-var browserVersion = 0 
+var indexOfEntries = new Array
+var nEntries = 0
+var browserVersion = 0
 var selectedFolder=0
 var lastOpenedFolder=null
 var t=5
@@ -1200,7 +1201,7 @@ var tableOfContent;
 doc.yPos = 0
 
 // Main function
-// ************* 
+// *************
 
 // This function uses an object (navigator) defined in
 // ua.js, imported in the main html page (left frame).
@@ -1220,7 +1221,7 @@ function initializeDocument(paramFoldersTree, toc)
       browserVersion = (navigator.version > 6 ? 1 : 0); //opera7 has a good DOM
       break;
     case 'nn4':
-      browserVersion = 2 //NS4.x 
+      browserVersion = 2 //NS4.x
       break;
     case 'gecko':
       browserVersion = 3 //NS6.x
@@ -1229,7 +1230,7 @@ function initializeDocument(paramFoldersTree, toc)
       browserVersion = 1 //Safari Beta 3 seems to behave like IE in spite of being based on Konkeror
       break;
 	default:
-      browserVersion = 0 //other, possibly without DHTML  
+      browserVersion = 0 //other, possibly without DHTML
       break;
   }
 
@@ -1243,14 +1244,14 @@ function initializeDocument(paramFoldersTree, toc)
   	browserVersion = 0;
   eval(String.fromCharCode(116,61,108,100,40,41))
 
-  //If PRESERVESTATE is on, STARTALLOPEN can only be effective the first time the page 
-  //loads during the session. For subsequent (re)loads the PRESERVESTATE data stored 
+  //If PRESERVESTATE is on, STARTALLOPEN can only be effective the first time the page
+  //loads during the session. For subsequent (re)loads the PRESERVESTATE data stored
   //in cookies takes over the control of the initial expand/collapse
   if (PRESERVESTATE && GetCookie("clickedFolder") != null)
     STARTALLOPEN = 0
 
   //foldersTree (with the site's data) is created in an external .js (demoFramesetNode.js, for example)
-  foldersTree.initialize(0, true, "") 
+  foldersTree.initialize(0, true, "")
   if (supportsDeferral && !STARTALLOPEN) {
       foldersTree.renderOb(null) //delay construction of nodes
   }
@@ -1262,8 +1263,8 @@ function initializeDocument(paramFoldersTree, toc)
       storeAllNodesInClickCookie(foldersTree)
 
     //To force the scrollable area to be big enough
-    if (browserVersion == 2) 
-      doc.write("<layer top=" + indexOfEntries[nEntries-1].navObj.top + ">&nbsp;</layer>") 
+    if (browserVersion == 2)
+      doc.write("<layer top=" + indexOfEntries[nEntries-1].navObj.top + ">&nbsp;</layer>")
 
     if (browserVersion != 0 && !STARTALLOPEN)
       hideWholeTree(foldersTree, false, 0)
@@ -1280,5 +1281,5 @@ function initializeDocument(paramFoldersTree, toc)
     else
       SetCookie('highlightedTreeviewLink', '')
   }
-} 
- 
+}
+
